@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+
+  hitta-skyddsrum-client:
+    build:
+      context: .
+      dockerfile: ./.docker/angular-seed.development.dockerfile
+    command: npm start
+    container_name: angular-seed-start
+    image: hitta-skyddsrum-client
+    networks:
+      - dev-network
+    ports:
+      - '5555:5555'
+
+networks:
+  dev-network:
+    driver: bridge
