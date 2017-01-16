@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import {Config} from "../config/env.config";
 // import 'rxjs/add/operator/do';  // for debugging
 
-interface Shelter {
+export interface Shelter {
   id: number,
   address: string,
   municipality: string,
@@ -18,7 +18,7 @@ interface Shelter {
   position: Position
 }
 
-interface Position {
+export interface Position {
   long: number,
   lat: number
 }
@@ -38,10 +38,20 @@ export class ApiService {
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {string[]} The Observable for the HTTP request.
+   * @return {Shelter[]} The Observable for the HTTP request.
    */
-  getShelters(): Observable<Shelter[]> {
-    return this.http.get(Config.API + '/shelters')
+  getShelters(coordinates: Coordinates, distance: number = 1): Observable<Shelter[]> {
+    let uri: string = Config.API + '/shelters';
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('lat', <string>coordinates.latitude.toString());
+    params.set('long', <string>coordinates.longitude.toString());
+    let options: RequestOptions = new RequestOptions({
+      search: params
+    });
+
+    console.log('params', params);
+
+    return this.http.get(uri, options)
                     .map(res => <Shelter[]>res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);
