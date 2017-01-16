@@ -313,8 +313,8 @@ Forks of this project demonstrate how to extend and integrate with other librari
 │       │   │   ├── index.ts
 │       │   │   ├── name-list
 │       │   │   │   ├── index.ts
-│       │   │   │   ├── name-list.service.spec.ts
-│       │   │   │   └── name-list.service.ts
+│       │   │   │   ├── api.service.spec.ts
+│       │   │   │   └── api.service.ts
 │       │   │   ├── navbar
 │       │   │   │   ├── index.ts
 │       │   │   │   ├── navbar.component.css

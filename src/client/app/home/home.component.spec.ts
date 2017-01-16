@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 
 import { HomeComponent } from './home.component';
-import { NameListService } from '../shared/name-list/name-list.service';
+import { ApiService } from '../shared/api/api.service';
 
 export function main() {
   describe('Home component', () => {
@@ -18,7 +18,7 @@ export function main() {
         imports: [FormsModule],
         declarations: [HomeComponent],
         providers: [
-          { provide: NameListService, useValue: new MockNameListService() }
+          { provide: ApiService, useValue: new MockApiService() }
         ]
       });
 
@@ -32,14 +32,14 @@ export function main() {
             let fixture = TestBed.createComponent(HomeComponent);
             let homeInstance = fixture.debugElement.componentInstance;
             let homeDOMEl = fixture.debugElement.nativeElement;
-            let mockNameListService = <MockNameListService>fixture.debugElement.injector.get(NameListService);
-            let nameListServiceSpy = spyOn(mockNameListService, 'get').and.callThrough();
+            let mockApiService = <MockApiService>fixture.debugElement.injector.get(ApiService);
+            let nameListServiceSpy = spyOn(mockApiService, 'get').and.callThrough();
 
-            mockNameListService.returnValue = ['1', '2', '3'];
+            mockApiService.returnValue = ['1', '2', '3'];
 
             fixture.detectChanges();
 
-            expect(homeInstance.nameListService).toEqual(jasmine.any(MockNameListService));
+            expect(homeInstance.nameListService).toEqual(jasmine.any(MockApiService));
             expect(homeDOMEl.querySelectorAll('li').length).toEqual(3);
             expect(nameListServiceSpy.calls.count()).toBe(1);
 
@@ -56,7 +56,7 @@ export function main() {
   });
 }
 
-class MockNameListService {
+class MockApiService {
 
   returnValue: string[];
 
