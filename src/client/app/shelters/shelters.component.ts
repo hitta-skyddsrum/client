@@ -1,4 +1,5 @@
 declare var google: any;
+declare var MarkerClusterer: any;
 
 import {Component, OnInit, OnChanges} from '@angular/core';
 import {ApiService, Shelter} from '../shared/api/api.service';
@@ -18,11 +19,12 @@ export class SheltersComponent implements OnInit {
 
   newName: string = '';
   errorMessage: string;
-  shelters: any[] = [];
+  shelters: Shelter[] = [];
   map: any;
   selectedShelter: Shelter;
   selectedShelterMarker: any;
-  shelterMarkers: any[];
+  shelterMarkers: any[] = [];
+  markerClusterer: any;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -53,6 +55,8 @@ export class SheltersComponent implements OnInit {
       zoom: 7,
       center: {lat: coordinates.latitude.valueOf(), lng: coordinates.longitude.valueOf()}
     });
+
+    this.plotShelters();
 
 //    directionsDisplay.setMap(map);
 //    calculateAndDisplayRoute(directionsService, directionsDisplay);
@@ -92,7 +96,7 @@ export class SheltersComponent implements OnInit {
     // Create all the markers
     for(var i=0;i<this.shelters.length;i++) {
       var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.shelters[i].lat, this.shelters[i].long),
+        position: new google.maps.LatLng(this.shelters[i].position.lat, this.shelters[i].position.long),
         map: this.map,
         icon: {
           url: '/assets/images/icon-shelter.png',
@@ -103,12 +107,27 @@ export class SheltersComponent implements OnInit {
       this.setShelterMarkerEventData(this.shelters[i], marker);
       this.shelterMarkers.push(marker);
     }
+
+    this.markerClusterer = new MarkerClusterer(this.map, this.shelterMarkers, {
+      enableRetinaIcons: false,
+      maxZoom: 15,
+      imagePath: '/assets/images/icon-shelter-cluster',
+      imageExtension: 'png'
+    });
+
+    google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function(markerClusterer: any) {
+      console.log('nu börjar vi!', markerClusterer);
+    });
+
+    google.maps.event.addListener(this.markerClusterer, 'clusteringend', function(markerClusterer: any) {
+      console.log('nu slutar vi!', markerClusterer);
+    });
   }
 
   private setShelterMarkerEventData(shelter: Shelter, marker: any ) {
     var _shelterComponent = this;
 
-    google.maps.event.addListener(marker, 'click', function(event) {
+    google.maps.event.addListener(marker, 'click', function(event: Event) {
       // If there's a selected shelter, reset the size of it
       if( typeof _shelterComponent.selectedShelterMarker !== 'undefined' ) {
         var icon = this.selectedShelterMarker.icon;

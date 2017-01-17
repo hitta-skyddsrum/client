@@ -28,7 +28,7 @@ export class GeolocationService {
     console.log('getLocation', (window.navigator && window.navigator.geolocation));
 
     return Observable.create(observer => {
-      if (1 == 1) {
+      if (window.navigator && window.navigator.geolocation) {
         console.log('get current position');
         window.navigator.geolocation.getCurrentPosition(
           (position) => {
