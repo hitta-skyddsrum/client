@@ -18,7 +18,7 @@ import { SheltersModule } from './shelters/shelters.module';
     AboutModule,
     HomeModule,
     SharedModule.forRoot(),
-    SheltersModule
+    SheltersModule,
   ],
   declarations: [AppComponent],
   providers: [{

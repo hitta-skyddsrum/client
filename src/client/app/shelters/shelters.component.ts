@@ -1,30 +1,24 @@
-declare var google: any;
-declare var MarkerClusterer: any;
-
-import {Component, OnInit, OnChanges} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {ApiService, Shelter} from '../shared/api/api.service';
 import {GeolocationService} from '../shared/geolocation/geolocation.service';
 import {Observable} from "rxjs/Observable";
+import {SheltersMapComponent} from './map/shelters.map.component';
 
 /**
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
   moduleId: module.id,
-  selector: 'map',
+  selector: 'sd-app',
   templateUrl: 'shelters.component.html',
   styleUrls: ['shelters.component.css'],
 })
-export class SheltersComponent implements OnInit {
+export class SheltersComponent implements AfterViewInit {
 
-  newName: string = '';
-  errorMessage: string;
   shelters: Shelter[] = [];
-  map: any;
-  selectedShelter: Shelter;
-  selectedShelterMarker: any;
-  shelterMarkers: any[] = [];
-  markerClusterer: any;
+  currentPosition: Coordinates;
+
+  @ViewChild(SheltersMapComponent) sheltersMapComponent = SheltersMapComponent;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -38,118 +32,14 @@ export class SheltersComponent implements OnInit {
   /**
    * Get the shelters OnInit
    */
-  ngOnInit() {
+  ngAfterViewInit() {
     this.getPosition().subscribe(location => {
+      this.currentPosition = location.coords;
+      this.sheltersMapComponent.writeMap(location.coords);
+
       this.getShelters(location.coords).subscribe(
-        result => this.writeMap(location.coords)
+        result => this.sheltersMapComponent.plotShelters(this.shelters)
       );
-    });
-  }
-
-  private writeMap(coordinates: Coordinates) {
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-
-    console.log(coordinates.longitude.valueOf());
-    this.map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 7,
-      center: {lat: coordinates.latitude.valueOf(), lng: coordinates.longitude.valueOf()}
-    });
-
-    this.plotShelters();
-
-//    directionsDisplay.setMap(map);
-//    calculateAndDisplayRoute(directionsService, directionsDisplay);
-
-    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-
-      var waypts = [];
-      var checkboxArray:any[] = [
-        'winnipeg', 'regina','calgary'
-      ];
-      for (var i = 0; i < checkboxArray.length; i++) {
-
-        waypts.push({
-          location: checkboxArray[i],
-          stopover: true
-        });
-
-      }
-
-      directionsService.route({
-        origin: {lat: directionsDisplay.lat, lng: directionsDisplay.lng},
-        destination: {lat: 49.3, lng: -123.12},
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: 'DRIVING'
-      }, function(response, status) {
-        if (status === 'OK') {
-          directionsDisplay.setDirections(response);
-        } else {
-          window.alert('Directions request failed due to ' + status);
-        }
-      });
-    }
-  }
-
-  private plotShelters() {
-    // Create all the markers
-    for(var i=0;i<this.shelters.length;i++) {
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.shelters[i].position.lat, this.shelters[i].position.long),
-        map: this.map,
-        icon: {
-          url: '/assets/images/icon-shelter.png',
-          scaledSize: new google.maps.Size(30, 30)
-        }
-      });
-
-      this.setShelterMarkerEventData(this.shelters[i], marker);
-      this.shelterMarkers.push(marker);
-    }
-
-    this.markerClusterer = new MarkerClusterer(this.map, this.shelterMarkers, {
-      enableRetinaIcons: false,
-      maxZoom: 15,
-      imagePath: '/assets/images/icon-shelter-cluster',
-      imageExtension: 'png'
-    });
-
-    google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function(markerClusterer: any) {
-      console.log('nu börjar vi!', markerClusterer);
-    });
-
-    google.maps.event.addListener(this.markerClusterer, 'clusteringend', function(markerClusterer: any) {
-      console.log('nu slutar vi!', markerClusterer);
-    });
-  }
-
-  private setShelterMarkerEventData(shelter: Shelter, marker: any ) {
-    var _shelterComponent = this;
-
-    google.maps.event.addListener(marker, 'click', function(event: Event) {
-      // If there's a selected shelter, reset the size of it
-      if( typeof _shelterComponent.selectedShelterMarker !== 'undefined' ) {
-        var icon = this.selectedShelterMarker.icon;
-        icon.scaledSize.width = 29;
-        icon.scaledSize.height = 30;
-        _shelterComponent.selectedShelterMarker.setIcon(icon);
-      }
-
-      // Set the new selected shelter
-      _shelterComponent.selectedShelterMarker = this;
-
-      // Set the icon size
-      var icon = _shelterComponent.selectedShelterMarker.icon;
-      icon.scaledSize.width = 58;
-      icon.scaledSize.height = 60;
-      _shelterComponent.selectedShelterMarker.setIcon(icon);
-
-      // Set selected for the UI
-      _shelterComponent.selectedShelter = shelter;
-
-      // Write path
-//      findClosestPath($scope.currentPosition, this.position, false);
     });
   }
 
@@ -170,17 +60,6 @@ export class SheltersComponent implements OnInit {
           }
         );
     })
-  }
-
-  /**
-   * Pushes a new name onto the names array
-   * @return {boolean} false to prevent default form submit behavior to refresh the page.
-   */
-  addName(): boolean {
-    // TODO: implement apiService.post
-    this.shelters.push(this.newName);
-    this.newName = '';
-    return false;
   }
 
 }
