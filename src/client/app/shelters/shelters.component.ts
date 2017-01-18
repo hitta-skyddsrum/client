@@ -20,10 +20,6 @@ import {SheltersUserStateService} from "./user-state/shelters.user-state.service
 export class SheltersComponent implements OnInit {
 
   shelters: Shelter[] = [];
-  currentPosition: Coordinates;
-
-//  @ViewChild(SheltersMapComponent) sheltersMapComponent = SheltersMapComponent;
-//  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent = SheltersInfoBoxComponent;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -32,7 +28,7 @@ export class SheltersComponent implements OnInit {
    * @param {ApiService} apiService - The injected ApiService.
    */
   constructor(
-    public apiService: ApiService,
+    private apiService: ApiService,
     private route: ActivatedRoute,
     private sheltersUserStateService: SheltersUserStateService
   ) {

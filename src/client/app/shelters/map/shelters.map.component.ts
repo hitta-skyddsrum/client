@@ -4,8 +4,6 @@ declare var MarkerClusterer: any;
 
 import {Component} from '@angular/core';
 import {Shelter} from '../../shared/api';
-import {Observable} from "rxjs/observable";
-import {Observer} from "rxjs";
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 
 /**
@@ -24,7 +22,6 @@ export class SheltersMapComponent {
   selectedShelterMarker: any;
   shelterMarkers: any[] = [];
   markerClusterer: any;
-  shelterSelected$: Observable<number>;
 
   constructor(
     private sheltersUserStateService: SheltersUserStateService,
@@ -52,8 +49,6 @@ export class SheltersMapComponent {
       zoom: 15,
       center: {lat: Number(coordinates.latitude.valueOf()), lng: Number(coordinates.longitude.valueOf())}
     });
-
-    console.log({lat: (<number> coordinates.latitude.valueOf()), lng: (<number> coordinates.longitude.valueOf())});
 
     this.directionsDisplay = new google.maps.DirectionsRenderer();
     this.directionsDisplay.setMap(this.map);
@@ -88,7 +83,7 @@ export class SheltersMapComponent {
     return closest;
   }
 
-  public plotShelters(shelters: Shelter[]) {
+  private plotShelters(shelters: Shelter[]) {
     // Create all the markers
     for(var i=0;i<shelters.length;i++) {
       var marker = new google.maps.Marker({
@@ -149,8 +144,6 @@ export class SheltersMapComponent {
       optimizeWaypoints: true
     };
 
-    console.log('origin', origin);
-
     // Request the route
     directionsService.route(request, function(response: any, status: any) {
       console.log('google.maps.DirectionsStatus.OK', status);
@@ -170,8 +163,6 @@ export class SheltersMapComponent {
         case google.maps.DirectionsStatus.OK:
           // If we couldn't find a path, lets try with travelMode DRIVING
           // google.maps.TravelMode['DRIVING']
-          console.log('route');
-          console.log(response);
 
           // Render the direction
           _shelterComponent.directionsDisplay.setOptions({
