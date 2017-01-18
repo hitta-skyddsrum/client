@@ -1,10 +1,11 @@
-import {Component, ViewChild, AfterViewInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, ViewChild, AfterViewInit, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {ApiService, Shelter} from '../shared/api/api.service';
-import {GeolocationService} from '../shared/geolocation/geolocation.service';
 import {Observable} from "rxjs/Observable";
 import {SheltersMapComponent} from './map/shelters.map.component';
 import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
+import {Observer} from "rxjs";
+import {SheltersUserStateService} from "./user-state/shelters.user-state.service";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -15,13 +16,14 @@ import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
   templateUrl: 'shelters.component.html',
   styleUrls: ['shelters.component.css'],
 })
-export class SheltersComponent implements AfterViewInit {
+
+export class SheltersComponent implements OnInit {
 
   shelters: Shelter[] = [];
   currentPosition: Coordinates;
 
-  @ViewChild(SheltersMapComponent) sheltersMapComponent = SheltersMapComponent;
-  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent = SheltersInfoBoxComponent;
+//  @ViewChild(SheltersMapComponent) sheltersMapComponent = SheltersMapComponent;
+//  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent = SheltersInfoBoxComponent;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -31,38 +33,34 @@ export class SheltersComponent implements AfterViewInit {
    */
   constructor(
     public apiService: ApiService,
-    public geoLocation: GeolocationService,
-    public router: Router) {
+    private route: ActivatedRoute,
+    private sheltersUserStateService: SheltersUserStateService
+  ) {
   }
 
   /**
    * Get the shelters OnInit
    */
-  ngAfterViewInit() {
-    this.getPosition().subscribe(location => {
-      this.currentPosition = location.coords;
-      this.sheltersMapComponent.writeMap(location.coords);
-      this.router.navigate()
-      this.getShelters(location.coords).subscribe(
-        result => {
-          this.sheltersMapComponent.plotShelters(this.shelters);
-          this.sheltersInfoBoxComponent.open();
-          this.sheltersInfoBoxComponent.setCurrentStep(1);
-        }
-      );
-    });
+  ngOnInit() {
+    let lat: number = this.route.snapshot.queryParams['lat'];
+    let lng: number = this.route.snapshot.queryParams['lng'];
+    let coords: Coordinates = <Coordinates> {
+      latitude: lat,
+      longitude: lng,
+      accuracy: 1,
+      altitude: null,
+      altitudeAccuracy: 1,
+      heading: null
+    };
+    let location: Position = <Position> {
+      coords: coords
+    };
 
+    this.sheltersUserStateService.setPosition(location);
   }
 
-  getPosition() {
-    return this.geoLocation.getLocation({});
-  }
-
-  /**
-   * Handle the apiService observable
-   */
   getShelters(coordinates: Coordinates) {
-    return Observable.create(observer => {
+    return Observable.create((observer: any) => {
       this.apiService.getShelters(coordinates)
         .subscribe(
           shelters => {

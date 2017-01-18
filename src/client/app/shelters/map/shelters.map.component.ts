@@ -1,8 +1,12 @@
+import {ApiService} from "../../shared/api/api.service";
 declare var google: any;
 declare var MarkerClusterer: any;
 
 import {Component} from '@angular/core';
 import {Shelter} from '../../shared/api';
+import {Observable} from "rxjs/observable";
+import {Observer} from "rxjs";
+import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -17,16 +21,39 @@ import {Shelter} from '../../shared/api';
 export class SheltersMapComponent {
   map: any;
   directionsDisplay: any;
-  selectedShelter: Shelter;
   selectedShelterMarker: any;
   shelterMarkers: any[] = [];
   markerClusterer: any;
+  shelterSelected$: Observable<number>;
 
-  writeMap(coordinates: Coordinates) {
+  constructor(
+    private sheltersUserStateService: SheltersUserStateService,
+    apiService: ApiService
+  ) {
+    sheltersUserStateService.currentPosition$.subscribe(
+      position => {
+        console.log('position', position);
+        if (position !== null) {
+          this.writeMap(position.coords);
+
+          apiService.getShelters(position.coords)
+            .subscribe(
+              shelters => {
+                this.plotShelters(shelters);
+              }
+            );
+        }
+      }
+    );
+  }
+
+  private writeMap(coordinates: Coordinates) {
     this.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
-      center: {lat: coordinates.latitude.valueOf(), lng: coordinates.longitude.valueOf()}
+      center: {lat: Number(coordinates.latitude.valueOf()), lng: Number(coordinates.longitude.valueOf())}
     });
+
+    console.log({lat: (<number> coordinates.latitude.valueOf()), lng: (<number> coordinates.longitude.valueOf())});
 
     this.directionsDisplay = new google.maps.DirectionsRenderer();
     this.directionsDisplay.setMap(this.map);
@@ -167,29 +194,28 @@ export class SheltersMapComponent {
   }
 
   private setShelterMarkerEventData(shelter: Shelter, marker: any ) {
-    var _shelterComponent = this;
+    var _sheltersMap = this;
 
     google.maps.event.addListener(marker, 'click', function(event: Event) {
 
       // If there's a selected shelter, reset the size of it
-      if( typeof _shelterComponent.selectedShelterMarker !== 'undefined' ) {
-        _shelterComponent.resetSizeOfMarker(_shelterComponent.selectedShelterMarker);
+      if( typeof _sheltersMap.selectedShelterMarker !== 'undefined' ) {
+        _sheltersMap.resetSizeOfMarker(_sheltersMap.selectedShelterMarker);
       }
 
       // Set the new selected shelter
-      _shelterComponent.selectedShelterMarker = this;
+      _sheltersMap.selectedShelterMarker = this;
 
       // Set the icon size
-      var icon = _shelterComponent.selectedShelterMarker.icon;
+      var icon = _sheltersMap.selectedShelterMarker.icon;
       icon.scaledSize.width = 58;
       icon.scaledSize.height = 60;
-      _shelterComponent.selectedShelterMarker.setIcon(icon);
+      _sheltersMap.selectedShelterMarker.setIcon(icon);
 
-      // Set selected for the UI
-      _shelterComponent.selectedShelter = shelter;
+      _sheltersMap.sheltersUserStateService.selectShelter(shelter);
 
       // Write path
-      _shelterComponent.findClosestPath(
+      _sheltersMap.findClosestPath(
         this.map.getCenter(),
         this.getPosition(),
         false,

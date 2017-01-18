@@ -27,11 +27,11 @@ export class GeolocationService {
   public getLocation(opts: Object) {
     console.log('getLocation', (window.navigator && window.navigator.geolocation));
 
-    return Observable.create(observer => {
+    return Observable.create((observer: any) => {
       if (window.navigator && window.navigator.geolocation) {
         console.log('get current position');
         window.navigator.geolocation.getCurrentPosition(
-          (position) => {
+          (position: Position) => {
             observer.next(position);
             observer.complete();
           },

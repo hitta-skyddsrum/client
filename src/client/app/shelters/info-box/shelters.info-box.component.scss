@@ -6,7 +6,7 @@ body {
 }
 
 :host(shelters-infobox) {
-  section {
+  /deep/ section {
     position: absolute;
     bottom: 0;
     left: 0;

@@ -1,6 +1,7 @@
 <section [ngClass]="{'open': isOpen}">
     <div class="inner">
         <div class="content">
+            <router-outlet></router-outlet>
         </div>
         <div class="progress">
             <div class="progress-bar" [ngStyle]="{'width': progressBarWidth + '%'}"></div>
