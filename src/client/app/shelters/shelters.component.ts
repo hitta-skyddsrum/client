@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, AfterViewInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {ApiService, Shelter} from '../shared/api/api.service';
 import {GeolocationService} from '../shared/geolocation/geolocation.service';
 import {Observable} from "rxjs/Observable";
 import {SheltersMapComponent} from './map/shelters.map.component';
+import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -19,6 +21,7 @@ export class SheltersComponent implements AfterViewInit {
   currentPosition: Coordinates;
 
   @ViewChild(SheltersMapComponent) sheltersMapComponent = SheltersMapComponent;
+  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent = SheltersInfoBoxComponent;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -26,7 +29,10 @@ export class SheltersComponent implements AfterViewInit {
    *
    * @param {ApiService} apiService - The injected ApiService.
    */
-  constructor(public apiService: ApiService, public geoLocation: GeolocationService) {
+  constructor(
+    public apiService: ApiService,
+    public geoLocation: GeolocationService,
+    public router: Router) {
   }
 
   /**
@@ -36,11 +42,16 @@ export class SheltersComponent implements AfterViewInit {
     this.getPosition().subscribe(location => {
       this.currentPosition = location.coords;
       this.sheltersMapComponent.writeMap(location.coords);
-
+      this.router.navigate()
       this.getShelters(location.coords).subscribe(
-        result => this.sheltersMapComponent.plotShelters(this.shelters)
+        result => {
+          this.sheltersMapComponent.plotShelters(this.shelters);
+          this.sheltersInfoBoxComponent.open();
+          this.sheltersInfoBoxComponent.setCurrentStep(1);
+        }
       );
     });
+
   }
 
   getPosition() {

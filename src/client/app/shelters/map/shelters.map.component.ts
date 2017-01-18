@@ -1,8 +1,7 @@
 declare var google: any;
 declare var MarkerClusterer: any;
 
-import {Component, OnInit, OnChanges} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Component} from '@angular/core';
 import {Shelter} from '../../shared/api';
 
 /**

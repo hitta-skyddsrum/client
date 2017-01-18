@@ -38,3 +38,10 @@
   -moz-box-shadow: $properties;
   -webkit-box-shadow: $properties;
 }
+
+@mixin transition-timing-function($properties) {
+  transition-timing-function: $properties;
+  -moz-transition-timing-function: $properties;
+  -o-transition-timing-function: $properties;
+  -webkit-transition-timing-function: $properties;
+}
