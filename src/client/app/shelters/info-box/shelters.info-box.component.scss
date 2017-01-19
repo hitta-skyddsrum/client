@@ -25,7 +25,7 @@ body {
     }
 
     > .inner {
-      padding: 18px;
+      padding: 19px;
     }
 
     .content {
@@ -34,10 +34,9 @@ body {
       height: 63px;
 
       .button {
-
         position: absolute;
-        right: 0;
-        bottom: 0;
+        right: 20px;
+        bottom: 50px;
         padding: 10px 20px;
         background-color: $blue;
         color: #fff;
