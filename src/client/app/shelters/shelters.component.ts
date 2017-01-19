@@ -1,11 +1,8 @@
-import {Component, ViewChild, AfterViewInit, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {ApiService, Shelter} from '../shared/api/api.service';
 import {Observable} from "rxjs/Observable";
-import {SheltersMapComponent} from './map/shelters.map.component';
-import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
-import {Observer} from "rxjs";
 import {SheltersUserStateService} from "./user-state/shelters.user-state.service";
+import {ActivatedRoute} from "@angular/router";
 
 /**
  * This class represents the lazy loaded HomeComponent.
