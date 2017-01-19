@@ -14,54 +14,6 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['shelters.component.css'],
 })
 
-export class SheltersComponent implements OnInit {
-
-  shelters: Shelter[] = [];
-
-  /**
-   * Creates an instance of the SheltersComponent with the injected
-   * ApiService.
-   *
-   * @param {ApiService} apiService - The injected ApiService.
-   */
-  constructor(
-    private apiService: ApiService,
-    private route: ActivatedRoute,
-    private sheltersUserStateService: SheltersUserStateService
-  ) {
-  }
-
-  /**
-   * Get the shelters OnInit
-   */
-  ngOnInit() {
-    let lat: number = this.route.snapshot.queryParams['lat'];
-    let lng: number = this.route.snapshot.queryParams['lng'];
-    let coords: Coordinates = <Coordinates> {
-      latitude: lat,
-      longitude: lng,
-      accuracy: 1,
-      altitude: null,
-      altitudeAccuracy: 1,
-      heading: null
-    };
-    let location: Position = <Position> {
-      coords: coords
-    };
-
-    this.sheltersUserStateService.setPosition(location);
-  }
-
-  getShelters(coordinates: Coordinates) {
-    return Observable.create((observer: any) => {
-      this.apiService.getShelters(coordinates)
-        .subscribe(
-          shelters => {
-            this.shelters = shelters;
-            observer.next();
-          }
-        );
-    })
-  }
+export class SheltersComponent {
 
 }

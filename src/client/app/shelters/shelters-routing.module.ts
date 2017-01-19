@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {SheltersComponent} from './shelters.component';
+import {SheltersListComponent} from './list/shelters.list.component';
 import {SheltersInfoBoxStep1Component} from './info-box/step1/shelters.info-box.step1.component';
 import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.consumer-locator.component";
 
@@ -13,7 +13,7 @@ import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.cons
       },
       {
         path: 'skyddsrum',
-        component: SheltersComponent,
+        component: SheltersListComponent,
         children: [
           {
             path: '',

@@ -2,7 +2,7 @@ import {ApiService} from "../../shared/api/api.service";
 declare var google: any;
 declare var MarkerClusterer: any;
 
-import {Component} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 
@@ -16,38 +16,32 @@ import {SheltersUserStateService} from "../user-state/shelters.user-state.servic
   styleUrls: ['shelters.map.component.css'],
 })
 
-export class SheltersMapComponent {
+export class SheltersMapComponent implements AfterViewInit {
   map: any;
   directionsDisplay: any;
   selectedShelterMarker: any;
   shelterMarkers: any[] = [];
   markerClusterer: any;
 
-  constructor(
-    private sheltersUserStateService: SheltersUserStateService,
-    apiService: ApiService
-  ) {
-    sheltersUserStateService.currentPosition$.subscribe(
-      position => {
-        console.log('position', position);
-        if (position !== null) {
-          this.writeMap(position.coords);
-
-          apiService.getShelters(position.coords)
-            .subscribe(
-              shelters => {
-                this.plotShelters(shelters);
-              }
-            );
-        }
-      }
-    );
+  constructor(private sheltersUserStateService: SheltersUserStateService,
+              apiService: ApiService) {
   }
 
-  private writeMap(coordinates: Coordinates) {
+  ngAfterViewInit() {
+    this.loadMap();
+
+    this.sheltersUserStateService.shelters$.subscribe(
+      (shelters: Shelter[]) => {
+        this.plotShelters(shelters);
+      }
+    );
+
+  }
+
+  private loadMap() {
     this.map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: {lat: Number(coordinates.latitude.valueOf()), lng: Number(coordinates.longitude.valueOf())}
+      zoom: 5,
+      center: {lat: 60.490, lng: 14.941}
     });
 
     this.directionsDisplay = new google.maps.DirectionsRenderer();
@@ -55,6 +49,8 @@ export class SheltersMapComponent {
     this.directionsDisplay.setOptions({
       suppressMarkers: true
     });
+
+    this.sheltersUserStateService.setMapAsLoaded();
   }
 
   private findClosestMarker(origin: any, markerArray: any[]) {
@@ -63,68 +59,28 @@ export class SheltersMapComponent {
     var R = 6371; // radius of earth in km
     var distances: any[] = [];
     var closest = -1;
-    function rad(x: number) {return x*Math.PI/180;}
 
-    for(var i=0;i<markerArray.length; i++ ) {
+    function rad(x: number) {
+      return x * Math.PI / 180;
+    }
+
+    for (var i = 0; i < markerArray.length; i++) {
       let mLat = markerArray[i].getPosition().lat();
       let mLng = markerArray[i].getPosition().lng();
-      let dLat  = rad(mLat - lat);
+      let dLat = rad(mLat - lat);
       let dLong = rad(mLng - lng);
-      let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
-      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       let d = R * c;
       distances[i] = d;
-      if ( closest == -1 || d < distances[closest] ) {
+      if (closest == -1 || d < distances[closest]) {
         closest = i;
       }
     }
 
-    return closest;
+    return markerArray[closest];
   }
-
-  private plotShelters(shelters: Shelter[]) {
-    // Create all the markers
-    for(var i=0;i<shelters.length;i++) {
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(shelters[i].position.lat, shelters[i].position.long),
-        map: this.map,
-        icon: {
-          url: '/assets/images/icon-shelter.png',
-          scaledSize: new google.maps.Size(30, 30)
-        }
-      });
-
-      this.setShelterMarkerEventData(shelters[i], marker);
-      this.shelterMarkers.push(marker);
-    }
-
-    this.markerClusterer = new MarkerClusterer(this.map, this.shelterMarkers, {
-      enableRetinaIcons: false,
-      maxZoom: 15,
-      imagePath: '/assets/images/icon-shelter-cluster',
-      imageExtension: 'png'
-    });
-
-    google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function(markerClusterer: any) {
-      console.log('nu börjar vi!', markerClusterer);
-    });
-
-    google.maps.event.addListener(this.markerClusterer, 'clusteringend', function(markerClusterer: any) {
-      console.log('nu slutar vi!', markerClusterer);
-    });
-
-    this.markClosestShelter();
-  }
-
-  private markClosestShelter()
-  {
-    // Find the closest marker
-    var closestShelter = this.findClosestMarker(this.map.getCenter(), this.shelterMarkers);
-    // And select it
-    google.maps.event.trigger(this.shelterMarkers[closestShelter], 'click');
-  }
-
 
   // Find the closest path to given destination
   private findClosestPath(origin: any, destination: any, preserveViewport: boolean, travelMode: any) {
@@ -132,7 +88,7 @@ export class SheltersMapComponent {
     var _shelterComponent = this;
 
     // If travelMode isnt set, lets set it to WALKING
-    if( typeof travelMode === 'undefined' ) {
+    if (typeof travelMode === 'undefined') {
       travelMode = google.maps.TravelMode['WALKING'];
     }
 
@@ -145,7 +101,7 @@ export class SheltersMapComponent {
     };
 
     // Request the route
-    directionsService.route(request, function(response: any, status: any) {
+    directionsService.route(request, function (response: any, status: any) {
       console.log('google.maps.DirectionsStatus.OK', status);
 
       switch (status) {
@@ -177,40 +133,102 @@ export class SheltersMapComponent {
 
   };
 
-  private resetSizeOfMarker(marker: any) {
+  private plotShelters(shelters: Shelter[]) {
+    this.sheltersUserStateService.sheltersIsPlotted(false);
+
+    // Create all the markers
+    for (var i = 0; i < shelters.length; i++) {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(shelters[i].position.lat, shelters[i].position.long),
+        map: this.map,
+        icon: {
+          url: '/assets/images/icon-shelter.png',
+          scaledSize: new google.maps.Size(30, 30)
+        },
+        shelter: shelters[i]
+      });
+
+      this.setShelterMarkerEventData(shelters[i], marker);
+      this.shelterMarkers.push(marker);
+    }
+
+    this.markerClusterer = new MarkerClusterer(this.map, this.shelterMarkers, {
+      enableRetinaIcons: false,
+      maxZoom: 15,
+      imagePath: '/assets/images/icon-shelter-cluster',
+      imageExtension: 'png'
+    });
+
+    google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function (markerClusterer: any) {
+      console.log('nu börjar vi!', markerClusterer);
+    });
+
+    google.maps.event.addListener(this.markerClusterer, 'clusteringend', function (markerClusterer: any) {
+      console.log('nu slutar vi!', markerClusterer);
+    });
+
+    this.sheltersUserStateService.sheltersIsPlotted(true);
+  }
+
+  selectClosestShelter(origin: Position) {
+    // Find the closest marker
+    var closestMarker = this.findClosestMarker(
+      new google.maps.LatLng(origin.coords.latitude, origin.coords.longitude),
+      this.shelterMarkers);
+    // And select it
+    google.maps.event.trigger(closestMarker, 'click');
+  }
+
+  private setSizeOfMarkerAsOriginal(marker: any, type: string) {
     let icon = marker.icon;
-    icon.scaledSize.width = 29;
-    icon.scaledSize.height = 30;
+    switch (type) {
+      case 'shelter':
+        icon.scaledSize.width = 29;
+        icon.scaledSize.height = 30;
+        break;
+    }
     marker.setIcon(icon);
   }
 
-  private setShelterMarkerEventData(shelter: Shelter, marker: any ) {
+  private setSizeOfMarkerAsSelected(marker: any, type: string) {
+    let icon = marker.icon;
+    switch (type) {
+      case 'shelter':
+        icon.scaledSize.width = 58;
+        icon.scaledSize.height = 60;
+        break;
+    }
+    marker.setIcon(icon);
+  }
+
+  private setShelterMarkerEventData(shelter: Shelter, marker: any) {
     var _sheltersMap = this;
 
-    google.maps.event.addListener(marker, 'click', function(event: Event) {
+    google.maps.event.addListener(marker, 'click', function (event: Event) {
 
-      // If there's a selected shelter, reset the size of it
-      if( typeof _sheltersMap.selectedShelterMarker !== 'undefined' ) {
-        _sheltersMap.resetSizeOfMarker(_sheltersMap.selectedShelterMarker);
+        // If there's a selected shelter, reset the size of it
+        if (typeof _sheltersMap.selectedShelterMarker !== 'undefined') {
+          _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedShelterMarker, 'shelter');
+        }
+
+        // Set the new selected shelter
+        _sheltersMap.sheltersUserStateService.selectShelter(shelter);
+        _sheltersMap.selectedShelterMarker = this;
+
+        _sheltersMap.setSizeOfMarkerAsSelected(_sheltersMap.selectedShelterMarker, 'shelter');
+
+        _sheltersMap.sheltersUserStateService.currentPosition$.subscribe(
+          (position: Position) => {
+            // Write path
+            _sheltersMap.findClosestPath(
+              new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+              this.getPosition(),
+              false,
+              google.maps.TravelMode['WALKING']
+            );
+          });
       }
+    );
 
-      // Set the new selected shelter
-      _sheltersMap.selectedShelterMarker = this;
-
-      // Set the icon size
-      var icon = _sheltersMap.selectedShelterMarker.icon;
-      icon.scaledSize.width = 58;
-      icon.scaledSize.height = 60;
-      _sheltersMap.selectedShelterMarker.setIcon(icon);
-
-      _sheltersMap.sheltersUserStateService.selectShelter(shelter);
-
-      // Write path
-      _sheltersMap.findClosestPath(
-        this.map.getCenter(),
-        this.getPosition(),
-        false,
-        google.maps.TravelMode['WALKING']);
-    });
   }
 }

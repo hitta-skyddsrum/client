@@ -10,11 +10,13 @@ import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
 import {SheltersInfoBoxStep1Component} from "./info-box/step1/shelters.info-box.step1.component";
 import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.consumer-locator.component";
 import {SheltersUserStateService} from "./user-state/shelters.user-state.service";
+import {SheltersListComponent} from "./list/shelters.list.component";
 
 @NgModule({
   imports: [CommonModule, SheltersRoutingModule, SharedModule],
   declarations: [
     SheltersComponent,
+    SheltersListComponent,
     SheltersMapComponent,
     SheltersInfoBoxComponent,
     SheltersInfoBoxStep1Component,
@@ -24,7 +26,8 @@ import {SheltersUserStateService} from "./user-state/shelters.user-state.service
     SheltersComponent,
     SheltersMapComponent,
     SheltersInfoBoxComponent,
-    SheltersInfoBoxStep1Component
+    SheltersInfoBoxStep1Component,
+    SheltersListComponent
   ],
   providers: [ApiService, GeolocationService, SheltersUserStateService]
 })
