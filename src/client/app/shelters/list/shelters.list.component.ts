@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ApiService, Shelter} from '../../shared/api/api.service';
+import {ApiService, Shelter, Position} from '../../shared/api/api.service';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {ActivatedRoute} from "@angular/router";
 import {SheltersComponent} from "../shelters.component";
 import {SheltersMapComponent} from "../map/shelters.map.component";
+import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -19,6 +20,7 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
   shelters: Shelter[] = [];
 
   @ViewChild(SheltersMapComponent) sheltersMapComponent: SheltersMapComponent;
+  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent: SheltersInfoBoxComponent;
 
   /**
    * Creates an instance of the SheltersComponent with the injected
@@ -40,27 +42,28 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
   ngOnInit() {
     let lat: number = this.route.snapshot.queryParams['lat'];
     let lng: number = this.route.snapshot.queryParams['lng'];
-    let coords: Coordinates = <Coordinates> {
-      latitude: lat,
-      longitude: lng,
-      accuracy: 1,
-      altitude: null,
-      altitudeAccuracy: 1,
-      heading: null
-    };
-    let location: Position = <Position> {
-      coords: coords
+    let position: Position = <Position> {
+      lat: lat,
+      long: lng
     };
 
-    this.sheltersUserStateService.setPosition(location);
+    this.sheltersUserStateService.setPosition(position);
 
-    this.apiService.getShelters(coords).subscribe(
+    this.apiService.getShelters(position).subscribe(
         (shelters: Shelter[]) => this.sheltersUserStateService.setShelters(shelters)
       );
 
-    this.sheltersUserStateService.whenSheltersIsPlotted$.subscribe(
-      (result: boolean) => this.sheltersMapComponent.selectClosestShelter(location)
+    this.sheltersMapComponent.whenSheltersIsPlotted$.subscribe(
+      (result: boolean) => this.sheltersMapComponent.selectClosestShelter(position)
     );
+
+    this.sheltersUserStateService.selectedShelter$.subscribe(
+      (shelter: Shelter) => {
+        this.sheltersInfoBoxComponent.shelter = shelter;
+        this.sheltersInfoBoxComponent.open();
+        this.sheltersInfoBoxComponent.setCurrentStep(1);
+      }
+    )
   }
 
 }

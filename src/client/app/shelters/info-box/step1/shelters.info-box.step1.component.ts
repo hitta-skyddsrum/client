@@ -15,9 +15,6 @@ export class SheltersInfoBoxStep1Component {
   shelter: any;
 
   constructor(sheltersUserStateService: SheltersUserStateService) {
-    sheltersUserStateService.selectedShelter$.subscribe(shelter => {
-      this.shelter = shelter;
-      console.log('shelter', shelter);
-    });
+    sheltersUserStateService.selectedShelter$.subscribe(shelter => this.shelter = shelter);
   }
 }

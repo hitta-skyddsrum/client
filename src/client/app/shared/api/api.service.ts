@@ -18,6 +18,12 @@ export interface Shelter {
   position: Position
 }
 
+export interface Hospital {
+  position: Position,
+  name: string,
+  address: string,
+}
+
 export interface Position {
   long: number,
   lat: number
@@ -36,15 +42,11 @@ export class ApiService {
    */
   constructor(private http: Http) {}
 
-  /**
-   * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {Shelter[]} The Observable for the HTTP request.
-   */
-  getShelters(coordinates: Coordinates, distance: number = 1): Observable<Shelter[]> {
+  getShelters(position: Position): Observable<Shelter[]> {
     let uri: string = Config.API + '/shelters';
     let params: URLSearchParams = new URLSearchParams();
-    params.set('lat', <string>coordinates.latitude.toString());
-    params.set('long', <string>coordinates.longitude.toString());
+    params.set('lat', <string>position.lat.toString());
+    params.set('long', <string>position.long.toString());
     let options: RequestOptions = new RequestOptions({
       search: params
     });
@@ -55,6 +57,29 @@ export class ApiService {
                     .map(res => <Shelter[]>res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);
+  }
+
+  shelters() {
+    let apiService = this;
+    return {
+      show(params: Object = null) {
+        let uri: string = Config.API + '/shelters/' + params.id;
+
+        return apiService.http.get(uri)
+          .map((result: any) => <Shelter>result.json())
+          //              .do(data => console.log('server data:', data))  // debug
+          .catch(this.handleError);
+      },
+
+      showHospitals(params: Object = null) {
+        let uri: string = Config.API + '/shelters/' + params.id + '/hospitals';
+
+        return apiService.http.get(uri)
+          .map((result: any) => <Hospital[]>result.json())
+          //              .do(data => console.log('server data:', data))  // debug
+          .catch(this.handleError);
+      }
+    }
   }
 
   /**

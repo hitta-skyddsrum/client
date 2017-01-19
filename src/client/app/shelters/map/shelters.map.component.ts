@@ -1,10 +1,11 @@
-import {ApiService} from "../../shared/api/api.service";
+import {ApiService, Hospital, Position} from "../../shared/api/api.service";
 declare var google: any;
 declare var MarkerClusterer: any;
 
 import {Component, AfterViewInit} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -20,8 +21,16 @@ export class SheltersMapComponent implements AfterViewInit {
   map: any;
   directionsDisplay: any;
   selectedShelterMarker: any;
+  selectedHospitalMarker: any;
   shelterMarkers: any[] = [];
+  hospitalMarkers: any[] = [];
   markerClusterer: any;
+
+  private sheltersIsPlotted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  whenSheltersIsPlotted$ = this.sheltersIsPlotted.asObservable().filter(r => r === true);
+
+  private hospitalsIsPlotted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  whenHospitalsIsPlotted$ = this.hospitalsIsPlotted.asObservable().filter(r => r === true);
 
   constructor(private sheltersUserStateService: SheltersUserStateService,
               apiService: ApiService) {
@@ -31,11 +40,37 @@ export class SheltersMapComponent implements AfterViewInit {
     this.loadMap();
 
     this.sheltersUserStateService.shelters$.subscribe(
-      (shelters: Shelter[]) => {
-        this.plotShelters(shelters);
-      }
+      (shelters: Shelter[]) => this.plotShelters(shelters)
     );
 
+    this.sheltersUserStateService.hospitals$.subscribe(
+      (hospitals: Hospital[]) => this.plotHospitals(hospitals)
+    )
+
+  }
+
+  selectClosestShelter(origin: Position = null) {
+    this.selectClosestMarker(this.shelterMarkers, origin);
+
+  }
+
+  selectClosestHospital(origin: Position = null) {
+    this.selectClosestMarker(this.hospitalMarkers, origin);
+  }
+
+  private selectClosestMarker(markers: any[], origin: Position = null) {
+    let marker: any;
+
+    if (origin !== null) {
+      marker = this.findClosestMarker(
+        new google.maps.LatLng(origin.lat, origin.long),
+        markers);
+    } else {
+      marker = markers[0];
+    }
+
+    // And select it
+    google.maps.event.trigger(marker, 'click');
   }
 
   private loadMap() {
@@ -82,8 +117,7 @@ export class SheltersMapComponent implements AfterViewInit {
     return markerArray[closest];
   }
 
-  // Find the closest path to given destination
-  private findClosestPath(origin: any, destination: any, preserveViewport: boolean, travelMode: any) {
+  private findClosestPath(origin: Position, destination: Position, preserveViewport: boolean, travelMode: any) {
     let directionsService = new google.maps.DirectionsService;
     var _shelterComponent = this;
 
@@ -94,8 +128,8 @@ export class SheltersMapComponent implements AfterViewInit {
 
     // Prepare request to get the route for the closest route
     var request = {
-      origin: origin,
-      destination: destination,
+      origin: new google.maps.LatLng(origin.lat, origin.long),
+      destination: new google.maps.LatLng(destination.lat, destination.long),
       travelMode: travelMode,
       optimizeWaypoints: true
     };
@@ -134,7 +168,7 @@ export class SheltersMapComponent implements AfterViewInit {
   };
 
   private plotShelters(shelters: Shelter[]) {
-    this.sheltersUserStateService.sheltersIsPlotted(false);
+    this.sheltersIsPlotted.next(false);
 
     // Create all the markers
     for (var i = 0; i < shelters.length; i++) {
@@ -145,7 +179,8 @@ export class SheltersMapComponent implements AfterViewInit {
           url: '/assets/images/icon-shelter.png',
           scaledSize: new google.maps.Size(30, 30)
         },
-        shelter: shelters[i]
+        shelter: shelters[i],
+        type: 'shelter',
       });
 
       this.setShelterMarkerEventData(shelters[i], marker);
@@ -167,16 +202,29 @@ export class SheltersMapComponent implements AfterViewInit {
       console.log('nu slutar vi!', markerClusterer);
     });
 
-    this.sheltersUserStateService.sheltersIsPlotted(true);
+    this.sheltersIsPlotted.next(true);
   }
 
-  selectClosestShelter(origin: Position) {
-    // Find the closest marker
-    var closestMarker = this.findClosestMarker(
-      new google.maps.LatLng(origin.coords.latitude, origin.coords.longitude),
-      this.shelterMarkers);
-    // And select it
-    google.maps.event.trigger(closestMarker, 'click');
+  private plotHospitals(hospitals: Hospital[]) {
+    this.hospitalsIsPlotted.next(false);
+
+    for(var i=0;i<hospitals.length;i++) {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(hospitals[i].position.lat, hospitals[i].position.long),
+        map: this.map,
+        icon: {
+          url: '/assets/images/icon-hospital.png',
+          scaledSize: new google.maps.Size(31, 31)
+        },
+        hospital: hospitals[i],
+        type: 'hospital',
+      });
+
+      this.setHospitalMarkerEventData(hospitals[i], marker);
+      this.hospitalMarkers.push(marker);
+    }
+
+    this.hospitalsIsPlotted.next(true);
   }
 
   private setSizeOfMarkerAsOriginal(marker: any, type: string) {
@@ -185,6 +233,10 @@ export class SheltersMapComponent implements AfterViewInit {
       case 'shelter':
         icon.scaledSize.width = 29;
         icon.scaledSize.height = 30;
+        break;
+      case 'hospital':
+        icon.scaledSize.width = 31;
+        icon.scaledSize.height = 31;
         break;
     }
     marker.setIcon(icon);
@@ -196,6 +248,10 @@ export class SheltersMapComponent implements AfterViewInit {
       case 'shelter':
         icon.scaledSize.width = 58;
         icon.scaledSize.height = 60;
+        break;
+      case 'hospital':
+        icon.scaledSize.width = 62;
+        icon.scaledSize.height = 62;
         break;
     }
     marker.setIcon(icon);
@@ -221,8 +277,8 @@ export class SheltersMapComponent implements AfterViewInit {
           (position: Position) => {
             // Write path
             _sheltersMap.findClosestPath(
-              new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-              this.getPosition(),
+              position,
+              this.shelter.position,
               false,
               google.maps.TravelMode['WALKING']
             );
@@ -231,4 +287,29 @@ export class SheltersMapComponent implements AfterViewInit {
     );
 
   }
+
+  private setHospitalMarkerEventData(hospital: Hospital, marker: any) {
+    let _sheltersMap = this;
+
+    google.maps.event.addListener(marker, 'click', function(event: Event) {
+      // If there's a selected shelter, reset the size of it
+      if( typeof _sheltersMap.selectedHospitalMarker != 'undefined' ) {
+        _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedHospitalMarker, 'hospital');
+      }
+
+      // Set the new selected shelter
+      _sheltersMap.selectedHospitalMarker = this;
+
+      _sheltersMap.setSizeOfMarkerAsSelected(this, 'hospital');
+
+      // Write path
+      _sheltersMap.findClosestPath(
+        _sheltersMap.selectedShelterMarker.shelter.position,
+        _sheltersMap.selectedHospitalMarker.hospital.position,
+        false,
+        google.maps.TravelMode['WALKING']
+      );
+  });
+
+}
 }

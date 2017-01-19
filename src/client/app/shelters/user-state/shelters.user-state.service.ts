@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import {Shelter} from "../../shared/api/api.service";
+import {Shelter, Hospital, Position} from "../../shared/api/api.service";
 import {Observer} from "rxjs";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import 'rxjs/add/operator/filter';
@@ -19,8 +19,8 @@ export class SheltersUserStateService {
   private mapIsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   whenMapIsLoaded$ = this.mapIsLoaded.asObservable().filter(r => r === true);
 
-  private sheltersIsPlottedOnMap: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  whenSheltersIsPlotted$ = this.sheltersIsPlottedOnMap.asObservable().filter(r => r === true);
+  private hospitals: BehaviorSubject<Hospital[]> = new BehaviorSubject<Hospital[]>([]);
+  hospitals$ = this.hospitals.asObservable().filter(h => h.length > 0);
 
   constructor() {
     /*
@@ -50,7 +50,7 @@ export class SheltersUserStateService {
     this.mapIsLoaded.next(true);
   }
 
-  sheltersIsPlotted(value: boolean) {
-    this.sheltersIsPlottedOnMap.next(value);
+  setHospitals(hospitals: Hospital[]) {
+    this.hospitals.next(hospitals);
   }
 }

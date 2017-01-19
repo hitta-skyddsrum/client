@@ -1,6 +1,7 @@
-import {Component, AfterContentInit} from '@angular/core';
+import {Component, AfterContentInit, ViewChild} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
+import {SheltersInfoBoxStep1Component} from "./step1/shelters.info-box.step1.component";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -17,16 +18,6 @@ export class SheltersInfoBoxComponent {
   isOpen: boolean;
   progressBarWidth: number;
   shelter: Shelter;
-
-  constructor(sheltersUserStateService: SheltersUserStateService) {
-    sheltersUserStateService.selectedShelter$.subscribe(shelter => {
-      if (shelter !== null) {
-        this.shelter = shelter;
-        this.setCurrentStep(1);
-        this.open();
-      }
-    });
-  }
 
   setCurrentStep(step: number) {
     this.currentStep = step;
