@@ -29,14 +29,14 @@ body {
     }
 
     .content {
-
+      position: relative;
       overflow: hidden;
       height: 63px;
 
       .button {
         position: absolute;
-        right: 20px;
-        bottom: 50px;
+        right: 0px;
+        bottom: 0px;
         padding: 10px 20px;
         background-color: $blue;
         color: #fff;

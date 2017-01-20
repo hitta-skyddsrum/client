@@ -49,9 +49,17 @@ export class SheltersMapComponent implements AfterViewInit {
 
   }
 
+  selectShelter(shelter: Shelter) {
+    for (var i=0;i<this.shelterMarkers.length;i++) {
+      if (this.shelterMarkers[i].shelter.id === shelter.id) {
+        this.clickMarker(this.shelterMarkers[i]);
+        break;
+      }
+    }
+  }
+
   selectClosestShelter(origin: Position = null) {
     this.selectClosestMarker(this.shelterMarkers, origin);
-
   }
 
   selectClosestHospital(origin: Position = null) {
@@ -69,7 +77,10 @@ export class SheltersMapComponent implements AfterViewInit {
       marker = markers[0];
     }
 
-    // And select it
+    this.clickMarker(marker);
+  }
+
+  private clickMarker(marker: any) {
     google.maps.event.trigger(marker, 'click');
   }
 
@@ -136,8 +147,6 @@ export class SheltersMapComponent implements AfterViewInit {
 
     // Request the route
     directionsService.route(request, function (response: any, status: any) {
-      console.log('google.maps.DirectionsStatus.OK', status);
-
       switch (status) {
         case google.maps.DirectionsStatus.REQUEST_DENIED:
           break;
@@ -148,7 +157,6 @@ export class SheltersMapComponent implements AfterViewInit {
         case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
           break;
         case google.maps.DirectionsStatus.ZERO_RESULTS:
-          console.log('response', response);
           break;
         case google.maps.DirectionsStatus.OK:
           // If we couldn't find a path, lets try with travelMode DRIVING
@@ -195,11 +203,11 @@ export class SheltersMapComponent implements AfterViewInit {
     });
 
     google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function (markerClusterer: any) {
-      console.log('nu börjar vi!', markerClusterer);
+//      console.log('nu börjar vi!', markerClusterer);
     });
 
     google.maps.event.addListener(this.markerClusterer, 'clusteringend', function (markerClusterer: any) {
-      console.log('nu slutar vi!', markerClusterer);
+//      console.log('nu slutar vi!', markerClusterer);
     });
 
     this.sheltersIsPlotted.next(true);

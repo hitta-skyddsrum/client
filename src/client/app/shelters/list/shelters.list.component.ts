@@ -40,14 +40,17 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
    * Get the shelters OnInit
    */
   ngOnInit() {
-    let lat: number = this.route.snapshot.queryParams['lat'];
-    let lng: number = this.route.snapshot.queryParams['lng'];
     let position: Position = <Position> {
-      lat: lat,
-      long: lng
+      lat: this.route.snapshot.queryParams['lat'],
+      long: this.route.snapshot.queryParams['lng']
     };
 
     this.sheltersUserStateService.setPosition(position);
+
+    // Clean the map on init
+    this.sheltersUserStateService.setHospitals([]);
+    this.sheltersUserStateService.setShelters([]);
+
 
     this.apiService.getShelters(position).subscribe(
         (shelters: Shelter[]) => this.sheltersUserStateService.setShelters(shelters)

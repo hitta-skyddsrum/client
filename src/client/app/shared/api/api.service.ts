@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import {Config} from "../config/env.config";
 // import 'rxjs/add/operator/do';  // for debugging
 
+declare var swal: any;
+
 export interface Shelter {
   id: number,
   address: string,
@@ -40,7 +42,9 @@ export class ApiService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+
+  }
 
   getShelters(position: Position): Observable<Shelter[]> {
     let uri: string = Config.API + '/shelters';
@@ -91,6 +95,7 @@ export class ApiService {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
+    swal('Oops...', errMsg, 'error');
     return Observable.throw(errMsg);
   }
 }

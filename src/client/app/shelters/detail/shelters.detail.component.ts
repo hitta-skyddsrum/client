@@ -38,17 +38,18 @@ export class SheltersDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.apiService.shelters().show(params).subscribe(
-        (shelter: Shelter) => this.sheltersUserStateService.setShelters([shelter])
+        (shelter: Shelter) => {
+          this.sheltersUserStateService.setShelters([shelter]);
+          this.sheltersMapComponent.whenSheltersIsPlotted$.subscribe(
+            (res: boolean) => this.sheltersMapComponent.selectShelter(shelter)
+          );
+        }
       );
 
       this.apiService.shelters().showHospitals(params).subscribe(
         (hospitals: Hospital[]) => this.sheltersUserStateService.setHospitals(hospitals)
       );
     });
-
-    this.sheltersMapComponent.whenSheltersIsPlotted$.subscribe(
-      (res: boolean) => this.sheltersMapComponent.selectClosestShelter()
-    );
 
     this.sheltersMapComponent.whenHospitalsIsPlotted$.subscribe(
       (res: boolean) => this.sheltersMapComponent.selectClosestHospital()
