@@ -367,12 +367,13 @@ export class SeedConfig {
         'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
+      'ng2-sharebuttons': 'node_modules/ng2-sharebuttons/index.js',
+      'traceur': 'node_modules/traceur/bin/traceur.js',
+
       'app/*': '/app/*',
       // For test config
       'dist/dev/*': '/base/dist/dev/*',
       '*': 'node_modules/*'
-    },
-    packages: {
     }
   };
 

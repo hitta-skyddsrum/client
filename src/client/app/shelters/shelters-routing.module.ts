@@ -5,6 +5,7 @@ import {SheltersInfoBoxStep1Component} from './info-box/step1/shelters.info-box.
 import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.consumer-locator.component";
 import {SheltersDetailComponent} from "./detail/shelters.detail.component";
 import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.step2.component";
+import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
 
 @NgModule({
   imports: [
@@ -30,9 +31,13 @@ import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.
           {
             path: '',
             component: SheltersInfoBoxStep2Component
+          },
+          {
+            path: 'dela',
+            component: SheltersInfoBoxStep3Component,
           }
         ]
-      }
+      },
     ])
   ],
   exports: [RouterModule]

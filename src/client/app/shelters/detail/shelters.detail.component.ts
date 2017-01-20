@@ -50,12 +50,12 @@ export class SheltersDetailComponent implements OnInit {
         (hospitals: Hospital[]) => this.sheltersUserStateService.setHospitals(hospitals)
       );
     });
+  }
 
+  ngAfterContentInit() {
     this.sheltersMapComponent.whenHospitalsIsPlotted$.subscribe(
       (res: boolean) => {
         this.sheltersMapComponent.selectClosestHospital();
-
-        this.sheltersUserStateService.setCurrentStep(2);
       }
     );
   }

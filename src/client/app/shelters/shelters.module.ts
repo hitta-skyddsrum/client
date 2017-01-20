@@ -13,9 +13,11 @@ import {SheltersUserStateService} from "./user-state/shelters.user-state.service
 import {SheltersListComponent} from "./list/shelters.list.component";
 import {SheltersDetailComponent} from "./detail/shelters.detail.component";
 import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.step2.component";
+import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
+import {ShareButtonsModule} from "ng2-sharebuttons";
 
 @NgModule({
-  imports: [CommonModule, SheltersRoutingModule, SharedModule],
+  imports: [CommonModule, SheltersRoutingModule, SharedModule, ShareButtonsModule],
   declarations: [
     SheltersComponent,
     SheltersListComponent,
@@ -23,6 +25,7 @@ import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.
     SheltersInfoBoxComponent,
     SheltersInfoBoxStep1Component,
     SheltersInfoBoxStep2Component,
+    SheltersInfoBoxStep3Component,
     SheltersConsumerLocatorComponent,
     SheltersDetailComponent,
   ],

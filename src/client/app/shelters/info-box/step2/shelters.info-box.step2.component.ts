@@ -11,4 +11,11 @@ import {SheltersUserStateService} from "../../user-state/shelters.user-state.ser
 
 export class SheltersInfoBoxStep2Component {
   shelter: any;
+
+  constructor(private sheltersUserStateService: SheltersUserStateService) {
+  }
+
+  ngAfterViewChecked(): void {
+    this.sheltersUserStateService.setCurrentStep(2);
+  }
 }
