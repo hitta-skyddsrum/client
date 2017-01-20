@@ -52,10 +52,11 @@ export class SheltersDetailComponent implements OnInit {
     });
 
     this.sheltersMapComponent.whenHospitalsIsPlotted$.subscribe(
-      (res: boolean) => this.sheltersMapComponent.selectClosestHospital()
-    );
+      (res: boolean) => {
+        this.sheltersMapComponent.selectClosestHospital();
 
-    this.sheltersInfoBoxContent.open();
-    this.sheltersInfoBoxContent.setCurrentStep(2);
+        this.sheltersUserStateService.setCurrentStep(2);
+      }
+    );
   }
 }

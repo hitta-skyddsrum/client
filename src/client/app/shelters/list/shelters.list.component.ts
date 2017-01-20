@@ -63,8 +63,7 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
     this.sheltersUserStateService.selectedShelter$.subscribe(
       (shelter: Shelter) => {
         this.sheltersInfoBoxComponent.shelter = shelter;
-        this.sheltersInfoBoxComponent.open();
-        this.sheltersInfoBoxComponent.setCurrentStep(1);
+        this.sheltersUserStateService.setCurrentStep(1);
       }
     )
   }

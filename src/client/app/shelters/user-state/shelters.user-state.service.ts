@@ -22,6 +22,9 @@ export class SheltersUserStateService {
   private hospitals: BehaviorSubject<Hospital[]> = new BehaviorSubject<Hospital[]>([]);
   hospitals$ = this.hospitals.asObservable().filter(h => h.length > 0);
 
+  private currentStep: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  currentStep$ = this.currentStep.asObservable().filter(cs => cs > 0);
+
   constructor() {
     /*
     this.selectedShelter$ = Observable.create((observer: Observer <any>) => {
@@ -52,5 +55,9 @@ export class SheltersUserStateService {
 
   setHospitals(hospitals: Hospital[]) {
     this.hospitals.next(hospitals);
+  }
+
+  setCurrentStep(step: number) {
+    this.currentStep.next(step);
   }
 }

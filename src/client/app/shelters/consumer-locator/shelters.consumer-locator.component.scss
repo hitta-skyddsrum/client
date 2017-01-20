@@ -1,0 +1,9 @@
+@import "../../../scss/mixins";
+
+:host {
+  /deep/ .padSpinner {
+    width: 100%;
+    text-align: center;
+    @include vertical-align(absolute);
+  }
+}

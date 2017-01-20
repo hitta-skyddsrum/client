@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ApiService } from './api/api.service';
+import {SpinnerComponent} from "./spinner/spinner.component";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -13,9 +14,9 @@ import { ApiService } from './api/api.service';
 
 @NgModule({
   imports: [CommonModule, RouterModule],
-  declarations: [ToolbarComponent, NavbarComponent],
+  declarations: [ToolbarComponent, NavbarComponent, SpinnerComponent],
   exports: [ToolbarComponent, NavbarComponent,
-    CommonModule, FormsModule, RouterModule]
+    CommonModule, FormsModule, RouterModule, SpinnerComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

@@ -7,7 +7,8 @@ import {ActivatedRoute, Router, NavigationExtras} from "@angular/router";
  */
 @Component({
   moduleId: module.id,
-  templateUrl: 'shelters.consumer-locator.component.html'
+  templateUrl: 'shelters.consumer-locator.component.html',
+  styleUrls: ['shelters.consumer-locator.component.css'],
 })
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
