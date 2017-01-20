@@ -45,7 +45,11 @@ export class SheltersMapComponent implements AfterViewInit {
 
     this.sheltersUserStateService.hospitals$.subscribe(
       (hospitals: Hospital[]) => this.plotHospitals(hospitals)
-    )
+    );
+
+    this.sheltersUserStateService.currentPosition$.subscribe(
+      (position: Position) => this.plotCurrentPosition(position)
+    );
 
   }
 
@@ -175,12 +179,21 @@ export class SheltersMapComponent implements AfterViewInit {
 
   };
 
+  private plotCurrentPosition(position: Position) {
+    new google.maps.Marker({
+      position: new google.maps.LatLng(position.lat, position.long),
+      map: this.map,
+      type: 'currentPosition',
+    });
+
+  }
+
   private plotShelters(shelters: Shelter[]) {
     this.sheltersIsPlotted.next(false);
 
     // Create all the markers
-    for (var i = 0; i < shelters.length; i++) {
-      var marker = new google.maps.Marker({
+    for (let i = 0; i < shelters.length; i++) {
+      let marker = new google.maps.Marker({
         position: new google.maps.LatLng(shelters[i].position.lat, shelters[i].position.long),
         map: this.map,
         icon: {
