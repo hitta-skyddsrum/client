@@ -8,7 +8,6 @@ import {SheltersInfoBoxStep1Component} from "./step1/shelters.info-box.step1.com
  */
 @Component({
   moduleId: module.id,
-  selector: 'shelters-infoBox',
   templateUrl: 'shelters.info-box.component.html',
   styleUrls: ['shelters.info-box.component.css'],
 })

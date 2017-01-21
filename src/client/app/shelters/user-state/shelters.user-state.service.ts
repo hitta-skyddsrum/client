@@ -10,6 +10,9 @@ export class SheltersUserStateService {
   private selectedShelter: BehaviorSubject<Shelter> = new BehaviorSubject<Shelter>(null);
   selectedShelter$ = this.selectedShelter.asObservable().filter(s => s !== null);
 
+  private selectedHospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>(null);
+  selectedHospital$ = this.selectedHospital.asObservable().filter(h => h !== null);
+
   private currentPosition: BehaviorSubject<Position> = new BehaviorSubject<Position>(null);
   currentPosition$ = this.currentPosition.asObservable().filter(cp => cp !== null);
 
@@ -24,6 +27,9 @@ export class SheltersUserStateService {
 
   private currentStep: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   currentStep$ = this.currentStep.asObservable().filter(cs => cs > 0);
+
+  private shouldSelectClosestShelter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  shouldSelectClosestShelter$ = this.shouldSelectClosestShelter.asObservable().filter(v => v === true);
 
   constructor() {
     /*
@@ -59,5 +65,9 @@ export class SheltersUserStateService {
 
   setCurrentStep(step: number) {
     this.currentStep.next(step);
+  }
+
+  selectHospital(hospital: Hospital) {
+    this.selectedHospital.next(hospital);
   }
 }

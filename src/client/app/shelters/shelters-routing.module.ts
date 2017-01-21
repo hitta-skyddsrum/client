@@ -6,6 +6,9 @@ import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.cons
 import {SheltersDetailComponent} from "./detail/shelters.detail.component";
 import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.step2.component";
 import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
+import {SheltersMapComponent} from "./map/shelters.map.component";
+import {SheltersComponent} from "./shelters.component";
+import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
 
 @NgModule({
   imports: [
@@ -16,26 +19,46 @@ import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.
       },
       {
         path: 'skyddsrum',
-        component: SheltersListComponent,
+        component: SheltersComponent,
         children: [
           {
             path: '',
-            component: SheltersInfoBoxStep1Component
-          }
-        ]
-      },
-      {
-        path: 'skyddsrum/:id',
-        component: SheltersDetailComponent,
-        children: [
-          {
-            path: '',
-            component: SheltersInfoBoxStep2Component
+            component: SheltersMapComponent,
+            outlet: 'map',
           },
           {
-            path: 'dela',
-            component: SheltersInfoBoxStep3Component,
-          }
+            path: ':id',
+            children: [
+              {
+                path: '',
+                component: SheltersDetailComponent
+              },
+              {
+                path: 'dela',
+                outlet: 'infoBoxContent',
+                component: SheltersInfoBoxStep3Component,
+              },
+              {
+                path: '',
+                outlet: 'infoBoxContent',
+                component: SheltersInfoBoxStep2Component,
+              },
+            ]
+          },
+          {
+            path: '',
+            children: [
+              {
+                path: '',
+                component: SheltersListComponent
+              },
+              {
+                path: '',
+                outlet: 'infoBoxContent',
+                component: SheltersInfoBoxStep1Component,
+              },
+            ]
+          },
         ]
       },
     ])

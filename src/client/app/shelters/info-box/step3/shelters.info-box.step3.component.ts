@@ -11,6 +11,7 @@ import {Location} from "@angular/common";
 @Component({
   moduleId: module.id,
   templateUrl: 'shelters.info-box.step3.component.html',
+  styleUrls: ['shelters.info-box.step3.component.css']
 })
 
 export class SheltersInfoBoxStep3Component {

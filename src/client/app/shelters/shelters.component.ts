@@ -15,5 +15,19 @@ import {ActivatedRoute} from "@angular/router";
 })
 
 export class SheltersComponent {
+  currentStep: number;
+  isOpen: boolean;
+  progressBarWidth: number;
 
+  constructor(private sheltersUserStateService: SheltersUserStateService) {
+    sheltersUserStateService.currentStep$.subscribe(
+      step => this.setCurrentStep(step)
+    );
+  }
+
+  private setCurrentStep(step: number) {
+    this.isOpen = true;
+    this.currentStep = step;
+    this.progressBarWidth = (step - 1)*100/2;
+  }
 }

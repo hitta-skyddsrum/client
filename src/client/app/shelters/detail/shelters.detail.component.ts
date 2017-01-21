@@ -40,23 +40,23 @@ export class SheltersDetailComponent implements OnInit {
       this.apiService.shelters().show(params).subscribe(
         (shelter: Shelter) => {
           this.sheltersUserStateService.setShelters([shelter]);
-          this.sheltersMapComponent.whenSheltersIsPlotted$.subscribe(
-            (res: boolean) => this.sheltersMapComponent.selectShelter(shelter)
-          );
+          this.sheltersUserStateService.selectShelter(shelter);
         }
       );
 
       this.apiService.shelters().showHospitals(params).subscribe(
-        (hospitals: Hospital[]) => this.sheltersUserStateService.setHospitals(hospitals)
+        (hospitals: Hospital[]) => {
+          this.sheltersUserStateService.setHospitals(hospitals);
+          this.sheltersUserStateService.selectHospital(hospitals[0]);
+        }
       );
     });
+
+    this.sheltersUserStateService.selectedHospital$.subscribe(
+      () => this.sheltersUserStateService.setCurrentStep(2)
+    );
   }
 
   ngAfterContentInit() {
-    this.sheltersMapComponent.whenHospitalsIsPlotted$.subscribe(
-      (res: boolean) => {
-        this.sheltersMapComponent.selectClosestHospital();
-      }
-    );
   }
 }

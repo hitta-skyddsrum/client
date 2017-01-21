@@ -12,7 +12,6 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
  */
 @Component({
   moduleId: module.id,
-  selector: 'shelters-map',
   templateUrl: 'shelters.map.component.html',
   styleUrls: ['shelters.map.component.css'],
 })
@@ -48,22 +47,55 @@ export class SheltersMapComponent implements AfterViewInit {
     );
 
     this.sheltersUserStateService.currentPosition$.subscribe(
-      (position: Position) => this.plotCurrentPosition(position)
+      (position: Position) => {
+        this.plotCurrentPosition(position);
+
+        this.sheltersUserStateService.shouldSelectClosestShelter$.subscribe(
+          () => {
+            this.selectClosestShelter(position);
+          }
+        );
+      }
     );
 
+    this.sheltersUserStateService.selectedShelter$.subscribe(
+      (shelter: Shelter) => this.selectShelter(shelter)
+    );
+
+    this.sheltersUserStateService.selectedHospital$.subscribe(
+      (hospital: Hospital) => this.selectHospital(hospital)
+    );
+  }
+
+  selectHospital(hospital: Hospital) {
+    this.whenSheltersIsPlotted$.subscribe(
+      () => {
+        for (var i=0;i<this.hospitalMarkers.length;i++) {
+          if (this.hospitalMarkers[i].hospital.hsaId === hospital.hsaId) {
+            this.clickMarker(this.hospitalMarkers[i]);
+            break;
+          }
+        }
+      });
   }
 
   selectShelter(shelter: Shelter) {
-    for (var i=0;i<this.shelterMarkers.length;i++) {
-      if (this.shelterMarkers[i].shelter.id === shelter.id) {
-        this.clickMarker(this.shelterMarkers[i]);
-        break;
-      }
-    }
+    this.whenSheltersIsPlotted$.subscribe(
+      () => {
+        for (var i=0;i<this.shelterMarkers.length;i++) {
+          if (this.shelterMarkers[i].shelter.id === shelter.id) {
+            this.clickMarker(this.shelterMarkers[i]);
+            break;
+          }
+        }
+      });
   }
 
   selectClosestShelter(origin: Position = null) {
-    this.selectClosestMarker(this.shelterMarkers, origin);
+    this.whenSheltersIsPlotted$.subscribe(
+      () => this.selectClosestMarker(this.shelterMarkers, origin)
+    );
+
   }
 
   selectClosestHospital(origin: Position = null) {
@@ -289,7 +321,7 @@ export class SheltersMapComponent implements AfterViewInit {
         }
 
         // Set the new selected shelter
-        _sheltersMap.sheltersUserStateService.selectShelter(shelter);
+//        _sheltersMap.sheltersUserStateService.selectShelter(shelter);
         _sheltersMap.selectedShelterMarker = this;
 
         _sheltersMap.setSizeOfMarkerAsSelected(_sheltersMap.selectedShelterMarker, 'shelter');

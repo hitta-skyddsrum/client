@@ -15,7 +15,7 @@ import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component"
   templateUrl: '../shelters.component.html',
 })
 
-export class SheltersListComponent extends SheltersComponent implements OnInit {
+export class SheltersListComponent implements OnInit {
 
   shelters: Shelter[] = [];
 
@@ -33,7 +33,6 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
     private route: ActivatedRoute,
     private sheltersUserStateService: SheltersUserStateService
   ) {
-    super();
   }
 
   /**
@@ -56,16 +55,19 @@ export class SheltersListComponent extends SheltersComponent implements OnInit {
         (shelters: Shelter[]) => this.sheltersUserStateService.setShelters(shelters)
       );
 
-    this.sheltersMapComponent.whenSheltersIsPlotted$.subscribe(
-      (result: boolean) => this.sheltersMapComponent.selectClosestShelter(position)
+    this.sheltersUserStateService.shelters$.subscribe(
+      (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
     );
 
     this.sheltersUserStateService.selectedShelter$.subscribe(
       (shelter: Shelter) => {
-        this.sheltersInfoBoxComponent.shelter = shelter;
         this.sheltersUserStateService.setCurrentStep(1);
       }
     )
+  }
+
+  ngAfterViewInit() {
+
   }
 
 }

@@ -1,6 +1,4 @@
-import {Component, AfterContentInit} from '@angular/core';
-import {SheltersComponent} from "../../shelters.component";
-import {SheltersInfoBoxComponent} from "../shelters.info-box.component";
+import {Component} from '@angular/core';
 import {SheltersUserStateService} from "../../user-state/shelters.user-state.service";
 
 /**

@@ -1,0 +1,83 @@
+@import "../../../../scss/mixins";
+@import "../../../../scss/variables";
+$fa-font-path: "/node_modules/font-awesome/fonts";
+
+/deep/ .swal2-content {
+  @import "font-awesome/scss/font-awesome.scss";
+
+  .sb-container {
+    .sb-buttons {
+      display: flex;
+      -ms-flex-pack: distribute;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      width: 50%;
+
+      .sb-button {
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        align-items: center;
+        flex: 1 1 auto;
+
+        button {
+          max-width: 80px;
+          min-width: 50px;
+          width: 100%;
+          background-color: transparent;
+          margin: 5px;
+          font-size: 1.2em;
+
+          &.facebook {
+            color: #3b5998;
+            &:hover {
+              background: #3b5998;
+            }
+          }
+
+          &.twitter {
+            color: #00acee;
+
+            &:hover {
+              background: #00acee;
+            }
+          }
+
+          &:hover {
+            color: #fff;
+          }
+
+        }
+      }
+
+      &.sb-default-style {
+        .sb-button {
+          button {
+            cursor: pointer;
+            outline: 0;
+            border: 0;
+          }
+        }
+      }
+    }
+  }
+
+
+  .sb-container .btn, .sb-container button {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: .43333em;
+  }
+
+  .sb-container .btn:hover, .sb-container button:hover {
+  }
+
+  .sb-container button:hover {
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+  }
+}
