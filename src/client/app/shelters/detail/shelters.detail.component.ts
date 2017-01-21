@@ -28,6 +28,6 @@ export class SheltersDetailComponent implements OnInit {
 
     this.sheltersUserStateService.selectedHospital$.subscribe(
       () => this.sheltersUserStateService.setCurrentStep(2)
-    );
+    ).unsubscribe();
   }
 }

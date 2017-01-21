@@ -37,7 +37,7 @@ export class SheltersListComponent implements OnInit {
       lat: this.route.snapshot.queryParams['lat'],
       long: this.route.snapshot.queryParams['lng']
     };
-
+    
     this.sheltersUserStateService.setPosition(position);
 
     // Clean the map on init
@@ -51,12 +51,12 @@ export class SheltersListComponent implements OnInit {
 
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
-    );
+    ).unsubscribe();
 
     this.sheltersUserStateService.selectedShelter$.subscribe(
       (shelter: Shelter) => {
         this.sheltersUserStateService.setCurrentStep(1);
       }
-    )
+    ).unsubscribe();
   }
 }

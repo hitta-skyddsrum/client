@@ -16,7 +16,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
   styleUrls: ['shelters.map.component.css'],
 })
 
-export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
+export class SheltersMapComponent implements AfterViewInit {
   map: any;
   directionsDisplay: any;
   selectedShelterMarker: any;
@@ -35,14 +35,8 @@ export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
               apiService: ApiService) {
   }
 
-  ngAfterViewChecked() {
-//    console.log('checked')
-  }
-
   ngAfterViewInit() {
     this.loadMap();
-//    console.log('map init');
-
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.plotShelters(shelters)
     );
@@ -52,9 +46,7 @@ export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
     );
 
     this.sheltersUserStateService.currentPosition$.subscribe(
-      (position: Position) => {
-        this.plotCurrentPosition(position);
-      }
+      (position: Position) => this.plotCurrentPosition(position)
     );
 
     this.sheltersUserStateService.selectedShelter$.subscribe(
@@ -87,14 +79,13 @@ export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
             break;
           }
         }
-      });
+      }).unsubscribe();
   }
 
   selectClosestShelter(origin: Position = null) {
     this.whenSheltersIsPlotted$.subscribe(
       () => this.selectClosestMarker(this.shelterMarkers, origin)
-    );
-
+    ).unsubscribe();
   }
 
   selectClosestHospital(origin: Position = null) {
@@ -354,7 +345,7 @@ export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
               false,
               google.maps.TravelMode['WALKING']
             );
-          });
+          }).unsubscribe();
       }
     );
 
