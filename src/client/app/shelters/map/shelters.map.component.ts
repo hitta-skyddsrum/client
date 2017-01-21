@@ -2,7 +2,7 @@ import {ApiService, Hospital, Position} from "../../shared/api/api.service";
 declare var google: any;
 declare var MarkerClusterer: any;
 
-import {Component, AfterViewInit} from '@angular/core';
+import {Component, AfterViewInit, AfterViewChecked} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
@@ -16,7 +16,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
   styleUrls: ['shelters.map.component.css'],
 })
 
-export class SheltersMapComponent implements AfterViewInit {
+export class SheltersMapComponent implements AfterViewInit, AfterViewChecked {
   map: any;
   directionsDisplay: any;
   selectedShelterMarker: any;
@@ -35,8 +35,13 @@ export class SheltersMapComponent implements AfterViewInit {
               apiService: ApiService) {
   }
 
+  ngAfterViewChecked() {
+//    console.log('checked')
+  }
+
   ngAfterViewInit() {
     this.loadMap();
+//    console.log('map init');
 
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.plotShelters(shelters)
@@ -49,12 +54,6 @@ export class SheltersMapComponent implements AfterViewInit {
     this.sheltersUserStateService.currentPosition$.subscribe(
       (position: Position) => {
         this.plotCurrentPosition(position);
-
-        this.sheltersUserStateService.shouldSelectClosestShelter$.subscribe(
-          () => {
-            this.selectClosestShelter(position);
-          }
-        );
       }
     );
 
@@ -68,7 +67,7 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   selectHospital(hospital: Hospital) {
-    this.whenSheltersIsPlotted$.subscribe(
+    var _subsc = this.whenSheltersIsPlotted$.subscribe(
       () => {
         for (var i=0;i<this.hospitalMarkers.length;i++) {
           if (this.hospitalMarkers[i].hospital.hsaId === hospital.hsaId) {
@@ -76,7 +75,7 @@ export class SheltersMapComponent implements AfterViewInit {
             break;
           }
         }
-      });
+      }).unsubscribe();
   }
 
   selectShelter(shelter: Shelter) {
@@ -223,8 +222,18 @@ export class SheltersMapComponent implements AfterViewInit {
   private plotShelters(shelters: Shelter[]) {
     this.sheltersIsPlotted.next(false);
 
+    // Collect the shelters that already is marked
+    let seenShelters: number[] = [];
+    for (let i=0;i<this.shelterMarkers.length;i++) {
+      seenShelters.push(this.shelterMarkers[i].shelter.id);
+    }
+
     // Create all the markers
     for (let i = 0; i < shelters.length; i++) {
+      if (seenShelters.indexOf(shelters[i].id) !== -1) {
+        continue;
+      }
+
       let marker = new google.maps.Marker({
         position: new google.maps.LatLng(shelters[i].position.lat, shelters[i].position.long),
         map: this.map,
@@ -261,7 +270,17 @@ export class SheltersMapComponent implements AfterViewInit {
   private plotHospitals(hospitals: Hospital[]) {
     this.hospitalsIsPlotted.next(false);
 
+    // Collect the hospitals that already is marked
+    let seenHospitals: number[] = [];
+    for (let i=0;i<this.hospitalMarkers.length;i++) {
+      seenHospitals.push(this.hospitalMarkers[i].hospital.id);
+    }
+
     for(var i=0;i<hospitals.length;i++) {
+      if (seenHospitals.indexOf(hospitals[i].id) !== -1) {
+        continue;
+      }
+
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(hospitals[i].position.lat, hospitals[i].position.long),
         map: this.map,

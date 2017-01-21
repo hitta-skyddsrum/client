@@ -48,7 +48,7 @@ export class SheltersListComponent implements OnInit {
 
     // Clean the map on init
     this.sheltersUserStateService.setHospitals([]);
-    this.sheltersUserStateService.setShelters([]);
+//    this.sheltersUserStateService.setShelters([]);
 
 
     this.apiService.getShelters(position).subscribe(
