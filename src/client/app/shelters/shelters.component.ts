@@ -16,8 +16,12 @@ export class SheltersComponent {
   currentStep: number;
   isOpen: boolean;
   progressBarWidth: number;
+  showBouncer: boolean = false;
 
-  constructor(private sheltersUserStateService: SheltersUserStateService) {
+  constructor(
+    private sheltersUserStateService: SheltersUserStateService
+  ) {
+
     sheltersUserStateService.currentStep$.subscribe(
       step => this.setCurrentStep(step)
     );

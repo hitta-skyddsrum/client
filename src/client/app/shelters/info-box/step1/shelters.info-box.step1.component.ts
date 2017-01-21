@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {SheltersUserStateService} from "../../user-state/shelters.user-state.service";
+import {SheltersInfoBoxComponent} from "../shelters.info-box.component";
+import {Router} from "@angular/router";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -9,10 +11,14 @@ import {SheltersUserStateService} from "../../user-state/shelters.user-state.ser
   templateUrl: 'shelters.info-box.step1.component.html',
 })
 
-export class SheltersInfoBoxStep1Component {
+export class SheltersInfoBoxStep1Component extends SheltersInfoBoxComponent {
   shelter: any;
 
-  constructor(sheltersUserStateService: SheltersUserStateService) {
+  constructor(
+    router: Router,
+    sheltersUserStateService: SheltersUserStateService,
+  ) {
+    super(router);
     sheltersUserStateService.selectedShelter$.subscribe(shelter => this.shelter = shelter);
   }
 }

@@ -1,4 +1,13 @@
-<div class="button" routerLink="{{shelter?.id}}">Nästa</div>
+<div class="button" routerLink="{{shelter?.id}}" [ngClass]="{showBouncer: showBouncer}">
+    <div class="bouncer">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+    <span class="text">
+        Nästa
+    </span>
+</div>
 <div class="step1">
     <h1>Skyddsrum: {{shelter?.id}} </h1>
     <p>{{shelter?.address}}</p>

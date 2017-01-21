@@ -1,4 +1,13 @@
-<div class="button" [routerLink]="[{outlets: {infoBoxContent: 'dela'}}]">Nästa</div>
+<div class="button" [routerLink]="[{outlets: {infoBoxContent: 'dela'}}]" [ngClass]="{showBouncer: showBouncer}">
+    <div class="bouncer">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+    <span class="text">
+        Nästa
+    </span>
+</div>
 <div class="step2">
     <h1>Närmaste akutintag</h1>
     <p>Så här tar du dig till närmaste akutintag från skyddsrummet.</p>

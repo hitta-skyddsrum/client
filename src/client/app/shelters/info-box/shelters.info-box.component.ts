@@ -2,6 +2,7 @@ import {Component, AfterContentInit, ViewChild} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {SheltersInfoBoxStep1Component} from "./step1/shelters.info-box.step1.component";
+import {Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from "@angular/router";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -13,20 +14,32 @@ import {SheltersInfoBoxStep1Component} from "./step1/shelters.info-box.step1.com
 })
 
 export class SheltersInfoBoxComponent {
-  currentStep: number;
-  isOpen: boolean;
-  progressBarWidth: number;
-  shelter: Shelter;
+  showBouncer: boolean = false;
 
-  constructor(sheltersUserStateService: SheltersUserStateService) {
-    sheltersUserStateService.currentStep$.subscribe(
-      step => this.setCurrentStep(step)
-    );
+  constructor(
+    private router: Router
+  ) {
+
+    router.events.subscribe((event: Event) => {
+      this.navigationInterceptor(event);
+    });
   }
 
-  private setCurrentStep(step: number) {
-    this.isOpen = true;
-    this.currentStep = step;
-    this.progressBarWidth = (step - 1)*100/2;
+  // Shows and hides the loading spinner during RouterEvent changes
+  navigationInterceptor(event: Event): void {
+    if (event instanceof NavigationStart) {
+      this.showBouncer = true;
+    }
+    if (event instanceof NavigationEnd) {
+      this.showBouncer = false;
+    }
+
+    // Set showBouncer state to false in both of the below events to hide the spinner in case a request fails
+    if (event instanceof NavigationCancel) {
+      this.showBouncer = false;
+    }
+    if (event instanceof NavigationError) {
+      this.showBouncer = false;
+    }
   }
 }
