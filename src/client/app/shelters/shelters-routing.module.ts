@@ -8,7 +8,9 @@ import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.
 import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
 import {SheltersMapComponent} from "./map/shelters.map.component";
 import {SheltersComponent} from "./shelters.component";
-import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
+import {SheltersListResolver} from "./list/shelters.list.resolver";
+import {SheltersDetailShelterResolver} from "./detail/shelters.detail.shelter.resolver";
+import {SheltersDetailHospitalResolver} from "./detail/shelters.detail.hospitals.resolver";
 
 @NgModule({
   imports: [
@@ -31,7 +33,11 @@ import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
             children: [
               {
                 path: '',
-                component: SheltersDetailComponent
+                component: SheltersDetailComponent,
+                resolve: {
+                  shelter: SheltersDetailShelterResolver,
+                  hospitals: SheltersDetailHospitalResolver,
+                },
               },
               {
                 path: 'dela',
@@ -50,7 +56,10 @@ import {SheltersInfoBoxComponent} from "./info-box/shelters.info-box.component";
             children: [
               {
                 path: '',
-                component: SheltersListComponent
+                component: SheltersListComponent,
+                resolve: {
+                  shelters: SheltersListResolver
+                }
               },
               {
                 path: '',

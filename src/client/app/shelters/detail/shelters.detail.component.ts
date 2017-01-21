@@ -1,14 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ApiService, Shelter, Hospital} from '../../shared/api/api.service';
-import {Observable} from "rxjs/Observable";
+import {Component, OnInit} from '@angular/core';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {ActivatedRoute} from "@angular/router";
-import {SheltersMapComponent} from "../map/shelters.map.component";
-import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component";
+import {Shelter, Hospital} from "../../shared/api/api.service";
 
-/**
- * This class represents the lazy loaded HomeComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-app',
@@ -18,45 +12,22 @@ import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component"
 
 export class SheltersDetailComponent implements OnInit {
 
-  shelter: Shelter;
-  hospitals: Hospital[];
-
-  @ViewChild(SheltersMapComponent) sheltersMapComponent: SheltersMapComponent;
-  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxContent: SheltersInfoBoxComponent;
-
-  /**
-   * Creates an instance of the SheltersComponent with the injected
-   * ApiService.
-   *
-   * @param {ApiService} apiService - The injected ApiService.
-   */
-  constructor(private apiService: ApiService,
-              private route: ActivatedRoute,
-              private sheltersUserStateService: SheltersUserStateService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private sheltersUserStateService: SheltersUserStateService
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.apiService.shelters().show(params).subscribe(
-        (shelter: Shelter) => {
-          this.sheltersUserStateService.setShelters([shelter]);
-          this.sheltersUserStateService.selectShelter(shelter);
-        }
-      );
+    let shelter: Shelter = this.route.snapshot.data['shelter'];
+    this.sheltersUserStateService.setShelters([shelter]);
+    this.sheltersUserStateService.selectShelter(shelter);
 
-      this.apiService.shelters().showHospitals(params).subscribe(
-        (hospitals: Hospital[]) => {
-          this.sheltersUserStateService.setHospitals(hospitals);
-          this.sheltersUserStateService.selectHospital(hospitals[0]);
-        }
-      );
-    });
+    let hospitals: Hospital[] = this.route.snapshot.data['hospitals'];
+    this.sheltersUserStateService.setHospitals(hospitals);
+    this.sheltersUserStateService.selectHospital(hospitals[0]);
 
     this.sheltersUserStateService.selectedHospital$.subscribe(
       () => this.sheltersUserStateService.setCurrentStep(2)
     );
-  }
-
-  ngAfterContentInit() {
   }
 }

@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ApiService, Shelter, Position} from '../../shared/api/api.service';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {ActivatedRoute} from "@angular/router";
-import {SheltersComponent} from "../shelters.component";
 import {SheltersMapComponent} from "../map/shelters.map.component";
 import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component";
 
@@ -29,15 +28,10 @@ export class SheltersListComponent implements OnInit {
    * @param {ApiService} apiService - The injected ApiService.
    */
   constructor(
-    private apiService: ApiService,
     private route: ActivatedRoute,
     private sheltersUserStateService: SheltersUserStateService
-  ) {
-  }
+  ) {}
 
-  /**
-   * Get the shelters OnInit
-   */
   ngOnInit() {
     let position: Position = <Position> {
       lat: this.route.snapshot.queryParams['lat'],
@@ -51,9 +45,9 @@ export class SheltersListComponent implements OnInit {
 //    this.sheltersUserStateService.setShelters([]);
 
 
-    this.apiService.getShelters(position).subscribe(
-        (shelters: Shelter[]) => this.sheltersUserStateService.setShelters(shelters)
-      );
+    this.sheltersUserStateService.setShelters(
+      this.route.snapshot.data['shelters']
+    );
 
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
@@ -65,9 +59,4 @@ export class SheltersListComponent implements OnInit {
       }
     )
   }
-
-  ngAfterViewInit() {
-
-  }
-
 }

@@ -15,6 +15,9 @@ import {SheltersDetailComponent} from "./detail/shelters.detail.component";
 import {SheltersInfoBoxStep2Component} from "./info-box/step2/shelters.info-box.step2.component";
 import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
 import {ShareButtonsModule} from "ng2-sharebuttons";
+import {SheltersListResolver} from "./list/shelters.list.resolver";
+import {SheltersDetailShelterResolver} from "./detail/shelters.detail.shelter.resolver";
+import {SheltersDetailHospitalResolver} from "./detail/shelters.detail.hospitals.resolver";
 
 @NgModule({
   imports: [CommonModule, SheltersRoutingModule, SharedModule, ShareButtonsModule],
@@ -36,7 +39,14 @@ import {ShareButtonsModule} from "ng2-sharebuttons";
     SheltersInfoBoxStep1Component,
     SheltersListComponent
   ],
-  providers: [ApiService, GeolocationService, SheltersUserStateService]
+  providers: [
+    ApiService,
+    GeolocationService,
+    SheltersUserStateService,
+    SheltersListResolver,
+    SheltersDetailShelterResolver,
+    SheltersDetailHospitalResolver,
+  ]
 })
 export class SheltersModule {
 }
