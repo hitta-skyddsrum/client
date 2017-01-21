@@ -1,1 +1,24 @@
-<hs-spinner></hs-spinner>
+<section>
+
+    <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
+        <div class="bouncer">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <input
+                type="text"
+                class="input-text"
+                [(ngModel)]="searchQuery"
+                (ngModelChange)="lookupAddress($event)"
+                placeholder="Ange var du vill hitta ditt närmsta skyddsrum"
+        />
+        <ul class="autocomplete">
+            <li *ngFor="let address of addressSuggestions">
+                <a [routerLink]="['/skyddsrum']" [queryParams]="{lat: address.geometry?.location.lat(), lng: address.geometry?.location.lng()}">
+                    {{address.formatted_address}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>

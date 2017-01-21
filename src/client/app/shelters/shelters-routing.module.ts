@@ -17,7 +17,12 @@ import {SheltersDetailHospitalResolver} from "./detail/shelters.detail.hospitals
     RouterModule.forChild([
       {
         path: 'skyddsrum/var-ar-du',
-        component: SheltersConsumerLocatorComponent
+        component: SheltersConsumerLocatorComponent,
+        data: {
+          meta: {
+            title: 'Var vill du hitta närmsta skyddsrum? | Hitta skyddsrum',
+          },
+        },
       },
       {
         path: 'skyddsrum',
@@ -59,7 +64,12 @@ import {SheltersDetailHospitalResolver} from "./detail/shelters.detail.hospitals
                 component: SheltersListComponent,
                 resolve: {
                   shelters: SheltersListResolver
-                }
+                },
+                data: {
+                  meta: {
+                    title: 'Visa skyddsrum | Hitta skyddsrum',
+                  },
+                },
               },
               {
                 path: '',
