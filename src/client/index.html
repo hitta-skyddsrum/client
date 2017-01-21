@@ -17,10 +17,57 @@
 
   <!-- inject:css -->
   <!-- endinject -->
+  <style>
+    .padSpinner {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+
+    .spinner {
+      display: inline-block;
+      opacity: 1;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      border-top-color: rgba(0,0,0,.3);
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1.5s ease-in-out infinite;
+      -o-animation: spin 1.5s ease-in-out infinite;
+      -moz-animation: spin 1.5s ease-in-out infinite;
+      height: 50px;
+      width: 50px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+      }
+    }
+
+    @-webkit-keyframes spin {
+      to {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <sd-app>Loading...</sd-app>
+  <sd-app>
+    <div id="loading" class="padSpinner">
+      <div class="spinner"></div>
+    </div>
+  </sd-app>
 
   <script>
   // Fixes undefined module function in SystemJS bundle
