@@ -262,13 +262,13 @@ export class SheltersMapComponent implements AfterViewInit {
     this.hospitalsIsPlotted.next(false);
 
     // Collect the hospitals that already is marked
-    let seenHospitals: number[] = [];
+    let seenHospitals: any[] = [];
     for (let i=0;i<this.hospitalMarkers.length;i++) {
-      seenHospitals.push(this.hospitalMarkers[i].hospital.id);
+      seenHospitals.push(this.hospitalMarkers[i].hospital.hsaId);
     }
 
     for(var i=0;i<hospitals.length;i++) {
-      if (seenHospitals.indexOf(hospitals[i].id) !== -1) {
+      if (seenHospitals.indexOf(hospitals[i].hsaId) !== -1) {
         continue;
       }
 

@@ -67,7 +67,7 @@ export class ApiService {
   shelters() {
     let apiService = this;
     return {
-      show(params: Object = null) {
+      show(params: any = null) {
         let uri: string = Config.API + '/shelters/' + params.id;
 
         return apiService.http.get(uri)
@@ -76,7 +76,7 @@ export class ApiService {
           .catch(this.handleError);
       },
 
-      showHospitals(params: Object = null) {
+      showHospitals(params: any = null) {
         let uri: string = Config.API + '/shelters/' + params.id + '/hospitals';
 
         return apiService.http.get(uri)
