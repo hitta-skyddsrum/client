@@ -4,7 +4,7 @@ import './operators';
 import {MetaService} from "ng2-meta";
 import {Router, Event} from "@angular/router";
 
-declare var ga:Function;
+declare var ga:any;
 /**
  * This class represents the main application component.
  */
