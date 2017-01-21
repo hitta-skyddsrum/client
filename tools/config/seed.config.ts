@@ -369,6 +369,7 @@ export class SeedConfig {
 
       'ng2-sharebuttons': 'node_modules/ng2-sharebuttons/index.js',
       'traceur': 'node_modules/traceur/bin/traceur.js',
+      'ng2-meta': 'node_modules/ng2-meta/dist/index.js',
 
       'app/*': '/app/*',
       // For test config

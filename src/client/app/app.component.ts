@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Config } from './shared/config/env.config';
 import './operators';
+import {MetaService} from "ng2-meta";
 
 /**
  * This class represents the main application component.
@@ -11,7 +12,7 @@ import './operators';
   templateUrl: 'app.component.html',
 })
 export class AppComponent {
-  constructor() {
+  constructor(private metaService: MetaService) {
     console.log('Environment config', Config);
   }
 }

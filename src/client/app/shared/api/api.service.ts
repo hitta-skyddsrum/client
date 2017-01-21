@@ -13,9 +13,9 @@ export interface Shelter {
   city: string,
   slots: number,
   air_cleaners: number,
-  filter_type: string,
-  shelter_id: string,
-  estate_id: string,
+  filterType: string,
+  shelterId: string,
+  estateId: string,
   goid: string,
   position: Position
 }

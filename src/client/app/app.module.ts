@@ -8,6 +8,7 @@ import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { SheltersModule } from './shelters/shelters.module';
+import {MetaModule} from "ng2-meta";
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { SheltersModule } from './shelters/shelters.module';
     HomeModule,
     SharedModule.forRoot(),
     SheltersModule,
+    MetaModule.forRoot(),
   ],
   declarations: [AppComponent],
   providers: [{
