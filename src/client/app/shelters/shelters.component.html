@@ -1,5 +1,6 @@
 <router-outlet></router-outlet>
-<router-outlet name="map"></router-outlet>
+<hs-map *ngIf="currentStep > 1"></hs-map>
+<hs-consumerLocator></hs-consumerLocator>
 <section id="infoBox" [ngClass]="{'open': true}">
     <div>
         <div class="inner">
@@ -8,9 +9,10 @@
             </div>
             <div class="progress">
                 <div class="progress-bar" [ngStyle]="{'width': progressBarWidth + '%'}"></div>
-                <div class="c1" [ngClass]="{color: currentStep > 0 }"></div>
+                <div class="c1 color"></div>
                 <div class="c2" [ngClass]="{color: currentStep > 1 }"></div>
                 <div class="c3" [ngClass]="{color: currentStep > 2 }"></div>
+                <div class="c4" [ngClass]="{color: currentStep > 3 }"></div>
             </div>
         </div>
     </div>

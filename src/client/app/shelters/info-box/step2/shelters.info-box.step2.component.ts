@@ -1,4 +1,4 @@
-import {Component, AfterContentInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {SheltersUserStateService} from "../../user-state/shelters.user-state.service";
 import {SheltersInfoBoxComponent} from "../shelters.info-box.component";
 import {Router} from "@angular/router";
@@ -16,12 +16,9 @@ export class SheltersInfoBoxStep2Component extends SheltersInfoBoxComponent {
 
   constructor(
     router: Router,
-    private sheltersUserStateService: SheltersUserStateService,
+    sheltersUserStateService: SheltersUserStateService,
   ) {
     super(router);
-  }
-
-  ngAfterViewChecked(): void {
-    this.sheltersUserStateService.setCurrentStep(2);
+    sheltersUserStateService.selectedShelter$.subscribe(shelter => this.shelter = shelter);
   }
 }

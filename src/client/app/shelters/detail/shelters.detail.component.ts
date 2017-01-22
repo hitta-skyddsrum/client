@@ -31,9 +31,5 @@ export class SheltersDetailComponent implements OnInit {
     let hospitals: Hospital[] = this.route.snapshot.data['hospitals'];
     this.sheltersUserStateService.setHospitals(hospitals);
     this.sheltersUserStateService.selectHospital(hospitals[0]);
-
-    this.sheltersUserStateService.selectedHospital$.subscribe(
-      () => this.sheltersUserStateService.setCurrentStep(2)
-    ).unsubscribe();
   }
 }

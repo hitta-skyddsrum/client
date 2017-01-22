@@ -16,9 +16,9 @@ export class SheltersInfoBoxStep1Component extends SheltersInfoBoxComponent {
 
   constructor(
     router: Router,
-    sheltersUserStateService: SheltersUserStateService,
+    private sheltersUserStateService: SheltersUserStateService,
   ) {
     super(router);
-    sheltersUserStateService.selectedShelter$.subscribe(shelter => this.shelter = shelter);
+    this.sheltersUserStateService.setCurrentStep(1);
   }
 }

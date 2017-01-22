@@ -30,6 +30,6 @@ export class SheltersComponent {
   private setCurrentStep(step: number) {
     this.isOpen = true;
     this.currentStep = step;
-    this.progressBarWidth = (step - 1)*100/2;
+    this.progressBarWidth = (step - 1)*100/3;
   }
 }

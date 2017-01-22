@@ -14,6 +14,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
   moduleId: module.id,
   templateUrl: 'shelters.map.component.html',
   styleUrls: ['shelters.map.component.css'],
+  selector: 'hs-map',
 })
 
 export class SheltersMapComponent implements AfterViewInit {

@@ -14,8 +14,8 @@ export class SheltersListResolver implements Resolve<Shelter[]> {
     state: RouterStateSnapshot
   ) {
     let position: Position = <Position> {
-      lat: route.queryParams['lat'],
-      long: route.queryParams['lng']
+      lat: route.params['lat'],
+      long: route.params['lng']
     };
     return this.apiService.getShelters(position);
   }

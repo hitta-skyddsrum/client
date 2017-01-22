@@ -15,7 +15,7 @@
         />
         <ul class="autocomplete">
             <li *ngFor="let address of addressSuggestions;">
-                <a [routerLink]="['/skyddsrum']" [queryParams]="{lat: address.geometry?.location.lat(), lng: address.geometry?.location.lng()}">
+                <a [routerLink]="['/skyddsrum/koordinater', address.geometry?.location.lat(), address.geometry?.location.lng()]">
                     {{address.formatted_address}}
                 </a>
             </li>

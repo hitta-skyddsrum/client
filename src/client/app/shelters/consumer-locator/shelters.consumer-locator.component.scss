@@ -11,7 +11,8 @@ $searchBoxInputHeight: 60px;
     .search_box {
       max-width: 80%;
       width: 500px;
-      @include vertical-align(relative);
+      top: 20px;
+      position: relative;
       padding-top: 0;
       @include box-shadow(0 1px 5px rgba(0, 0, 0, 0.2));
       margin: 0 auto;

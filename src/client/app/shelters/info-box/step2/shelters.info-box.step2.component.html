@@ -1,4 +1,4 @@
-<div class="button" [routerLink]="[{outlets: {infoBoxContent: 'dela'}}]" [ngClass]="{showBouncer: showBouncer}">
+<div class="button" [routerLink]="['/skyddsrum', shelter?.id]" [ngClass]="{showBouncer: showBouncer}">
     <div class="bouncer">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
@@ -8,7 +8,8 @@
         Nästa
     </span>
 </div>
-<div class="step2">
-    <h1>Närmaste akutintag</h1>
-    <p>Så här tar du dig till närmaste akutintag från skyddsrummet.</p>
+<div class="step1">
+    <h1>Skyddsrum: {{shelter?.id}} </h1>
+    <p>{{shelter?.address}}</p>
+    <p>Kapacitet: {{shelter?.slots}} personer</p>
 </div>

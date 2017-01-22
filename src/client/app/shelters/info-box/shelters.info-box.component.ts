@@ -1,7 +1,7 @@
 import {Component, AfterContentInit, ViewChild} from '@angular/core';
 import {Shelter} from '../../shared/api';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
-import {SheltersInfoBoxStep1Component} from "./step1/shelters.info-box.step1.component";
+import {SheltersInfoBoxStep2Component} from "./step2/shelters.info-box.step2.component";
 import {Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from "@angular/router";
 
 /**

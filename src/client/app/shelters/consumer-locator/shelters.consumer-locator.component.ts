@@ -10,6 +10,7 @@ declare var google: any;
   moduleId: module.id,
   templateUrl: 'shelters.consumer-locator.component.html',
   styleUrls: ['shelters.consumer-locator.component.css'],
+  selector: 'hs-consumerLocator'
 })
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {

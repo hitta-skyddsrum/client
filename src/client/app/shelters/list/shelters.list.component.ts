@@ -34,8 +34,8 @@ export class SheltersListComponent implements OnInit {
 
   ngOnInit() {
     let position: Position = <Position> {
-      lat: this.route.snapshot.queryParams['lat'],
-      long: this.route.snapshot.queryParams['lng']
+      lat: this.route.snapshot.params['lat'],
+      long: this.route.snapshot.params['lng']
     };
     
     this.sheltersUserStateService.setPosition(position);
@@ -55,7 +55,7 @@ export class SheltersListComponent implements OnInit {
 
     this.sheltersUserStateService.selectedShelter$.subscribe(
       (shelter: Shelter) => {
-        this.sheltersUserStateService.setCurrentStep(1);
+        this.sheltersUserStateService.setCurrentStep(2);
       }
     ).unsubscribe();
   }
