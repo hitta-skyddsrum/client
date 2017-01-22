@@ -3,6 +3,7 @@ import {GeolocationService} from '../../shared/geolocation/geolocation.service';
 import {ActivatedRoute, Router, NavigationExtras} from "@angular/router";
 import {Observable} from "rxjs";
 import {GmapsGeocoderService} from "../../shared/gmaps-geocoder/gmaps-geocoder.service";
+import {Position} from "../../shared/api/api.service";
 
 declare var google: any;
 
@@ -33,17 +34,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     this.displayBouncer(true);
 
     this.geoLocation.getLocation({}).subscribe(
-      (position: Position) => {
-        console.log(position);
-
-        let navigationExtras: NavigationExtras = {
-          queryParams: {
-            'lat': position.coords.latitude.valueOf(),
-            'lng': position.coords.longitude.valueOf()
-          }
-        };
-
-        this.lookupPosition(position);
+      (pos: any) => {
+        this.lookupPosition(<Position> {
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude,
+        });
       },
       () => {
         this.displayBouncer(false);

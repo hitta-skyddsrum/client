@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {ApiService, Shelter, Position} from '../../shared/api/api.service';
 import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
 import {ActivatedRoute} from "@angular/router";
 import {SheltersMapComponent} from "../map/shelters.map.component";
 import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component";
+import {GmapsGeocoderService} from "../../shared/gmaps-geocoder/gmaps-geocoder.service";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -14,9 +15,10 @@ import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component"
   templateUrl: '../shelters.component.html',
 })
 
-export class SheltersListComponent implements OnInit {
+export class SheltersListComponent implements OnInit, AfterViewInit {
 
   shelters: Shelter[] = [];
+  private currentPosition: Position;
 
   @ViewChild(SheltersMapComponent) sheltersMapComponent: SheltersMapComponent;
   @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent: SheltersInfoBoxComponent;
@@ -29,16 +31,17 @@ export class SheltersListComponent implements OnInit {
    */
   constructor(
     private route: ActivatedRoute,
-    private sheltersUserStateService: SheltersUserStateService
+    private sheltersUserStateService: SheltersUserStateService,
+    private gmapsGeocoderService: GmapsGeocoderService,
   ) {}
 
   ngOnInit() {
-    let position: Position = <Position> {
-      lat: this.route.snapshot.params['lat'],
-      long: this.route.snapshot.params['lng']
+    this.currentPosition = <Position> {
+      lat: <number>this.route.snapshot.params['lat'],
+      long: <number>this.route.snapshot.params['lng']
     };
     
-    this.sheltersUserStateService.setPosition(position);
+    this.sheltersUserStateService.setPosition(this.currentPosition);
 
     // Clean the map on init
     this.sheltersUserStateService.setHospitals([]);
@@ -58,5 +61,14 @@ export class SheltersListComponent implements OnInit {
         this.sheltersUserStateService.setCurrentStep(2);
       }
     ).unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    debugger;
+    this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
+      (address:any) => {
+        console.log(address);
+      }
+    )
   }
 }
