@@ -11,7 +11,7 @@
                 class="input-text"
                 [(ngModel)]="searchQuery"
                 (ngModelChange)="lookupAddress($event)"
-                placeholder="Ange var du vill hitta ditt närmsta skyddsrum"
+                placeholder="Ange adress"
         />
         <ul class="autocomplete">
             <li *ngFor="let address of addressSuggestions;">
