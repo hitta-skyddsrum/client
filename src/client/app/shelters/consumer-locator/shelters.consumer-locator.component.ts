@@ -2,6 +2,7 @@ import {Component, AfterContentInit, AfterViewInit, Output, NgZone, Input} from 
 import {GeolocationService} from '../../shared/geolocation/geolocation.service';
 import {ActivatedRoute, Router, NavigationExtras} from "@angular/router";
 import {Observable} from "rxjs";
+import {GmapsGeocoderService} from "../../shared/gmaps-geocoder/gmaps-geocoder.service";
 
 declare var google: any;
 
@@ -14,7 +15,7 @@ declare var google: any;
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
   private gmapsGeocoder: any;
-  @Output() addressSuggestions: string[];
+  addressSuggestions: any[];
   showBouncer: boolean;
   searchQuery: string;
   searchTimeout: any;
@@ -22,6 +23,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   constructor (
     private zone: NgZone,
     private geoLocation: GeolocationService,
+    private gmapsGeocoderService: GmapsGeocoderService
   ) {
 
   }
@@ -29,40 +31,39 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.gmapsGeocoder = new google.maps.Geocoder();
     this.displayBouncer(true);
-    this.getPosition().subscribe((position: Position) => {
-      console.log(position);
-      this.displayBouncer(false);
+    this.getPosition().subscribe(
+      (position: Position) => {
+        console.log(position);
 
-      let navigationExtras: NavigationExtras = {
-        queryParams: {
-          'lat': position.coords.latitude.valueOf(),
-          'lng': position.coords.longitude.valueOf()
-        }
-      };
+        let navigationExtras: NavigationExtras = {
+          queryParams: {
+            'lat': position.coords.latitude.valueOf(),
+            'lng': position.coords.longitude.valueOf()
+          }
+        };
 
-      this.lookupPosition(position);
-    });
+        this.lookupPosition(position);
+      },
+      () => {
+        this.displayBouncer(false);
+      },
+      () => {
+        this.displayBouncer(false);
+      }
+    );
   }
 
   private lookupPosition(position: Position) {
     this.displayBouncer(true);
-    this.gmapsGeocoder.geocode({
-      location: {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-    },
-      (results: any, status: string) => {
-        this.displayBouncer(false);
-      console.log('results', results);
-        switch (status) {
-          case 'OK':
-            this.zone.run(() => this.addressSuggestions = results);
-            break;
-        }
-      }
-    );
 
+    this.gmapsGeocoderService.lookupPosition(position).subscribe(
+      (results: any[]) => {
+        this.displayBouncer(false);
+        this.zone.run(() => this.addressSuggestions = results);
+      },
+      () => this.displayBouncer(false),
+      () => this.displayBouncer(false),
+    )
   }
 
   private getPosition() {
@@ -74,41 +75,23 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       return;
     }
 
+    console.log('address', address);
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout);
     }
 
     this.searchTimeout = setTimeout(() => {
-      this.displayBouncer(true);
-
-      let options = {
-        address: address,
-        componentRestrictions: {
-          country: 'SE'
-        }
-      }
-
-      this.gmapsGeocoder.geocode(options,
-        (results:any, status:any) => {
-          this.displayBouncer(false);
-          switch (status) {
-            case google.maps.GeocoderStatus.REQUEST_DENIED:
-              break;
-            case google.maps.GeocoderStatus.UNKNOWN_ERROR:
-              break;
-            case google.maps.GeocoderStatus.INVALID_REQUEST:
-              break;
-            case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-              break;
-            case google.maps.GeocoderStatus.ZERO_RESULTS:
-              break;
-            case google.maps.GeocoderStatus.OK:
-              console.log(results);
-              this.addressSuggestions = results;
-          }
-        }
-      );
-    }, 350);
+        this.displayBouncer(true);
+        this.gmapsGeocoderService.lookupAddress(address).subscribe(
+          (result: any[]) => {
+            console.log('resultat: ', result[0].formatted_address);
+            this.displayBouncer(false);
+            this.addressSuggestions = result;
+          },
+          () => this.displayBouncer(false),
+          () => this.displayBouncer(false),
+        )
+    }, 50);
 
   }
 
