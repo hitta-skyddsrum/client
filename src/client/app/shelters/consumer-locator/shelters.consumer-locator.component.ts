@@ -1,4 +1,4 @@
-import {Component, AfterContentInit, AfterViewInit, Output, NgZone, Input} from '@angular/core';
+import {Component, AfterContentInit, AfterViewInit, Output, NgZone, Input, EventEmitter} from '@angular/core';
 import {GeolocationService} from '../../shared/geolocation/geolocation.service';
 import {ActivatedRoute, Router, NavigationExtras} from "@angular/router";
 import {Observable} from "rxjs";
@@ -15,7 +15,7 @@ declare var google: any;
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
   private gmapsGeocoder: any;
-  addressSuggestions: any[];
+  @Output() addressSuggestions: any[];
   showBouncer: boolean;
   searchQuery: string;
   searchTimeout: any;
@@ -25,13 +25,13 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     private geoLocation: GeolocationService,
     private gmapsGeocoderService: GmapsGeocoderService
   ) {
-
+    this.gmapsGeocoder = new google.maps.Geocoder();
   }
 
   ngAfterViewInit() {
-    this.gmapsGeocoder = new google.maps.Geocoder();
     this.displayBouncer(true);
-    this.getPosition().subscribe(
+
+    this.geoLocation.getLocation({}).subscribe(
       (position: Position) => {
         console.log(position);
 
@@ -58,16 +58,12 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
     this.gmapsGeocoderService.lookupPosition(position).subscribe(
       (results: any[]) => {
+        this.updateAddressSuggestions(results);
         this.displayBouncer(false);
-        this.zone.run(() => this.addressSuggestions = results);
       },
       () => this.displayBouncer(false),
       () => this.displayBouncer(false),
     )
-  }
-
-  private getPosition() {
-    return this.geoLocation.getLocation({});
   }
 
   lookupAddress(address: string) {
@@ -75,28 +71,28 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       return;
     }
 
-    console.log('address', address);
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout);
     }
 
-    this.searchTimeout = setTimeout(() => {
-        this.displayBouncer(true);
-        this.gmapsGeocoderService.lookupAddress(address).subscribe(
-          (result: any[]) => {
-            console.log('resultat: ', result[0].formatted_address);
-            this.displayBouncer(false);
-            this.addressSuggestions = result;
-          },
-          () => this.displayBouncer(false),
-          () => this.displayBouncer(false),
-        )
-    }, 50);
+    this.displayBouncer(true);
+    this.gmapsGeocoderService.lookupAddress(address).subscribe(
+      (result: any[]) => {
+        console.log('resultat: ', result[0]);
+        this.updateAddressSuggestions(result);
+        this.displayBouncer(false);
+      },
+      () => this.displayBouncer(false),
+      () => this.displayBouncer(false),
+    )
 
   }
 
   private displayBouncer(value: boolean) {
-    this.showBouncer = value;
+    this.zone.run(() => this.showBouncer = value);
   }
 
+  private updateAddressSuggestions(addresses: any[]) {
+    this.zone.run(() => this.addressSuggestions = addresses);
+  }
 }
