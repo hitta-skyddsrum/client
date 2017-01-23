@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 const GEOLOCATION_ERRORS = {
   'errors.location.unsupportedBrowser': 'Browser does not support location services',
@@ -49,14 +49,10 @@ export class GeolocationService {
             }
           },
           opts);
-      }
-      else {
+      } else {
         observer.error(GEOLOCATION_ERRORS['errors.location.unsupportedBrowser']);
       }
 
     });
-
-
   }
 }
-

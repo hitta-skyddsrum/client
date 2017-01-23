@@ -1,8 +1,8 @@
-import {Component, AfterContentInit, AfterViewInit, Output, NgZone, Input, EventEmitter} from '@angular/core';
-import {GeolocationService} from '../../shared/geolocation/geolocation.service';
-import {ActivatedRoute, Router, NavigationExtras} from "@angular/router";
-import {Observable} from "rxjs";
-import {GmapsGeocoderService} from "../../shared/gmaps-geocoder/gmaps-geocoder.service";
+import { Component, AfterViewInit, Output, NgZone } from '@angular/core';
+import { GeolocationService } from '../../shared/geolocation/geolocation.service';
+import { Router } from '@angular/router';
+import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
+import { Position } from '../../shared/api/api.service';
 
 declare var google: any;
 
@@ -10,7 +10,7 @@ declare var google: any;
   moduleId: module.id,
   templateUrl: 'shelters.consumer-locator.component.html',
   styleUrls: ['shelters.consumer-locator.component.css'],
-  selector: 'hs-consumerLocator'
+  selector: 'hs-consumer-locator'
 })
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
@@ -22,6 +22,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   searchTimeout: any;
 
   constructor (
+    router: Router,
     private zone: NgZone,
     private geoLocation: GeolocationService,
     private gmapsGeocoderService: GmapsGeocoderService
@@ -33,17 +34,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     this.displayBouncer(true);
 
     this.geoLocation.getLocation({}).subscribe(
-      (position: Position) => {
-        console.log(position);
-
-        let navigationExtras: NavigationExtras = {
-          queryParams: {
-            'lat': position.coords.latitude.valueOf(),
-            'lng': position.coords.longitude.valueOf()
-          }
-        };
-
-        this.lookupPosition(position);
+      (pos: any) => {
+        this.lookupPosition(<Position> {
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude,
+        });
       },
       () => {
         this.displayBouncer(false);
@@ -64,7 +59,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       },
       () => this.displayBouncer(false),
       () => this.displayBouncer(false),
-    )
+    );
   }
 
   lookupAddress(address: string) {
@@ -85,7 +80,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       },
       () => this.displayBouncer(false),
       () => this.displayBouncer(false),
-    )
+    );
 
   }
 

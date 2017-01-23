@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
-import {ActivatedRoute} from "@angular/router";
-import {Shelter, Hospital} from "../../shared/api/api.service";
-import {MetaService} from "ng2-meta";
+import { Component, OnInit } from '@angular/core';
+import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
+import { ActivatedRoute } from '@angular/router';
+import { Shelter, Hospital } from '../../shared/api/api.service';
+import { MetaService } from 'ng2-meta';
 
 @Component({
   moduleId: module.id,

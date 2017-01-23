@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Config } from './shared/config/env.config';
 import './operators';
-import {MetaService} from "ng2-meta";
-import {Router, Event} from "@angular/router";
+import { MetaService } from 'ng2-meta';
+import { Router, Event } from '@angular/router';
 
 declare var ga:any;
 /**

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../shared/api/api.service';
+import { Component } from '@angular/core';
 
 /**
  * This class represents the lazy loaded HomeComponent.

@@ -1,11 +1,11 @@
-import {ApiService, Hospital, Position} from "../../shared/api/api.service";
+import { ApiService, Hospital, Position } from '../../shared/api/api.service';
+import { Component, AfterViewInit } from '@angular/core';
+import { Shelter } from '../../shared/api';
+import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 declare var google: any;
 declare var MarkerClusterer: any;
-
-import {Component, AfterViewInit, AfterViewChecked} from '@angular/core';
-import {Shelter} from '../../shared/api';
-import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -147,7 +147,7 @@ export class SheltersMapComponent implements AfterViewInit {
       let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       let d = R * c;
       distances[i] = d;
-      if (closest == -1 || d < distances[closest]) {
+      if (closest === -1 || d < distances[closest]) {
         closest = i;
       }
     }
@@ -357,7 +357,7 @@ export class SheltersMapComponent implements AfterViewInit {
 
     google.maps.event.addListener(marker, 'click', function(event: Event) {
       // If there's a selected shelter, reset the size of it
-      if( typeof _sheltersMap.selectedHospitalMarker != 'undefined' ) {
+      if( typeof _sheltersMap.selectedHospitalMarker !== 'undefined' ) {
         _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedHospitalMarker, 'hospital');
       }
 
@@ -373,7 +373,6 @@ export class SheltersMapComponent implements AfterViewInit {
         false,
         google.maps.TravelMode['WALKING']
       );
-  });
-
-}
+    });
+  }
 }

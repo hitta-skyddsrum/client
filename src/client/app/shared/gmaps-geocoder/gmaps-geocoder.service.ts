@@ -1,5 +1,6 @@
-import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Position } from '../api/api.service';
 
 declare var google: any;
 
@@ -14,13 +15,36 @@ export class GmapsGeocoderService {
     this.gmapsGeocoder = new google.maps.Geocoder();
   }
 
+  getHighestSublocalityAddress(addresses:any[]) {
+    let ordered: any[] = [];
+    let prefix = 'sublocality_level_';
+
+    for (let i=0;i<addresses.length;i++) {
+      let address = addresses[i];
+
+      let subs = address.types.filter((k: string[]) => {
+        return k.indexOf(prefix) === 0;
+      });
+
+      if (subs.length === 0) {
+        continue;
+      }
+
+      let level = subs[0].replace(prefix, '');
+
+      ordered[level] = address;
+    }
+
+    return ordered.slice(-1).pop();
+  }
+
   lookupPosition(position: Position) {
     return Observable.create((observer: any) => {
 
       this.gmapsGeocoder.geocode({
           location: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lat: position.lat,
+            lng: position.long
           }
         },
         (results: any, status: string) => {
@@ -45,7 +69,7 @@ export class GmapsGeocoderService {
         componentRestrictions: {
           country: 'SE'
         }
-      }
+      };
 
       this.gmapsGeocoder.geocode(options,
         (results:any, status:any) => {
