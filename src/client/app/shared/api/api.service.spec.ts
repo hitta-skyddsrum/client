@@ -4,10 +4,10 @@ import { MockBackend } from '@angular/http/testing';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ApiService } from './api.service';
+import { ApiService, Position } from './api.service';
 
 export function main() {
-  describe('NameList Service', () => {
+  describe('Api Service', () => {
     let nameListService: ApiService;
     let mockBackend: MockBackend;
 
@@ -28,18 +28,26 @@ export function main() {
     });
 
     it('should return an Observable when get called', async(() => {
-      expect(TestBed.get(ApiService).get()).toEqual(jasmine.any(Observable));
+      let position: Position = <Position> {
+        lat: 0.0,
+        long: 0.0,
+      };
+      expect(TestBed.get(ApiService).shelters().index(position)).toEqual(jasmine.any(Observable));
     }));
 
     it('should resolve to list of names when get called', async(() => {
-      let nameListService = TestBed.get(ApiService);
+      let apiService = TestBed.get(ApiService);
       let mockBackend = TestBed.get(MockBackend);
+      let position: Position = <Position> {
+        lat: 0.0,
+        long: 0.0,
+      };
 
       mockBackend.connections.subscribe((c: any) => {
         c.mockRespond(new Response(new ResponseOptions({ body: '["Dijkstra", "Hopper"]' })));
       });
 
-      nameListService.get().subscribe((data: any) => {
+      apiService.shelters().index(position).subscribe((data: any) => {
         expect(data).toEqual(['Dijkstra', 'Hopper']);
       });
     }));

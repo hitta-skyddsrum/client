@@ -15,8 +15,11 @@ module.exports = function (config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'browserify'],
 
+    preprocessors: {
+      'node_modules/ng2-meta/dist/index.js': [ 'browserify' ]
+    },
 
     // list of files / patterns to load in the browser
     files: [
@@ -37,6 +40,8 @@ module.exports = function (config) {
       'node_modules/zone.js/dist/sync-test.js',
       'node_modules/zone.js/dist/proxy.js',
       'node_modules/zone.js/dist/jasmine-patch.js',
+
+      'node_modules/ng2-meta/dist/index.js',
 
       // RxJs.
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
