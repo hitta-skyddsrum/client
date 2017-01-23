@@ -1,17 +1,15 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {SheltersListComponent} from './list/shelters.list.component';
-import {SheltersInfoBoxStep2Component} from './info-box/step2/shelters.info-box.step2.component';
-import {SheltersConsumerLocatorComponent} from "./consumer-locator/shelters.consumer-locator.component";
-import {SheltersDetailComponent} from "./detail/shelters.detail.component";
-import {SheltersInfoBoxStep3Component} from "./info-box/step3/shelters.info-box.step3.component";
-import {SheltersMapComponent} from "./map/shelters.map.component";
-import {SheltersComponent} from "./shelters.component";
-import {SheltersListResolver} from "./list/shelters.list.resolver";
-import {SheltersDetailShelterResolver} from "./detail/shelters.detail.shelter.resolver";
-import {SheltersDetailHospitalResolver} from "./detail/shelters.detail.hospitals.resolver";
-import {SheltersInfoBoxStep1Component} from "./info-box/step1/shelters.info-box.step1.component";
-import {SheltersInfoBoxStep4Component} from "./info-box/step4/shelters.info-box.step4.component";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { SheltersListComponent } from './list/shelters.list.component';
+import { SheltersInfoBoxStep2Component } from './info-box/step2/shelters.info-box.step2.component';
+import { SheltersDetailComponent } from './detail/shelters.detail.component';
+import { SheltersInfoBoxStep3Component } from './info-box/step3/shelters.info-box.step3.component';
+import { SheltersComponent } from './shelters.component';
+import { SheltersListResolver } from './list/shelters.list.resolver';
+import { SheltersDetailShelterResolver } from './detail/shelters.detail.shelter.resolver';
+import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospitals.resolver';
+import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-box.step1.component';
+import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
 
 @NgModule({
   imports: [

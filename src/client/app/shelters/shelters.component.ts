@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {SheltersUserStateService} from "./user-state/shelters.user-state.service";
+import { Component, Output } from '@angular/core';
+import { SheltersUserStateService } from './user-state/shelters.user-state.service';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -15,7 +15,7 @@ import {SheltersUserStateService} from "./user-state/shelters.user-state.service
 export class SheltersComponent {
   currentStep: number;
   isOpen: boolean;
-  progressBarWidth: number;
+  progressBarWidth: number = 0;
   showBouncer: boolean = false;
 
   constructor(

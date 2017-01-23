@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import {Resolve, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
-import {ApiService, Position, Shelter} from "../../shared/api/api.service";
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ApiService, Position, Shelter } from '../../shared/api/api.service';
 
 @Injectable()
 export class SheltersListResolver implements Resolve<Shelter[]> {

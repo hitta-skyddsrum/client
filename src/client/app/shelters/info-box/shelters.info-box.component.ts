@@ -1,8 +1,5 @@
-import {Component, AfterContentInit, ViewChild} from '@angular/core';
-import {Shelter} from '../../shared/api';
-import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
-import {SheltersInfoBoxStep2Component} from "./step2/shelters.info-box.step2.component";
-import {Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from "@angular/router";
+import { Component } from '@angular/core';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
 /**
  * This class represents the lazy loaded HomeComponent.

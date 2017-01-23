@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import {Shelter, Hospital, Position} from "../../shared/api/api.service";
-import {Observer} from "rxjs";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import { Shelter, Hospital, Position } from '../../shared/api/api.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/filter';
 
 @Injectable()

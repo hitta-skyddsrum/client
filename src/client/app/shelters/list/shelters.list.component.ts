@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {ApiService, Shelter, Position} from '../../shared/api/api.service';
-import {SheltersUserStateService} from "../user-state/shelters.user-state.service";
-import {ActivatedRoute} from "@angular/router";
-import {SheltersMapComponent} from "../map/shelters.map.component";
-import {SheltersInfoBoxComponent} from "../info-box/shelters.info-box.component";
-import {GmapsGeocoderService} from "../../shared/gmaps-geocoder/gmaps-geocoder.service";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ApiService, Shelter, Position } from '../../shared/api/api.service';
+import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
+import { ActivatedRoute } from '@angular/router';
+import { SheltersMapComponent } from '../map/shelters.map.component';
+import { SheltersInfoBoxComponent } from '../info-box/shelters.info-box.component';
+import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
+import { MetaService } from 'ng2-meta';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -31,16 +32,17 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
    */
   constructor(
     private route: ActivatedRoute,
+    private metaService: MetaService,
     private sheltersUserStateService: SheltersUserStateService,
     private gmapsGeocoderService: GmapsGeocoderService,
   ) {}
 
   ngOnInit() {
     this.currentPosition = <Position> {
-      lat: <number>this.route.snapshot.params['lat'],
-      long: <number>this.route.snapshot.params['lng']
+      lat: Number(this.route.snapshot.params['lat']),
+      long: Number(this.route.snapshot.params['lng'])
     };
-    
+
     this.sheltersUserStateService.setPosition(this.currentPosition);
 
     // Clean the map on init
@@ -64,11 +66,13 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    debugger;
     this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
-      (address:any) => {
-        console.log(address);
+      (addresses:any[]) => {
+        console.log(addresses);
+        setTimeout(() => {
+          this.metaService.setTitle('Hitta skyddsrum nära ' + addresses[1].formatted_address);
+        });
       }
-    )
+    );
   }
 }

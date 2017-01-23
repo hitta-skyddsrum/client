@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
-import {Position} from "../api/api.service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Position } from '../api/api.service';
 
 declare var google: any;
 
@@ -46,7 +46,7 @@ export class GmapsGeocoderService {
         componentRestrictions: {
           country: 'SE'
         }
-      }
+      };
 
       this.gmapsGeocoder.geocode(options,
         (results:any, status:any) => {

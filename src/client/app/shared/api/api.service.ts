@@ -1,35 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import {Config} from "../config/env.config";
+import { Config } from '../config/env.config';
 // import 'rxjs/add/operator/do';  // for debugging
 
 declare var swal: any;
 
 export interface Shelter {
-  id: number,
-  address: string,
-  municipality: string,
-  city: string,
-  slots: number,
-  air_cleaners: number,
-  filterType: string,
-  shelterId: string,
-  estateId: string,
-  goid: string,
-  position: Position
+  id: number;
+  address: string;
+  municipality: string;
+  city: string;
+  slots: number;
+  air_cleaners: number;
+  filterType: string;
+  shelterId: string;
+  estateId: string;
+  goid: string;
+  position: Position;
 }
 
 export interface Hospital {
-  position: Position,
-  name: string,
-  address: string,
-  hsaId: string,
+  position: Position;
+  name: string;
+  address: string;
+  hsaId: string;
 }
 
 export interface Position {
-  long: number,
-  lat: number
+  long: number;
+  lat: number;
 }
 
 /**
@@ -84,7 +84,7 @@ export class ApiService {
           //              .do(data => console.log('server data:', data))  // debug
           .catch(this.handleError);
       }
-    }
+    };
   }
 
   /**
