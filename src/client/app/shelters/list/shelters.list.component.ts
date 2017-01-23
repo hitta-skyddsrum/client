@@ -68,9 +68,21 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
       (addresses:any[]) => {
-        console.log(addresses);
+        let title: string =  'Visa skyddsrum';
+
+        if (addresses.length > 0) {
+          let address = this.gmapsGeocoderService.getHighestSublocalityAddress(addresses);
+
+          // Fallback
+          if (typeof address === 'undefined') {
+            address = addresses[0];
+          }
+
+          title += ' nära ' + address.formatted_address;
+        }
+
         setTimeout(() => {
-          this.metaService.setTitle('Hitta skyddsrum nära ' + addresses[1].formatted_address);
+          this.metaService.setTitle(title);
         });
       }
     );
