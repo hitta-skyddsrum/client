@@ -43,30 +43,27 @@ export class ApiService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {
-
-  }
-
-  getShelters(position: Position): Observable<Shelter[]> {
-    let uri: string = Config.API + '/shelters';
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('lat', <string>position.lat.toString());
-    params.set('long', <string>position.long.toString());
-    let options: RequestOptions = new RequestOptions({
-      search: params
-    });
-
-    console.log('params', params);
-
-    return this.http.get(uri, options)
-                    .map(res => <Shelter[]>res.json())
-    //              .do(data => console.log('server data:', data))  // debug
-                    .catch(this.handleError);
-  }
+  constructor(private http: Http) {}
 
   shelters() {
     let apiService = this;
     return {
+      index(position: Position): Observable<Shelter[]> {
+        let uri: string = Config.API + '/shelters';
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('lat', <string>position.lat.toString());
+        params.set('long', <string>position.long.toString());
+        let options: RequestOptions = new RequestOptions({
+          search: params
+        });
+
+
+        return apiService.http.get(uri, options)
+          .map((res: any) => <Shelter[]>res.json())
+          //              .do(data => console.log('server data:', data))  // debug
+          .catch(this.handleError);
+      },
+
       show(params: any = null) {
         let uri: string = Config.API + '/shelters/' + params.id;
 
