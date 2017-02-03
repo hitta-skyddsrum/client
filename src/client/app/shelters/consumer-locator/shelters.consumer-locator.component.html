@@ -1,11 +1,8 @@
 <section>
-
     <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
-        <div class="bouncer">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
+        <bouncer
+                [bounceIf]="showBouncer"
+        ></bouncer>
         <input
                 type="text"
                 class="input-text"
