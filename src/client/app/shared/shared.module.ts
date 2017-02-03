@@ -8,6 +8,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ApiService } from './api/api.service';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { GmapsGeocoderService } from './gmaps-geocoder/gmaps-geocoder.service';
+import { BouncerComponent } from './bouncer/bouncer.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -15,9 +16,21 @@ import { GmapsGeocoderService } from './gmaps-geocoder/gmaps-geocoder.service';
 
 @NgModule({
   imports: [CommonModule, RouterModule],
-  declarations: [ToolbarComponent, NavbarComponent, SpinnerComponent],
-  exports: [ToolbarComponent, NavbarComponent,
-    CommonModule, FormsModule, RouterModule, SpinnerComponent]
+  declarations: [
+    ToolbarComponent,
+    NavbarComponent,
+    SpinnerComponent,
+    BouncerComponent,
+  ],
+  exports: [
+    ToolbarComponent,
+    NavbarComponent,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    SpinnerComponent,
+    BouncerComponent,
+  ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

@@ -8,7 +8,6 @@ $searchBoxInputHeight: 60px;
     height: 100%;
     width: 100%;
     position: absolute;
-//    z-index: 100000;
 
     .search_box {
       max-width: 80%;
@@ -34,7 +33,7 @@ $searchBoxInputHeight: 60px;
 
         outline-color: $orange;
       }
-
+/*
       .button {
         width: 20%;
         background-color: #4d90fe;
@@ -45,7 +44,7 @@ $searchBoxInputHeight: 60px;
         padding-top: 6px;
         cursor: pointer;
       }
-
+*/
       .autocomplete {
         background: #fff;
         list-style: none;
@@ -75,9 +74,7 @@ $searchBoxInputHeight: 60px;
         }
       }
 
-      @include bouncer();
-
-      .bouncer {
+      /deep/ .bouncer {
         right: 20px;
         @include vertical-align(absolute);
         div {
@@ -85,11 +82,5 @@ $searchBoxInputHeight: 60px;
         }
       }
     }
-  }
-
-  /deep/ .padSpinner {
-    width: 100%;
-    text-align: center;
-    @include vertical-align(absolute);
   }
 }

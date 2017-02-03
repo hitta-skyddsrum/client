@@ -31,9 +31,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.displayBouncer(true);
-
-    this.geoLocation.getLocation({}).subscribe(
+    this.geoLocation.getLocation().subscribe(
       (pos: any) => {
         this.lookupPosition(<Position> {
           lat: pos.coords.latitude,
@@ -41,10 +39,8 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
         });
       },
       () => {
-        this.displayBouncer(false);
       },
       () => {
-        this.displayBouncer(false);
       }
     );
   }

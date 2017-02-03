@@ -1,12 +1,8 @@
-<div class="button" [routerLink]="['/skyddsrum', shelter?.id]" [ngClass]="{showBouncer: showBouncer}">
-    <div class="bouncer">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
-    </div>
-    <span class="text">
-        Nästa
-    </span>
+<div class="button" [routerLink]="['/skyddsrum', shelter?.id]">
+    <bouncer
+            [bounceIf]="showBouncer"
+            [textValue]="'Nästa'"
+    ></bouncer>
 </div>
 <div class="step1">
     <h1>Skyddsrum: {{shelter?.id}} </h1>

@@ -56,25 +56,6 @@
         background-color: $green_hover;
         @include box-shadow( 0 0 10px rgba( 0, 0, 0, 0.4 ) );
       }
-
-      .spinner {
-        display: none;
-        font-size: 1em;
-      }
-
-      &.loading {
-
-        .spinner {
-
-          display: block;
-          margin-top: 1px;
-        }
-
-        .text {
-
-          display: none;
-        }
-      }
     }
   }
 }
