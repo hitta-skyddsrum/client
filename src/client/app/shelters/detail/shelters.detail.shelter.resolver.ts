@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { ApiService, Shelter } from '../../shared/api/api.service';
+import { ApiService } from '../../shared/api/api.service';
+import { Shelter } from '../../../models/shelter.model';
 
 @Injectable()
 export class SheltersDetailShelterResolver implements Resolve<Shelter> {

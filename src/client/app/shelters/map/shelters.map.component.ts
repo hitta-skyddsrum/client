@@ -1,8 +1,10 @@
-import { ApiService, Hospital, Position } from '../../shared/api/api.service';
+import { ApiService } from '../../shared/api/api.service';
 import { Component, AfterViewInit } from '@angular/core';
-import { Shelter } from '../../shared/api';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Shelter } from '../../../models/shelter.model';
+import { Hospital } from '../../../models/hospital.model';
+import { Position } from '../../../models/position.model';
 
 declare var google: any;
 declare var MarkerClusterer: any;

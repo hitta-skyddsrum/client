@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ApiService, Shelter, Position } from '../../shared/api/api.service';
+import { ApiService } from '../../shared/api/api.service';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { SheltersMapComponent } from '../map/shelters.map.component';
 import { SheltersInfoBoxComponent } from '../info-box/shelters.info-box.component';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { MetaService } from 'ng2-meta';
+import { Shelter } from '../../../models/shelter.model';
+import { Position } from '../../../models/position.model';
 
 /**
  * This class represents the lazy loaded HomeComponent.

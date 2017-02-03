@@ -4,7 +4,8 @@ import { MockBackend } from '@angular/http/testing';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ApiService, Position } from './api.service';
+import { ApiService } from './api.service';
+import { Position } from '../../../models/position.model';
 
 export function main() {
   describe('Api Service', () => {

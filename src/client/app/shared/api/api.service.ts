@@ -2,35 +2,12 @@ import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Config } from '../config/env.config';
+import { Shelter } from '../../../models/shelter.model';
+import { Hospital } from '../../../models/hospital.model';
+import { Position } from '../../../models/position.model';
 // import 'rxjs/add/operator/do';  // for debugging
 
 declare var swal: any;
-
-export interface Shelter {
-  id: number;
-  address: string;
-  municipality: string;
-  city: string;
-  slots: number;
-  air_cleaners: number;
-  filterType: string;
-  shelterId: string;
-  estateId: string;
-  goid: string;
-  position: Position;
-}
-
-export interface Hospital {
-  position: Position;
-  name: string;
-  address: string;
-  hsaId: string;
-}
-
-export interface Position {
-  long: number;
-  lat: number;
-}
 
 /**
  * This class provides the NameList service with methods to read names and add names.

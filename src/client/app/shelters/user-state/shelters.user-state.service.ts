@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Shelter, Hospital, Position } from '../../shared/api/api.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/filter';
+import { Shelter } from '../../../models/shelter.model';
+import { Hospital } from '../../../models/hospital.model';
+import { Position } from '../../../models/position.model';
 
 @Injectable()
 export class SheltersUserStateService {
