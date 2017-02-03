@@ -1,3 +1,5 @@
+import { Position } from './position.model';
+
 export interface Shelter {
   id: number;
   address: string;

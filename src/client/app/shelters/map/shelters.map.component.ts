@@ -5,6 +5,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 import { Position } from '../../../models/position.model';
+import { GmapsMarker } from '../../../models/gmaps-marker.model';
+import { GmapsMarkerShelter } from '../../../models/gmaps-marker-shelter.model';
+import { GmapsMarkerHospital } from '../../../models/gmaps-marker-hospital.model';
 
 declare var google: any;
 declare var MarkerClusterer: any;
@@ -22,10 +25,10 @@ declare var MarkerClusterer: any;
 export class SheltersMapComponent implements AfterViewInit {
   map: any;
   directionsDisplay: any;
-  selectedShelterMarker: any;
-  selectedHospitalMarker: any;
-  shelterMarkers: any[] = [];
-  hospitalMarkers: any[] = [];
+  selectedShelterMarker: GmapsMarkerShelter = null;
+  selectedHospitalMarker: GmapsMarkerHospital = null;
+  shelterMarkers: GmapsMarkerShelter[] = [];
+  hospitalMarkers: GmapsMarkerHospital[] = [];
   markerClusterer: any;
 
   private sheltersIsPlotted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -95,8 +98,8 @@ export class SheltersMapComponent implements AfterViewInit {
     this.selectClosestMarker(this.hospitalMarkers, origin);
   }
 
-  private selectClosestMarker(markers: any[], origin: Position = null) {
-    let marker: any;
+  private selectClosestMarker(markers: GmapsMarker[], origin: Position = null) {
+    let marker: GmapsMarker;
 
     if (origin !== null) {
       marker = this.findClosestMarker(
@@ -109,7 +112,7 @@ export class SheltersMapComponent implements AfterViewInit {
     this.clickMarker(marker);
   }
 
-  private clickMarker(marker: any) {
+  private clickMarker(marker: GmapsMarker) {
     google.maps.event.trigger(marker, 'click');
   }
 
@@ -128,18 +131,18 @@ export class SheltersMapComponent implements AfterViewInit {
     this.sheltersUserStateService.setMapAsLoaded();
   }
 
-  private findClosestMarker(origin: any, markerArray: any[]) {
+  private findClosestMarker(origin: any, markerArray: any[]): GmapsMarker {
     let lat = origin.lat();
     let lng = origin.lng();
-    var R = 6371; // radius of earth in km
-    var distances: any[] = [];
-    var closest = -1;
+    let R = 6371; // radius of earth in km
+    let distances: any[] = [];
+    let closest = -1;
 
     function rad(x: number) {
       return x * Math.PI / 180;
     }
 
-    for (var i = 0; i < markerArray.length; i++) {
+    for (let i = 0; i < markerArray.length; i++) {
       let mLat = markerArray[i].getPosition().lat();
       let mLng = markerArray[i].getPosition().lng();
       let dLat = rad(mLat - lat);
@@ -167,7 +170,7 @@ export class SheltersMapComponent implements AfterViewInit {
     }
 
     // Prepare request to get the route for the closest route
-    var request = {
+    let request = {
       origin: new google.maps.LatLng(origin.lat, origin.long),
       destination: new google.maps.LatLng(destination.lat, destination.long),
       travelMode: travelMode,
@@ -176,6 +179,9 @@ export class SheltersMapComponent implements AfterViewInit {
 
     // Request the route
     directionsService.route(request, function (response: any, status: any) {
+      /**
+       * TODO: Display alert on error
+       */
       switch (status) {
         case google.maps.DirectionsStatus.REQUEST_DENIED:
           break;
@@ -270,12 +276,12 @@ export class SheltersMapComponent implements AfterViewInit {
       seenHospitals.push(this.hospitalMarkers[i].hospital.hsaId);
     }
 
-    for(var i=0;i<hospitals.length;i++) {
+    for(let i=0;i<hospitals.length;i++) {
       if (seenHospitals.indexOf(hospitals[i].hsaId) !== -1) {
         continue;
       }
 
-      var marker = new google.maps.Marker({
+      let marker = new google.maps.Marker({
         position: new google.maps.LatLng(hospitals[i].position.lat, hospitals[i].position.long),
         map: this.map,
         icon: {
@@ -293,7 +299,7 @@ export class SheltersMapComponent implements AfterViewInit {
     this.hospitalsIsPlotted.next(true);
   }
 
-  private setSizeOfMarkerAsOriginal(marker: any, type: string) {
+  private setSizeOfMarkerAsOriginal(marker: GmapsMarker, type: string) {
     let icon = marker.icon;
     switch (type) {
       case 'shelter':
@@ -308,7 +314,7 @@ export class SheltersMapComponent implements AfterViewInit {
     marker.setIcon(icon);
   }
 
-  private setSizeOfMarkerAsSelected(marker: any, type: string) {
+  private setSizeOfMarkerAsSelected(marker: GmapsMarker, type: string) {
     let icon = marker.icon;
     switch (type) {
       case 'shelter':
@@ -323,13 +329,13 @@ export class SheltersMapComponent implements AfterViewInit {
     marker.setIcon(icon);
   }
 
-  private setShelterMarkerEventData(shelter: Shelter, marker: any) {
+  private setShelterMarkerEventData(shelter: Shelter, marker: GmapsMarker) {
     var _sheltersMap = this;
 
     google.maps.event.addListener(marker, 'click', function (event: Event) {
 
         // If there's a selected shelter, reset the size of it
-        if (typeof _sheltersMap.selectedShelterMarker !== 'undefined') {
+        if (_sheltersMap.selectedShelterMarker !== null) {
           _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedShelterMarker, 'shelter');
         }
 
@@ -354,12 +360,12 @@ export class SheltersMapComponent implements AfterViewInit {
 
   }
 
-  private setHospitalMarkerEventData(hospital: Hospital, marker: any) {
+  private setHospitalMarkerEventData(hospital: Hospital, marker: GmapsMarker) {
     let _sheltersMap = this;
 
     google.maps.event.addListener(marker, 'click', function(event: Event) {
       // If there's a selected shelter, reset the size of it
-      if( typeof _sheltersMap.selectedHospitalMarker !== 'undefined' ) {
+      if( _sheltersMap.selectedHospitalMarker !== null ) {
         _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedHospitalMarker, 'hospital');
       }
 
