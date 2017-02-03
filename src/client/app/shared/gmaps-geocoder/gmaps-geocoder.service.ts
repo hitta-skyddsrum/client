@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Position } from '../api/api.service';
+import { Position } from '../../../models/position.model';
 
 declare var google: any;
 
