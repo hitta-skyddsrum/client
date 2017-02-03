@@ -80,6 +80,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
   }
 
+  chooseAddress(address: any) {
+    this.addressSuggestions = [];
+    this.searchQuery = address.formatted_address;
+  }
+
   private displayBouncer(value: boolean) {
     this.zone.run(() => this.showBouncer = value);
   }
