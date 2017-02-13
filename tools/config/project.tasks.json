@@ -3,6 +3,9 @@
     "tslint",
     "build.test",
     "karma.run"
+  ],
+  "publish.prod": [
+    "publish"
   ]
 }
 
