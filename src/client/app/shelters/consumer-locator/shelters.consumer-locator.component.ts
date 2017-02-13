@@ -2,7 +2,7 @@ import { Component, AfterViewInit, Output, NgZone } from '@angular/core';
 import { GeolocationService } from '../../shared/geolocation/geolocation.service';
 import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
-import { Position } from '../../shared/api/api.service';
+import { Position } from '../../../models/position.model';
 
 declare var google: any;
 
