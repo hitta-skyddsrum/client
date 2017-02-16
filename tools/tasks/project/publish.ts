@@ -1,8 +1,9 @@
 let s3 = require('s3');
 let AWS = require('aws-sdk'); // https://www.npmjs.com/package/aws-sdk
+const env = require('env2')('./.env');
 
 export = () => {
-  console.log('process.env.AWS_S3_ACCESS_KEY', process.env.AWS_S3_ACCESS_KEY);
+  console.log('process.env.AWS_S3_ACCESS_KEY', process.env);
 
   AWS.config.loadFromPath('./amz-s3-credentials.json');
 
@@ -26,7 +27,7 @@ export = () => {
     deleteRemoved: true,
     s3Params: {
       Prefix: "",
-      Bucket: "hitta-skyddsrum",
+      Bucket: "hittaskyddsrum.se"
     },
   };
   let uploader = client.uploadDir(params);

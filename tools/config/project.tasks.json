@@ -5,6 +5,7 @@
     "karma.run"
   ],
   "publish.prod": [
+    "build.prod",
     "publish"
   ]
 }
