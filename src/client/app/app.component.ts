@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Config } from './shared/config/env.config';
 import './operators';
 import { MetaService } from 'ng2-meta';
-import { Router, Event } from '@angular/router';
+import { Router, Event, ActivatedRoute } from '@angular/router';
 
 declare var ga:any;
 /**
@@ -18,9 +18,20 @@ export class AppComponent {
 
   constructor(
     router: Router,
+    activatedRoute: ActivatedRoute,
     private metaService: MetaService,
   ) {
     console.log('Environment config', Config);
+
+
+    activatedRoute.fragment
+      .filter((fragment: string) => typeof fragment !== 'undefined')
+      .filter((fragment: string) => fragment !== null)
+      .subscribe((fragment: any) => {
+        if (fragment.indexOf('!') === 0) {
+          router.navigate([fragment.substr(1)]);
+        }
+      });
 
     router.events.subscribe((event: Event) => {
       var newRoute = event.url || '/';
