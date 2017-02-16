@@ -9,6 +9,7 @@ import { ApiService } from './api/api.service';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { GmapsGeocoderService } from './gmaps-geocoder/gmaps-geocoder.service';
 import { BouncerComponent } from './bouncer/bouncer.component';
+import { ContentContainerComponent } from './content-container/content-container.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -21,6 +22,7 @@ import { BouncerComponent } from './bouncer/bouncer.component';
     NavbarComponent,
     SpinnerComponent,
     BouncerComponent,
+    ContentContainerComponent,
   ],
   exports: [
     ToolbarComponent,
@@ -30,6 +32,7 @@ import { BouncerComponent } from './bouncer/bouncer.component';
     RouterModule,
     SpinnerComponent,
     BouncerComponent,
+    ContentContainerComponent,
   ]
 })
 export class SharedModule {

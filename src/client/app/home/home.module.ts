@@ -10,7 +10,6 @@ import { BouncerComponent } from '../shared/bouncer/bouncer.component';
     CommonModule,
     HomeRoutingModule,
     SharedModule,
-
   ],
   declarations: [HomeComponent],
   exports: [HomeComponent]

@@ -1,17 +1,11 @@
-<div class="start">
-  <div class="row" set-relative-height="0">
-    <div class="col col-center">
-      <div class="window">
-        <img src="/assets/images/logo.png" alt="Hitta skyddsrum" />
-        <p>Vi hjälper dig att hitta ditt närmaste skyddsrum. Så att du vet vart du ska ta vägen när det verkligen behövs.</p>
-        <a class="button" routerLink="/skyddsrum" ng-class="{loading: loading}">
-          <bouncer
-              [bounceIf]="loading"
-              [textValue]="'Börja nu'"
-          ></bouncer>
-        </a>
-        <div class="fb-like" data-href="http://www.hittaskyddsrum.se" data-layout="button" data-action="like" data-show-faces="true" data-share="false"></div>
-      </div>
-    </div>
-  </div>
-</div>
+<content-container>
+    <h1>Hitta skyddsrum</h1>
+    <p>Vi hjälper dig att hitta ditt närmaste skyddsrum. Så att du vet vart du ska ta vägen när det verkligen behövs.</p>
+    <a class="button" routerLink="/skyddsrum" ng-class="{loading: loading}">
+        <bouncer
+                [bounceIf]="loading"
+                [textValue]="'Börja nu'"
+        ></bouncer>
+    </a>
+    <div class="fb-like" data-href="http://www.hittaskyddsrum.se" data-layout="button" data-action="like" data-show-faces="true" data-share="false"></div>
+</content-container>
