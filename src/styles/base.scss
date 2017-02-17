@@ -1,0 +1,166 @@
+/* this file will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+
+$fa-font-path: "/node_modules/font-awesome/fonts";
+
+html,
+body,
+ion-content > .scroll {
+  height: 100%;
+}
+
+ion-nav-view {
+  z-index: 1;
+}
+
+.ion-google-place-container{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: none;
+}
+
+input.ion-google-place[readonly]{
+  background-color: transparent;
+  cursor: text;
+}
+
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+//@import "compass/css3";
+//@import "compass/reset";
+//@import "glyphicons";
+@import "mixins";
+@import "variables";
+@import "fonts";
+
+body {
+  font-family: ForsvarsmaktenSans,Akkurat,Arial,sans-serif;
+  font-size: 1.05em;
+  font-weight: 300;
+  background: #2c3142;
+  margin: 0;
+}
+
+h1 {
+  font-size: 2.1em;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-family: ForsvarsmaktenSans-Stencil,TradeGothic,Arial,sans-serif;
+}
+
+p {
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+ui-gmap-google-map {
+  display: block;
+
+  .angular-google-map-container {
+    height: 400px;
+    z-index: 1;
+    top: 0px; bottom: 0px;
+    width: 100%;
+  }
+}
+
+.control {
+
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  width: 100%;
+
+  .search_box {
+    padding-top: 0;
+    overflow: hidden;
+    margin-bottom: 2px;
+ //   @include box-shadow(0 1px 5px rgba(0, 0, 0, 0.2));
+
+    input[type=text], .button {
+
+      display: block;
+      float: left;
+      width: 100%;
+//      @include box-sizing('border-box');
+      padding: 8px 10px;
+      margin: 0px;
+      font-size: 1em;
+      font-weight: 300;
+      border: none;
+//      @include border-radius(2px 0px 0px 2px);
+      height: 35px;
+    }
+
+    .button {
+
+      width: 20%;
+      background-color: #4d90fe;
+//      @include border-radius(0px 2px 2px 0px);
+      text-align: center;
+      color: #fff;
+      font-size: 1.2em;
+      padding-top: 6px;
+      cursor: pointer;
+    }
+  }
+}
+
+body.platform-ios .search_box {
+  margin-top: 20px;
+}
+
+.spinner {
+
+  margin: auto;
+  width: 56px;
+  text-align: center;
+
+  div {
+
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+    animation: bouncedelay 1.4s infinite ease-in-out;
+    /* Prevent first frame from flickering when animation starts */
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
+  .bounce2 {
+
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+}
+
+@-webkit-keyframes bouncedelay {
+
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+
+  0%, 80%, 100% {
+
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% {
+
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
+}
