@@ -73,3 +73,4 @@ dll/
 
 .env
 .env.prod
+amz-s3-credentials.json
