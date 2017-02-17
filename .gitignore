@@ -1,3 +1,5 @@
+# @AngularClass
+
 # Logs
 logs
 *.log
@@ -12,10 +14,6 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-coverage_js
-
-# ignore documentation
-documentation
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -23,36 +21,56 @@ documentation
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directory
-# Commenting this out is preferred by some people, see
-# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
-node_modules
-typings
-ts-node
-
 # Users Environment Variables
 .lock-wscript
-.tsdrc
-.typingsrc
-.env
-amz-s3-credentials.json
 
-#IDE configuration files
-.idea
-*.iml
-
-/tools/**/*.js
-dist
-dev
-docs
-lib
-test
-tmp
-
-gulpfile.js
-gulpfile.js.map
-
-# OS X trash files
+# OS generated files #
 .DS_Store
-src/client/app/shared/config/env.config.js
-src/client/app/shared/config/env.config.js.map
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Node Files #
+/node_modules/
+/bower_components/
+npm-debug.log
+/npm-debug.log.*
+
+# Coverage #
+/coverage/
+
+# Typing #
+/src/typings/tsd/
+/typings/
+/tsd_typings/
+
+# Dist #
+/dist
+/public/__build__/
+/src/*/__build__/
+/__build__/**
+/public/dist/
+/src/*/dist/
+/dist/**
+/.awcache
+.webpack.json
+/compiled/
+dll/
+
+# Doc #
+/doc/
+
+# IDE #
+.idea/
+*.swp
+
+
+# Angular #
+*.ngfactory.ts
+*.css.shim.ts
+*.ngsummary.json
+*.shim.ngstyle.ts
+
+.env
+.env.prod
+amz-s3-credentials.json
