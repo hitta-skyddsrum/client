@@ -10,7 +10,6 @@ import { GmapsMarkerShelter } from '../../../models/gmaps-marker-shelter.model';
 import { GmapsMarkerHospital } from '../../../models/gmaps-marker-hospital.model';
 import { Observable } from 'rxjs';
 
-declare var google: any;
 declare var MarkerClusterer: any;
 
 /**

@@ -4,10 +4,7 @@ import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Position } from '../../../models/position.model';
 
-declare var google: any;
-
 @Component({
-
   templateUrl: 'shelters.consumer-locator.component.html',
   styleUrls: ['shelters.consumer-locator.component.scss'],
   selector: 'hs-consumer-locator'
