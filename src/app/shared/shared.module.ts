@@ -34,7 +34,7 @@ import { ContentContainerComponent } from './content-container/content-container
   ]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  public static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
       providers: [ApiService, GmapsGeocoderService]

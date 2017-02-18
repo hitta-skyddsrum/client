@@ -11,7 +11,7 @@ export class SheltersListResolver implements Resolve<Shelter[]> {
     private apiService: ApiService
   ) {}
 
-  resolve(
+  public resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {

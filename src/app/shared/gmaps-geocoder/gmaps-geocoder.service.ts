@@ -9,19 +9,15 @@ export class GmapsGeocoderService {
 
   private gmapsGeocoder: any;
 
-  constructor(
-
-  ) {
+  constructor() {
     this.gmapsGeocoder = new google.maps.Geocoder();
   }
 
-  getHighestSublocalityAddress(addresses:any[]) {
+  public getHighestSublocalityAddress(addresses: any[]) {
     let ordered: any[] = [];
     let prefix = 'sublocality_level_';
 
-    for (let i=0;i<addresses.length;i++) {
-      let address = addresses[i];
-
+    for (let address of addresses) {
       let subs = address.types.filter((k: string[]) => {
         return k.indexOf(prefix) === 0;
       });
@@ -38,7 +34,7 @@ export class GmapsGeocoderService {
     return ordered.slice(-1).pop();
   }
 
-  lookupPosition(position: Position) {
+  public lookupPosition(position: Position) {
     return Observable.create((observer: any) => {
 
       this.gmapsGeocoder.geocode({
@@ -62,27 +58,28 @@ export class GmapsGeocoderService {
 
   }
 
-  lookupAddress(address: string) {
+  public lookupAddress(address: string) {
     return Observable.create((observer: any) => {
       let options = {
-        address: address,
+        address,
         componentRestrictions: {
           country: 'SE'
         }
       };
 
       this.gmapsGeocoder.geocode(options,
-        (results:any, status:any) => {
+        (results: any, status: any) => {
           switch (status) {
+            case google.maps.GeocoderStatus.OK:
+              observer.next(results);
             case google.maps.GeocoderStatus.REQUEST_DENIED:
             case google.maps.GeocoderStatus.UNKNOWN_ERROR:
             case google.maps.GeocoderStatus.INVALID_REQUEST:
             case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
             case google.maps.GeocoderStatus.ZERO_RESULTS:
+            default:
               observer.error(status);
               break;
-            case google.maps.GeocoderStatus.OK:
-              observer.next(results);
           }
         });
     });

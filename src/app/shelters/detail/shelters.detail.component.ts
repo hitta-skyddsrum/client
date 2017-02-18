@@ -6,7 +6,6 @@ import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 
 @Component({
-
   selector: 'sd-app',
   templateUrl: '../shelters.component.html',
   styleUrls: ['../shelters.component.scss'],
@@ -20,7 +19,7 @@ export class SheltersDetailComponent implements OnInit {
     private metaService: MetaService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     let shelter: Shelter = this.route.snapshot.data['shelter'];
     this.sheltersUserStateService.setShelters([shelter]);
     this.sheltersUserStateService.selectShelter(shelter);

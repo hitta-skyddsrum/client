@@ -5,31 +5,29 @@ import { SheltersUserStateService } from './user-state/shelters.user-state.servi
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-
-  selector: 'sd-app',
   templateUrl: 'shelters.component.html',
   styleUrls: ['shelters.component.scss'],
 
 })
 
 export class SheltersComponent {
-  currentStep: number;
-  isOpen: boolean;
-  progressBarWidth: number = 0;
-  showBouncer: boolean = false;
+  public currentStep: number;
+  public isOpen: boolean;
+  public progressBarWidth: number = 0;
+  public showBouncer: boolean = false;
 
   constructor(
-    private sheltersUserStateService: SheltersUserStateService
+    protected sheltersUserStateService: SheltersUserStateService
   ) {
 
     sheltersUserStateService.currentStep$.subscribe(
-      step => this.setCurrentStep(step)
+      (step: number) => this.setCurrentStep(step)
     );
   }
 
   private setCurrentStep(step: number) {
     this.isOpen = true;
     this.currentStep = step;
-    this.progressBarWidth = (step - 1)*100/3;
+    this.progressBarWidth = (step - 1) * (100 / 3);
   }
 }

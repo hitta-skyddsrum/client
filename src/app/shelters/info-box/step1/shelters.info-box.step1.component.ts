@@ -12,9 +12,6 @@ import { Router } from '@angular/router';
 })
 
 export class SheltersInfoBoxStep1Component extends SheltersInfoBoxComponent {
-  shelter: any;
-  showBouncer: boolean;
-
   constructor(
     router: Router,
     private sheltersUserStateService: SheltersUserStateService,

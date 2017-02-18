@@ -31,7 +31,6 @@ type StoreType = {
   disposeOldHosts: () => void
 };
 
-
 @NgModule({
   imports: [
     BrowserModule,

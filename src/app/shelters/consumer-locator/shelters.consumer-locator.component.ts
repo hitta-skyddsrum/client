@@ -15,11 +15,11 @@ declare var google: any;
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
+  @Output() public addressSuggestions: any[];
+  public showBouncer: boolean;
+  public searchQuery: string;
+  private searchTimeout: any;
   private gmapsGeocoder: any;
-  @Output() addressSuggestions: any[];
-  showBouncer: boolean;
-  searchQuery: string;
-  searchTimeout: any;
 
   constructor (
     router: Router,
@@ -30,35 +30,18 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     this.gmapsGeocoder = new google.maps.Geocoder();
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this.geoLocation.getLocation().subscribe(
       (pos: any) => {
         this.lookupPosition(<Position> {
           lat: pos.coords.latitude,
           long: pos.coords.longitude,
         });
-      },
-      () => {
-      },
-      () => {
       }
     );
   }
 
-  private lookupPosition(position: Position) {
-    this.displayBouncer(true);
-
-    this.gmapsGeocoderService.lookupPosition(position).subscribe(
-      (results: any[]) => {
-        this.updateAddressSuggestions(results);
-        this.displayBouncer(false);
-      },
-      () => this.displayBouncer(false),
-      () => this.displayBouncer(false),
-    );
-  }
-
-  lookupAddress(address: string) {
+  public lookupAddress(address: string) {
     if (typeof address === 'undefined' || address.length < 4) {
       return;
     }
@@ -80,9 +63,22 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
   }
 
-  chooseAddress(address: any) {
+  public chooseAddress(address: any) {
     this.addressSuggestions = [];
     this.searchQuery = address.formatted_address;
+  }
+
+  private lookupPosition(position: Position) {
+    this.displayBouncer(true);
+
+    this.gmapsGeocoderService.lookupPosition(position).subscribe(
+      (results: any[]) => {
+        this.updateAddressSuggestions(results);
+        this.displayBouncer(false);
+      },
+      () => this.displayBouncer(false),
+      () => this.displayBouncer(false),
+    );
   }
 
   private displayBouncer(value: boolean) {

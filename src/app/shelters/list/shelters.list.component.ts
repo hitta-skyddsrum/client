@@ -8,6 +8,7 @@ import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder
 import { MetaService } from 'ng2-meta';
 import { Shelter } from '../../../models/shelter.model';
 import { Position } from '../../../models/position.model';
+import { SheltersComponent } from '../shelters.component';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -20,26 +21,18 @@ import { Position } from '../../../models/position.model';
 
 export class SheltersListComponent implements OnInit, AfterViewInit {
 
-  shelters: Shelter[] = [];
+  private shelters: Shelter[] = [];
   private currentPosition: Position;
 
-  @ViewChild(SheltersMapComponent) sheltersMapComponent: SheltersMapComponent;
-  @ViewChild(SheltersInfoBoxComponent) sheltersInfoBoxComponent: SheltersInfoBoxComponent;
-
-  /**
-   * Creates an instance of the SheltersComponent with the injected
-   * ApiService.
-   *
-   * @param {ApiService} apiService - The injected ApiService.
-   */
   constructor(
     private route: ActivatedRoute,
     private metaService: MetaService,
     private sheltersUserStateService: SheltersUserStateService,
     private gmapsGeocoderService: GmapsGeocoderService,
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.currentPosition = <Position> {
       lat: Number(this.route.snapshot.params['lat']),
       long: Number(this.route.snapshot.params['lng'])
@@ -49,8 +42,6 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
 
     // Clean the map on init
     this.sheltersUserStateService.setHospitals([]);
-//    this.sheltersUserStateService.setShelters([]);
-
 
     this.sheltersUserStateService.setShelters(
       this.route.snapshot.data['shelters']
@@ -67,9 +58,9 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
     ).unsubscribe();
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
-      (addresses:any[]) => this.setTitle(addresses)
+      (addresses: any[]) => this.setTitle(addresses)
     );
   }
 

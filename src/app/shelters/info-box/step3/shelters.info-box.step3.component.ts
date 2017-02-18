@@ -7,12 +7,10 @@ import { Router } from '@angular/router';
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-
   templateUrl: 'shelters.info-box.step3.component.html',
 })
 
 export class SheltersInfoBoxStep3Component extends SheltersInfoBoxComponent {
-  shelter: any;
 
   constructor(
     router: Router,

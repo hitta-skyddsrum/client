@@ -10,7 +10,7 @@ export class SheltersDetailHospitalResolver implements Resolve<Hospital[]> {
     private apiService: ApiService
   ) {}
 
-  resolve(
+  public resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {

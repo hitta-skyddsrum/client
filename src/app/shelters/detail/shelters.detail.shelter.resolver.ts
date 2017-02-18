@@ -10,7 +10,7 @@ export class SheltersDetailShelterResolver implements Resolve<Shelter> {
     private apiService: ApiService
   ) {}
 
-  resolve(
+  public resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {

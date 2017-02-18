@@ -13,31 +13,24 @@ declare var swal: any;
  */
 @Injectable()
 export class ApiService {
-
   private apiUrl: string = API_URL;
 
-  /**
-   * Creates a new ApiService with the injected Http.
-   * @param {Http} http - The injected Http.
-   * @constructor
-   */
   constructor(private http: Http) {}
 
-  shelters() {
+  public shelters() {
     let apiService = this;
     return {
       index(position: Position): Observable<Shelter[]> {
         let uri: string = apiService.apiUrl + '/shelters';
         let params: URLSearchParams = new URLSearchParams();
-        params.set('lat', <string>position.lat.toString());
-        params.set('long', <string>position.long.toString());
+        params.set('lat', <string> position.lat.toString());
+        params.set('long', <string> position.long.toString());
         let options: RequestOptions = new RequestOptions({
           search: params
         });
 
-
         return apiService.http.get(uri, options)
-          .map((res: any) => <Shelter[]>res.json())
+          .map((res: any) => <Shelter[]> res.json())
           //              .do(data => console.log('server data:', data))  // debug
           .catch(apiService.handleError);
       },
@@ -46,7 +39,7 @@ export class ApiService {
         let uri: string = apiService.apiUrl + '/shelters/' + params.id;
 
         return apiService.http.get(uri)
-          .map((result: any) => <Shelter>result.json())
+          .map((result: any) => <Shelter> result.json())
           //              .do(data => console.log('server data:', data))  // debug
           .catch(apiService.handleError);
       },
@@ -55,16 +48,13 @@ export class ApiService {
         let uri: string = apiService.apiUrl + '/shelters/' + params.id + '/hospitals';
 
         return apiService.http.get(uri)
-          .map((result: any) => <Hospital[]>result.json())
+          .map((result: any) => <Hospital[]> result.json())
           //              .do(data => console.log('server data:', data))  // debug
           .catch(apiService.handleError);
       }
     };
   }
 
-  /**
-    * Handle HTTP error
-    */
   private handleError (error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
@@ -75,4 +65,3 @@ export class ApiService {
     return Observable.throw(errMsg);
   }
 }
-

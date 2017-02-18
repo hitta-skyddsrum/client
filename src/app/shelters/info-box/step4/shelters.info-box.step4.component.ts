@@ -14,9 +14,11 @@ declare var swal: any;
 })
 
 export class SheltersInfoBoxStep4Component implements OnInit {
-  shelter: any;
-  facebookShareUrl: string = 'https://www.facebook.com/dialog/share?app_id=299962093491323&display=popup&href=';
-  twitterShareUrl: string = 'https://twitter.com/intent/tweet?text=';
+//  shelter: any;
+  private facebookShareUrl: string
+    = 'https://www.facebook.com/dialog/share?app_id=299962093491323&display=popup&href=';
+  private twitterShareUrl: string
+    = 'https://twitter.com/intent/tweet?text=';
 
   constructor(
     private sheltersUserStateService: SheltersUserStateService,
@@ -25,13 +27,15 @@ export class SheltersInfoBoxStep4Component implements OnInit {
     this.sheltersUserStateService.setCurrentStep(4);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.facebookShareUrl += window.location.href;
     this.twitterShareUrl += window.location.href;
   }
 
-  openShareDialog() {
-    let popupProps:string = '\'height=450, width=550, top=200, left=200, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0\'';
+  public openShareDialog() {
+    let popupProps: string = '\'height=450, width=550, top=200, left=200,'
+      + 'toolbar=0, location=0, menubar=0, directories=0, scrollbars=0\'';
+
     swal({
       html:
       '<div class="sb-container">' +
@@ -43,7 +47,8 @@ export class SheltersInfoBoxStep4Component implements OnInit {
       '</button>' +
       '</div>' +
       '<div class="sb-button">' +
-      '<button class="twitter" onclick="window.open(\'' + this.twitterShareUrl + '\', \'fbShareWindow\',' + popupProps + ');">' +
+      '<button class="twitter" onclick="window.open(\'' + this.twitterShareUrl +
+      '\', \'fbShareWindow\',' + popupProps + ');">' +
       '<i class="fa fa-twitter"></i>' +
       '</button>' +
       '</div>' +

@@ -8,6 +8,7 @@ import { Position } from '../../../models/position.model';
 import { GmapsMarker } from '../../../models/gmaps-marker.model';
 import { GmapsMarkerShelter } from '../../../models/gmaps-marker-shelter.model';
 import { GmapsMarkerHospital } from '../../../models/gmaps-marker-hospital.model';
+import { Observable } from 'rxjs';
 
 declare var google: any;
 declare var MarkerClusterer: any;
@@ -16,32 +17,34 @@ declare var MarkerClusterer: any;
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-
   templateUrl: 'shelters.map.component.html',
   styleUrls: ['shelters.map.component.scss'],
   selector: 'hs-map',
 })
 
 export class SheltersMapComponent implements AfterViewInit {
-  map: any;
-  directionsDisplay: any;
-  selectedShelterMarker: GmapsMarkerShelter = null;
-  selectedHospitalMarker: GmapsMarkerHospital = null;
-  shelterMarkers: GmapsMarkerShelter[] = [];
-  hospitalMarkers: GmapsMarkerHospital[] = [];
-  markerClusterer: any;
+  public whenSheltersIsPlotted$: Observable <boolean>;
+  public whenHospitalsIsPlotted$: Observable <boolean>;
+
+  private map: any;
+  private directionsDisplay: any;
+  private selectedShelterMarker: GmapsMarkerShelter = null;
+  private selectedHospitalMarker: GmapsMarkerHospital = null;
+  private shelterMarkers: GmapsMarkerShelter[] = [];
+  private hospitalMarkers: GmapsMarkerHospital[] = [];
+  private markerClusterer: any;
 
   private sheltersIsPlotted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  whenSheltersIsPlotted$ = this.sheltersIsPlotted.asObservable().filter(r => r === true);
-
   private hospitalsIsPlotted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  whenHospitalsIsPlotted$ = this.hospitalsIsPlotted.asObservable().filter(r => r === true);
 
-  constructor(private sheltersUserStateService: SheltersUserStateService,
-              apiService: ApiService) {
+  constructor(
+    private sheltersUserStateService: SheltersUserStateService,
+    apiService: ApiService) {
+    this.whenSheltersIsPlotted$ = this.sheltersIsPlotted.asObservable().filter((r) => r === true);
+    this.whenHospitalsIsPlotted$ = this.hospitalsIsPlotted.asObservable().filter((r) => r === true);
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this.loadMap();
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.plotShelters(shelters)
@@ -64,52 +67,28 @@ export class SheltersMapComponent implements AfterViewInit {
     );
   }
 
-  selectHospital(hospital: Hospital) {
-    var _subsc = this.whenSheltersIsPlotted$.subscribe(
+  private selectHospital(hospital: Hospital) {
+    let _subsc = this.whenSheltersIsPlotted$.subscribe(
       () => {
-        for (var i=0;i<this.hospitalMarkers.length;i++) {
-          if (this.hospitalMarkers[i].hospital.hsaId === hospital.hsaId) {
-            this.clickMarker(this.hospitalMarkers[i]);
+        for (let marker of this.hospitalMarkers) {
+          if (marker.hospital.hsaId === hospital.hsaId) {
+            this.clickMarker(marker);
             break;
           }
         }
       }).unsubscribe();
   }
 
-  selectShelter(shelter: Shelter) {
+  private selectShelter(shelter: Shelter) {
     this.whenSheltersIsPlotted$.subscribe(
       () => {
-        for (var i=0;i<this.shelterMarkers.length;i++) {
-          if (this.shelterMarkers[i].shelter.id === shelter.id) {
-            this.clickMarker(this.shelterMarkers[i]);
+        for (let marker of this.shelterMarkers) {
+          if (marker.shelter.id === shelter.id) {
+            this.clickMarker(marker);
             break;
           }
         }
       }).unsubscribe();
-  }
-
-  selectClosestShelter(origin: Position = null) {
-    this.whenSheltersIsPlotted$.subscribe(
-      () => this.selectClosestMarker(this.shelterMarkers, origin)
-    ).unsubscribe();
-  }
-
-  selectClosestHospital(origin: Position = null) {
-    this.selectClosestMarker(this.hospitalMarkers, origin);
-  }
-
-  private selectClosestMarker(markers: GmapsMarker[], origin: Position = null) {
-    let marker: GmapsMarker;
-
-    if (origin !== null) {
-      marker = this.findClosestMarker(
-        new google.maps.LatLng(origin.lat, origin.long),
-        markers);
-    } else {
-      marker = markers[0];
-    }
-
-    this.clickMarker(marker);
   }
 
   private clickMarker(marker: GmapsMarker) {
@@ -131,38 +110,14 @@ export class SheltersMapComponent implements AfterViewInit {
     this.sheltersUserStateService.setMapAsLoaded();
   }
 
-  private findClosestMarker(origin: any, markerArray: any[]): GmapsMarker {
-    let lat = origin.lat();
-    let lng = origin.lng();
-    let R = 6371; // radius of earth in km
-    let distances: any[] = [];
-    let closest = -1;
-
-    function rad(x: number) {
-      return x * Math.PI / 180;
-    }
-
-    for (let i = 0; i < markerArray.length; i++) {
-      let mLat = markerArray[i].getPosition().lat();
-      let mLng = markerArray[i].getPosition().lng();
-      let dLat = rad(mLat - lat);
-      let dLong = rad(mLng - lng);
-      let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      let d = R * c;
-      distances[i] = d;
-      if (closest === -1 || d < distances[closest]) {
-        closest = i;
-      }
-    }
-
-    return markerArray[closest];
-  }
-
-  private findClosestPath(origin: Position, destination: Position, preserveViewport: boolean, travelMode: any) {
-    let directionsService = new google.maps.DirectionsService;
-    var _shelterComponent = this;
+  private findClosestPath(
+    origin: Position,
+    destination: Position,
+    preserveViewport: boolean,
+    travelMode: any
+  ) {
+    let directionsService = new google.maps.DirectionsService();
+    let _shelterComponent = this;
 
     // If travelMode isnt set, lets set it to WALKING
     if (typeof travelMode === 'undefined') {
@@ -173,36 +128,33 @@ export class SheltersMapComponent implements AfterViewInit {
     let request = {
       origin: new google.maps.LatLng(origin.lat, origin.long),
       destination: new google.maps.LatLng(destination.lat, destination.long),
-      travelMode: travelMode,
+      travelMode,
       optimizeWaypoints: true
     };
 
     // Request the route
-    directionsService.route(request, function (response: any, status: any) {
+    directionsService.route(request, (response: any, status: any) => {
       /**
        * TODO: Display alert on error
        */
       switch (status) {
-        case google.maps.DirectionsStatus.REQUEST_DENIED:
-          break;
-        case google.maps.DirectionsStatus.UNKNOWN_ERROR:
-          break;
-        case google.maps.DirectionsStatus.INVALID_REQUEST:
-          break;
-        case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
-          break;
-        case google.maps.DirectionsStatus.ZERO_RESULTS:
-          break;
         case google.maps.DirectionsStatus.OK:
           // If we couldn't find a path, lets try with travelMode DRIVING
           // google.maps.TravelMode['DRIVING']
 
           // Render the direction
           _shelterComponent.directionsDisplay.setOptions({
-            preserveViewport: preserveViewport
+            preserveViewport
           });
           _shelterComponent.directionsDisplay.setDirections({routes: []});
           _shelterComponent.directionsDisplay.setDirections(response);
+          break;
+        case google.maps.DirectionsStatus.REQUEST_DENIED:
+        case google.maps.DirectionsStatus.UNKNOWN_ERROR:
+        case google.maps.DirectionsStatus.INVALID_REQUEST:
+        case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
+        case google.maps.DirectionsStatus.ZERO_RESULTS:
+        default:
           break;
       }
 
@@ -216,7 +168,6 @@ export class SheltersMapComponent implements AfterViewInit {
       map: this.map,
       type: 'currentPosition',
     });
-
   }
 
   private plotShelters(shelters: Shelter[]) {
@@ -224,28 +175,28 @@ export class SheltersMapComponent implements AfterViewInit {
 
     // Collect the shelters that already is marked
     let seenShelters: number[] = [];
-    for (let i=0;i<this.shelterMarkers.length;i++) {
-      seenShelters.push(this.shelterMarkers[i].shelter.id);
+    for (let marker of this.shelterMarkers) {
+      seenShelters.push(marker.shelter.id);
     }
 
     // Create all the markers
-    for (let i = 0; i < shelters.length; i++) {
-      if (seenShelters.indexOf(shelters[i].id) !== -1) {
+    for (let shelter of shelters) {
+      if (seenShelters.indexOf(shelter.id) !== -1) {
         continue;
       }
 
       let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(shelters[i].position.lat, shelters[i].position.long),
+        position: new google.maps.LatLng(shelter.position.lat, shelter.position.long),
         map: this.map,
         icon: {
           url: '/assets/images/icon-shelter.png',
           scaledSize: new google.maps.Size(30, 30)
         },
-        shelter: shelters[i],
+        shelter,
         type: 'shelter',
       });
 
-      this.setShelterMarkerEventData(shelters[i], marker);
+      this.setShelterMarkerEventData(shelter, marker);
       this.shelterMarkers.push(marker);
     }
 
@@ -256,11 +207,17 @@ export class SheltersMapComponent implements AfterViewInit {
       imageExtension: 'png'
     });
 
-    google.maps.event.addListener(this.markerClusterer, 'clusteringbegin', function (markerClusterer: any) {
+    google.maps.event.addListener(
+      this.markerClusterer,
+      'clusteringbegin',
+      (markerClusterer: any) => {
 //      console.log('nu börjar vi!', markerClusterer);
     });
 
-    google.maps.event.addListener(this.markerClusterer, 'clusteringend', function (markerClusterer: any) {
+    google.maps.event.addListener(
+      this.markerClusterer,
+      'clusteringend',
+      (markerClusterer: any) => {
 //      console.log('nu slutar vi!', markerClusterer);
     });
 
@@ -272,27 +229,27 @@ export class SheltersMapComponent implements AfterViewInit {
 
     // Collect the hospitals that already is marked
     let seenHospitals: any[] = [];
-    for (let i=0;i<this.hospitalMarkers.length;i++) {
-      seenHospitals.push(this.hospitalMarkers[i].hospital.hsaId);
+    for (let marker of this.hospitalMarkers) {
+      seenHospitals.push(marker.hospital.hsaId);
     }
 
-    for(let i=0;i<hospitals.length;i++) {
-      if (seenHospitals.indexOf(hospitals[i].hsaId) !== -1) {
+    for (let hospital of hospitals) {
+      if (seenHospitals.indexOf(hospital.hsaId) !== -1) {
         continue;
       }
 
       let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(hospitals[i].position.lat, hospitals[i].position.long),
+        position: new google.maps.LatLng(hospital.position.lat, hospital.position.long),
         map: this.map,
         icon: {
           url: '/assets/images/icon-hospital.png',
           scaledSize: new google.maps.Size(31, 31)
         },
-        hospital: hospitals[i],
+        hospital,
         type: 'hospital',
       });
 
-      this.setHospitalMarkerEventData(hospitals[i], marker);
+      this.setHospitalMarkerEventData(hospital, marker);
       this.hospitalMarkers.push(marker);
     }
 
@@ -310,6 +267,8 @@ export class SheltersMapComponent implements AfterViewInit {
         icon.scaledSize.width = 31;
         icon.scaledSize.height = 31;
         break;
+      default:
+        break;
     }
     marker.setIcon(icon);
   }
@@ -325,32 +284,32 @@ export class SheltersMapComponent implements AfterViewInit {
         icon.scaledSize.width = 62;
         icon.scaledSize.height = 62;
         break;
+      default:
+        break;
     }
     marker.setIcon(icon);
   }
 
-  private setShelterMarkerEventData(shelter: Shelter, marker: GmapsMarker) {
-    var _sheltersMap = this;
-
-    google.maps.event.addListener(marker, 'click', function (event: Event) {
+  private setShelterMarkerEventData(shelter: Shelter, marker: GmapsMarkerShelter) {
+    google.maps.event.addListener(marker, 'click', (event: Event) => {
 
         // If there's a selected shelter, reset the size of it
-        if (_sheltersMap.selectedShelterMarker !== null) {
-          _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedShelterMarker, 'shelter');
+        if (this.selectedShelterMarker !== null) {
+          this.setSizeOfMarkerAsOriginal(this.selectedShelterMarker, 'shelter');
         }
 
         // Set the new selected shelter
-//        _sheltersMap.sheltersUserStateService.selectShelter(shelter);
-        _sheltersMap.selectedShelterMarker = this;
+//        this.sheltersUserStateService.selectShelter(shelter);
+        this.selectedShelterMarker = marker;
 
-        _sheltersMap.setSizeOfMarkerAsSelected(_sheltersMap.selectedShelterMarker, 'shelter');
+        this.setSizeOfMarkerAsSelected(this.selectedShelterMarker, 'shelter');
 
-        _sheltersMap.sheltersUserStateService.currentPosition$.subscribe(
+        this.sheltersUserStateService.currentPosition$.subscribe(
           (position: Position) => {
             // Write path
-            _sheltersMap.findClosestPath(
+            this.findClosestPath(
               position,
-              this.shelter.position,
+              marker.shelter.position,
               false,
               google.maps.TravelMode['WALKING']
             );
@@ -360,24 +319,22 @@ export class SheltersMapComponent implements AfterViewInit {
 
   }
 
-  private setHospitalMarkerEventData(hospital: Hospital, marker: GmapsMarker) {
-    let _sheltersMap = this;
-
-    google.maps.event.addListener(marker, 'click', function(event: Event) {
+  private setHospitalMarkerEventData(hospital: Hospital, marker: GmapsMarkerHospital) {
+    google.maps.event.addListener(marker, 'click', (event: Event) => {
       // If there's a selected shelter, reset the size of it
-      if( _sheltersMap.selectedHospitalMarker !== null ) {
-        _sheltersMap.setSizeOfMarkerAsOriginal(_sheltersMap.selectedHospitalMarker, 'hospital');
+      if (this.selectedHospitalMarker !== null) {
+        this.setSizeOfMarkerAsOriginal(this.selectedHospitalMarker, 'hospital');
       }
 
       // Set the new selected shelter
-      _sheltersMap.selectedHospitalMarker = this;
+      this.selectedHospitalMarker = marker;
 
-      _sheltersMap.setSizeOfMarkerAsSelected(this, 'hospital');
+      this.setSizeOfMarkerAsSelected(marker, 'hospital');
 
       // Write path
-      _sheltersMap.findClosestPath(
-        _sheltersMap.selectedShelterMarker.shelter.position,
-        _sheltersMap.selectedHospitalMarker.hospital.position,
+      this.findClosestPath(
+        this.selectedShelterMarker.shelter.position,
+        this.selectedHospitalMarker.hospital.position,
         false,
         google.maps.TravelMode['WALKING']
       );
