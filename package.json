@@ -37,7 +37,7 @@
     "github-deploy:prod": "webpack --config config/webpack.github-deploy.js --progress --profile --env.githubProd",
     "github-deploy": "npm run github-deploy:dev",
     "lint": "npm run tslint \"src/**/*.ts\"",
-    "postinstall": "npm run webdriver:update",
+    "postinstall": "npm run webdriver:update && typings install",
     "postversion": "git push && git push --tags",
     "preclean:install": "npm run clean",
     "preversion": "npm test",
@@ -92,6 +92,7 @@
     "ng2-sharebuttons": "^1.1.5",
     "reflect-metadata": "^0.1.9",
     "rxjs": "5.0.2",
+    "typings": "^2.1.0",
     "zone.js": "0.7.6"
   },
   "devDependencies": {
