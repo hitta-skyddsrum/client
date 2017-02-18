@@ -81,6 +81,7 @@
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "~3.0.2",
     "@types/googlemaps": "^3.26.1",
+    "angular2-google-map-auto-complete": "^2.0.5",
     "core-js": "^2.4.1",
     "env2": "^2.1.1",
     "font-awesome": "^4.7.0",

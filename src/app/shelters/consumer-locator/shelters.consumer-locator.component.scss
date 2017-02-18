@@ -45,34 +45,6 @@ $searchBoxInputHeight: 60px;
         cursor: pointer;
       }
 */
-      .autocomplete {
-        background: #fff;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        top: $searchBoxInputHeight;
-        width: 100%;
-
-        li {
-          a {
-            text-decoration: none;
-            display: block;
-            padding: 10px 20px;
-            border-bottom: 1px solid $gray;
-            text-transform: capitalize;
-
-            &:hover {
-              background-color: $orange;
-              color: #fff;
-            }
-          }
-
-          &:last-child a {
-            border-bottom: 0;
-          }
-        }
-      }
 
       /deep/ .bouncer {
         right: 20px;
@@ -81,6 +53,40 @@ $searchBoxInputHeight: 60px;
           background-color: $orange;
         }
       }
+    }
+  }
+}
+
+/deep/ .pac-container {
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  .pac-item {
+    display: block;
+    padding: 10px 20px;
+    border-bottom: 1px solid $gray;
+
+    &:hover,
+    .selected {
+      background-color: $orange;
+      color: #fff;
+
+      .pac-icon,
+      .pac-item-query {
+        color: #fff;
+      }
+    }
+
+    .pac-item-query {
+      text-decoration: none;
+      text-transform: capitalize;
+
+    }
+
+    &:last-child .pac-item-query {
+      border-bottom: 0;
     }
   }
 }

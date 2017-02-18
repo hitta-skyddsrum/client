@@ -36,9 +36,11 @@ export class GeolocationService {
                 observer.error('Unknown ');
                 break;
             }
+            observer.complete();
           });
       } else {
         observer.error(GEOLOCATION_ERRORS['errors.location.unsupportedBrowser']);
+        observer.complete();
       }
 
     });

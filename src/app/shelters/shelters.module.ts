@@ -23,7 +23,12 @@ import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-bo
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
 
 @NgModule({
-  imports: [CommonModule, SheltersRoutingModule, SharedModule, ShareButtonsModule],
+  imports: [
+    CommonModule,
+    SheltersRoutingModule,
+    SharedModule,
+    ShareButtonsModule,
+  ],
   declarations: [
     SheltersComponent,
     SheltersListComponent,

@@ -1,8 +1,16 @@
-import { Component, AfterViewInit, Output, NgZone } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  Output,
+  NgZone,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import { GeolocationService } from '../../shared/geolocation/geolocation.service';
 import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Position } from '../../../models/position.model';
+import GeocoderResult = google.maps.GeocoderResult;
 
 @Component({
   templateUrl: 'shelters.consumer-locator.component.html',
@@ -12,10 +20,9 @@ import { Position } from '../../../models/position.model';
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
-  @Output() public addressSuggestions: any[];
+  @ViewChild('search') public searchElemRef: ElementRef;
   public showBouncer: boolean;
   public searchQuery: string;
-  private searchTimeout: any;
   private gmapsGeocoder: any;
 
   constructor (
@@ -28,6 +35,18 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
+    let autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
+      types: ['address'],
+      componentRestrictions: {
+        country: 'se'
+      }
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+      this.chooseAddress(place);
+    });
+
     if (this.router.url === '/skyddsrum') {
       this.displayBouncer(true);
       this.geoLocation.getLocation().first().subscribe(
@@ -36,37 +55,17 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
             lat: pos.coords.latitude,
             long: pos.coords.longitude,
           });
-        }
+        },
+        () => this.displayBouncer(false),
+        () => this.displayBouncer(false)
       );
     }
   }
 
-  public lookupAddress(address: string) {
-    if (typeof address === 'undefined' || address.length < 4) {
-      return;
-    }
-
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
-    }
-
-    this.displayBouncer(true);
-    this.gmapsGeocoderService.lookupAddress(address).subscribe(
-      (result: any[]) => {
-        console.log('resultat: ', result[0]);
-        this.updateAddressSuggestions(result);
-        this.displayBouncer(false);
-      },
-      () => this.displayBouncer(false),
-      () => this.displayBouncer(false),
-    );
-
-  }
-
   public chooseAddress(address: any) {
-    this.addressSuggestions = [];
     this.searchQuery = address.formatted_address;
     this.displayBouncer(true);
+
     this.router
       .navigate(['/skyddsrum/koordinater', address.geometry.location.lat(), address.geometry.location.lng()])
       .then(() => this.displayBouncer(false))
@@ -74,11 +73,20 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   private lookupPosition(position: Position) {
-    this.displayBouncer(true);
+    this.zone.run(() => this.displayBouncer(true));
 
     this.gmapsGeocoderService.lookupPosition(position).subscribe(
-      (results: any[]) => {
-        this.updateAddressSuggestions(results);
+      (results: GeocoderResult[]) => {
+
+        if (results.length > 0) {
+          this.searchQuery = results[0].formatted_address;
+
+          setTimeout(() => {
+            google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {})
+            this.searchElemRef.nativeElement.focus();
+          }, 60);
+        }
+
         this.displayBouncer(false);
       },
       () => this.displayBouncer(false),
@@ -88,9 +96,5 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
   private displayBouncer(value: boolean) {
     this.zone.run(() => this.showBouncer = value);
-  }
-
-  private updateAddressSuggestions(addresses: any[]) {
-    this.zone.run(() => this.addressSuggestions = addresses);
   }
 }
