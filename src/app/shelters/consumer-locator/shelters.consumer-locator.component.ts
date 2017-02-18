@@ -22,7 +22,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   private gmapsGeocoder: any;
 
   constructor (
-    router: Router,
+    private router: Router,
     private zone: NgZone,
     private geoLocation: GeolocationService,
     private gmapsGeocoderService: GmapsGeocoderService
@@ -31,14 +31,17 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.geoLocation.getLocation().subscribe(
-      (pos: any) => {
-        this.lookupPosition(<Position> {
-          lat: pos.coords.latitude,
-          long: pos.coords.longitude,
-        });
-      }
-    );
+    if (this.router.url === '/skyddsrum') {
+      this.displayBouncer(true);
+      this.geoLocation.getLocation().first().subscribe(
+        (pos: any) => {
+          this.lookupPosition(<Position> {
+            lat: pos.coords.latitude,
+            long: pos.coords.longitude,
+          });
+        }
+      );
+    }
   }
 
   public lookupAddress(address: string) {
@@ -66,6 +69,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   public chooseAddress(address: any) {
     this.addressSuggestions = [];
     this.searchQuery = address.formatted_address;
+    this.displayBouncer(true);
+    this.router
+      .navigate(['/skyddsrum/koordinater', address.geometry.location.lat(), address.geometry.location.lng()])
+      .then(() => this.displayBouncer(false))
+      .catch(() => this.displayBouncer(false))
   }
 
   private lookupPosition(position: Position) {
