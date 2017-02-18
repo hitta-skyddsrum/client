@@ -7,8 +7,7 @@ import { Hospital } from '../../../models/hospital.model';
 
 @Component({
   selector: 'sd-app',
-  templateUrl: '../shelters.component.html',
-  styleUrls: ['../shelters.component.scss'],
+  template: ''
 })
 
 export class SheltersDetailComponent implements OnInit {

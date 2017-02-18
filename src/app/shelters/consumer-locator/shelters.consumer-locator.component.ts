@@ -67,9 +67,12 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     this.displayBouncer(true);
 
     this.router
-      .navigate(['/skyddsrum/koordinater', address.geometry.location.lat(), address.geometry.location.lng()])
+      .navigate([
+        '/skyddsrum/koordinater',
+        address.geometry.location.lat(), address.geometry.location.lng()
+      ])
       .then(() => this.displayBouncer(false))
-      .catch(() => this.displayBouncer(false))
+      .catch(() => this.displayBouncer(false));
   }
 
   private lookupPosition(position: Position) {
@@ -82,7 +85,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
           this.searchQuery = results[0].formatted_address;
 
           setTimeout(() => {
-            google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {})
+            google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {});
             this.searchElemRef.nativeElement.focus();
           }, 60);
         }

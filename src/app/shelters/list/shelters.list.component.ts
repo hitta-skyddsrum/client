@@ -14,9 +14,7 @@ import { SheltersComponent } from '../shelters.component';
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-
-  selector: 'sd-app',
-  templateUrl: '../shelters.component.html',
+  template: ''
 })
 
 export class SheltersListComponent implements OnInit, AfterViewInit {
