@@ -5,12 +5,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 import { Position } from '../../../models/position.model';
-import { GmapsMarker } from '../../../models/gmaps-marker.model';
+import { GmapsMarker  } from '../../../models/gmaps-marker.model';
 import { GmapsMarkerShelter } from '../../../models/gmaps-marker-shelter.model';
 import { GmapsMarkerHospital } from '../../../models/gmaps-marker-hospital.model';
 import { Observable } from 'rxjs';
 
 declare var MarkerClusterer: any;
+declare var google: any;
 
 /**
  * This class represents the lazy loaded HomeComponent.
