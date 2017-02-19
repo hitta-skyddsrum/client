@@ -19,7 +19,7 @@ import { AppState, InternalStateType } from './app.service';
 
 import icons from 'glyphicons';
 import '../styles/base.scss';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdIconRegistry } from '@angular/material';
 import { AboutComponent } from './about/about.component';
 
 // Application wide providers
@@ -51,7 +51,7 @@ type StoreType = {
   ],
   providers: [
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
   ],
   bootstrap: [AppComponent]
 

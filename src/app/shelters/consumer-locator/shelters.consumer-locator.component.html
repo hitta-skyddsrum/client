@@ -1,4 +1,8 @@
-<section>
+<button md-mini-fab (click)="toggleSearchBar()">
+  <md-icon>search</md-icon>
+</button>
+
+<section [hidden]="!showSearchBar">
     <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
         <bouncer
                 [bounceIf]="showBouncer"

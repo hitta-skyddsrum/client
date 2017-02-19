@@ -23,7 +23,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   @ViewChild('search') public searchElemRef: ElementRef;
   public showBouncer: boolean;
   public searchQuery: string;
+  public showSearchBar: boolean;
+
   private gmapsGeocoder: any;
+  private autocomplete: any;
+  private autocompleteListener: any;
 
   constructor (
     private router: Router,
@@ -35,19 +39,8 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    let autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
-      types: ['address'],
-      componentRestrictions: {
-        country: 'se'
-      }
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-      this.chooseAddress(place);
-    });
-
     if (this.router.url === '/skyddsrum') {
+      this.displaySearchBar();
       this.displayBouncer(true);
       this.geoLocation.getLocation().first().subscribe(
         (pos: any) => {
@@ -62,6 +55,14 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     }
   }
 
+  public toggleSearchBar() {
+    if (this.showSearchBar === true) {
+      this.hideSearchBar();
+    } else {
+      this.displaySearchBar();
+    }
+  }
+
   public chooseAddress(address: any) {
     this.searchQuery = address.formatted_address;
     this.displayBouncer(true);
@@ -73,6 +74,29 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       ])
       .then(() => this.displayBouncer(false))
       .catch(() => this.displayBouncer(false));
+  }
+
+  private displaySearchBar() {
+    this.showSearchBar = true;
+
+    this.autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
+      types: ['address'],
+      componentRestrictions: {
+        country: 'se'
+      }
+    });
+
+    this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
+      let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
+      this.chooseAddress(place);
+    });
+
+  }
+
+  private hideSearchBar() {
+    this.showSearchBar = false;
+    google.maps.event.clearInstanceListeners(this.autocomplete);
+    google.maps.event.removeListener(this.autocompleteListener);
   }
 
   private lookupPosition(position: Position) {

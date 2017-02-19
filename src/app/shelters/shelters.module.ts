@@ -29,6 +29,7 @@ import { MaterialModule } from '@angular/material';
     SheltersRoutingModule,
     SharedModule,
     ShareButtonsModule,
+    MaterialModule,
   ],
   declarations: [
     SheltersComponent,
