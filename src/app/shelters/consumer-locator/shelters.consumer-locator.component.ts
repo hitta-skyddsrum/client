@@ -4,18 +4,33 @@ import {
   Output,
   NgZone,
   ViewChild,
-  ElementRef
+  ElementRef, trigger, transition, style, animate
 } from '@angular/core';
 import { GeolocationService } from '../../shared/geolocation/geolocation.service';
 import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Position } from '../../../models/position.model';
 import GeocoderResult = google.maps.GeocoderResult;
+import { triggerAnimation } from '@angular/compiler/src/compiler_util/render_util';
 
 @Component({
   templateUrl: 'shelters.consumer-locator.component.html',
   styleUrls: ['shelters.consumer-locator.component.scss'],
-  selector: 'hs-consumer-locator'
+  selector: 'hs-consumer-locator',
+  animations: [
+    trigger(
+      'enterAnimation', [
+        transition(':enter', [
+          style({transform: 'translateY(-100%)', opacity: 0}),
+          animate('100ms', style({transform: 'translateY(0)', opacity: 1}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0)', opacity: 1}),
+          animate('100ms', style({transform: 'translateY(-100%)', opacity: 0}))
+        ])
+      ]
+    )
+  ],
 })
 
 export class SheltersConsumerLocatorComponent implements AfterViewInit {
@@ -41,6 +56,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   public ngAfterViewInit() {
     if (this.router.url === '/skyddsrum') {
       this.displaySearchBar();
+
       this.displayBouncer(true);
       this.geoLocation.getLocation().first().subscribe(
         (pos: any) => {
@@ -64,6 +80,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public chooseAddress(address: any) {
+    this.hideSearchBar();
     this.searchQuery = address.formatted_address;
     this.displayBouncer(true);
 
@@ -79,24 +96,26 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   private displaySearchBar() {
     this.showSearchBar = true;
 
-    this.autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
-      types: ['address'],
-      componentRestrictions: {
-        country: 'se'
-      }
-    });
+    setTimeout(() => {
+      this.autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
+        types: ['address'],
+        componentRestrictions: {
+          country: 'se'
+        }
+      });
 
-    this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
-      let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
-      this.chooseAddress(place);
+      this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
+        let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
+        this.chooseAddress(place);
+      });
     });
 
   }
 
   private hideSearchBar() {
-    this.showSearchBar = false;
     google.maps.event.clearInstanceListeners(this.autocomplete);
     google.maps.event.removeListener(this.autocompleteListener);
+    this.showSearchBar = false;
   }
 
   private lookupPosition(position: Position) {

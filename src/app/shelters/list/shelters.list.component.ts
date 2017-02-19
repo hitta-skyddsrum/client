@@ -35,30 +35,29 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
       lat: Number(this.route.snapshot.params['lat']),
       long: Number(this.route.snapshot.params['lng'])
     };
-
     this.sheltersUserStateService.setPosition(this.currentPosition);
 
     // Clean the map on init
     this.sheltersUserStateService.setHospitals([]);
 
-    this.sheltersUserStateService.setShelters(
-      this.route.snapshot.data['shelters']
-    );
-
-    this.sheltersUserStateService.shelters$.subscribe(
-      (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
-    ).unsubscribe();
-
-    this.sheltersUserStateService.selectedShelter$.subscribe(
-      (shelter: Shelter) => {
-        this.sheltersUserStateService.setCurrentStep(2);
-      }
-    ).unsubscribe();
+    this.route.data.first().subscribe((data: any) => {
+      this.sheltersUserStateService.setShelters(data['shelters']);
+    });
   }
 
   public ngAfterViewInit() {
-    this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
+    this.gmapsGeocoderService.lookupPosition(this.currentPosition).first().subscribe(
       (addresses: any[]) => this.setTitle(addresses)
+    );
+
+    this.sheltersUserStateService.shelters$.first().subscribe(
+      (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
+    );
+
+    this.sheltersUserStateService.selectedShelter$.first().subscribe(
+      (shelter: Shelter) => {
+        this.sheltersUserStateService.setCurrentStep(2);
+      }
     );
   }
 

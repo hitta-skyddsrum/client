@@ -54,7 +54,7 @@ export class SheltersMapComponent implements AfterViewInit {
       (hospitals: Hospital[]) => this.plotHospitals(hospitals)
     );
 
-    this.sheltersUserStateService.currentPosition$.subscribe(
+    this.sheltersUserStateService.currentPosition$.first().subscribe(
       (position: Position) => this.plotCurrentPosition(position)
     );
 
@@ -68,7 +68,7 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   private selectHospital(hospital: Hospital) {
-    let _subsc = this.whenSheltersIsPlotted$.subscribe(
+    let _subsc = this.whenSheltersIsPlotted$.first().subscribe(
       () => {
         for (let marker of this.hospitalMarkers) {
           if (marker.hospital.hsaId === hospital.hsaId) {
@@ -76,11 +76,11 @@ export class SheltersMapComponent implements AfterViewInit {
             break;
           }
         }
-      }).unsubscribe();
+      });
   }
 
   private selectShelter(shelter: Shelter) {
-    this.whenSheltersIsPlotted$.subscribe(
+    this.whenSheltersIsPlotted$.first().subscribe(
       () => {
         for (let marker of this.shelterMarkers) {
           if (marker.shelter.id === shelter.id) {
@@ -88,7 +88,7 @@ export class SheltersMapComponent implements AfterViewInit {
             break;
           }
         }
-      }).unsubscribe();
+      });
   }
 
   private clickMarker(marker: GmapsMarker) {

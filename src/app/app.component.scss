@@ -10,6 +10,10 @@ md-sidenav-container,
   height: 100%;
 }
 
+.mat-sidenav-container {
+  background-color: $dark_gray;
+}
+
 .mat-sidenav,
 .mat-sidenav.mat-sidenav-push {
   background-color: $dark_gray;

@@ -2,7 +2,7 @@
   <md-icon>search</md-icon>
 </button>
 
-<section [hidden]="!showSearchBar">
+<section *ngIf="showSearchBar" [@enterAnimation]="showSearchBar">
     <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
         <bouncer
                 [bounceIf]="showBouncer"
