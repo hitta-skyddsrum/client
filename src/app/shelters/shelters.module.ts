@@ -21,6 +21,7 @@ import { SheltersDetailShelterResolver } from './detail/shelters.detail.shelter.
 import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospitals.resolver';
 import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-box.step1.component';
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
+import { MaterialModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-bo
     SheltersRoutingModule,
     SharedModule,
     ShareButtonsModule,
+    MaterialModule,
   ],
   declarations: [
     SheltersComponent,

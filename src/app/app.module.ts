@@ -19,6 +19,8 @@ import { AppState, InternalStateType } from './app.service';
 
 import icons from 'glyphicons';
 import '../styles/base.scss';
+import { MaterialModule, MdIconRegistry } from '@angular/material';
+import { AboutComponent } from './about/about.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -41,11 +43,15 @@ type StoreType = {
     SheltersModule,
     MetaModule.forRoot(),
     NotFoundModule,
+    MaterialModule,
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    AboutComponent,
+  ],
   providers: [
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
   ],
   bootstrap: [AppComponent]
 

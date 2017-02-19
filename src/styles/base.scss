@@ -1,6 +1,8 @@
 /* this file will be extracted to main dist folder and is imported in index.html */
 /* This file is for setting global styles  */
 
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
 $fa-font-path: "/node_modules/font-awesome/fonts";
 
 html,
@@ -44,7 +46,7 @@ body {
   font-family: ForsvarsmaktenSans,Akkurat,Arial,sans-serif;
   font-size: 1.05em;
   font-weight: 300;
-  background: #2c3142;
+  background: $dark_gray;
   margin: 0;
 }
 
@@ -60,6 +62,14 @@ h1 {
 p {
   line-height: 1.4;
   margin-bottom: 10px;
+
+  a {
+    color: $orange;
+  }
+}
+
+:focus {
+  outline-color: $orange;
 }
 
 ui-gmap-google-map {
@@ -122,7 +132,7 @@ body.platform-ios .search_box {
 .spinner {
 
   margin: auto;
-  width: 56px;
+  width: 50px;
   text-align: center;
 
   div {

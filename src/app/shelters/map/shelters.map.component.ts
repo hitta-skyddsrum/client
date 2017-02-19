@@ -98,7 +98,8 @@ export class SheltersMapComponent implements AfterViewInit {
   private loadMap() {
     this.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 5,
-      center: {lat: 60.490, lng: 14.941}
+      center: {lat: 60.490, lng: 14.941},
+      mapTypeControl: false
     });
 
     this.directionsDisplay = new google.maps.DirectionsRenderer();
