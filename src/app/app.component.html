@@ -1,5 +1,41 @@
-<!--
-<sd-toolbar></sd-toolbar>
-<sd-navbar></sd-navbar>
--->
-<router-outlet></router-outlet>
+<md-sidenav-container>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <button (click)="sidenav.toggle()" class="menu-toggle">
+    <md-icon>menu</md-icon>
+  </button>
+
+  <md-sidenav #sidenav align="end" mode="push">
+    <md-toolbar routerLink="/" (click)="sidenav.close()">
+      Hitta skyddsrum
+    </md-toolbar>
+    <md-list>
+      <md-list-item>
+        <button md-button routerLink="/" (click)="sidenav.close()">
+          <md-icon>home</md-icon>
+          <span>
+          Start
+          </span>
+        </button>
+      </md-list-item>
+      <md-list-item>
+        <button md-button routerLink="/skyddsrum" (click)="sidenav.close()">
+          <md-icon>near_me</md-icon>
+          <span>
+          Hitta skyddsrum
+          </span>
+        </button>
+      </md-list-item>
+      <md-list-item>
+        <button md-button routerLink="/om-tjansten" (click)="sidenav.close()">
+          <md-icon>help</md-icon>
+          <span>
+          Om tjänsten
+          </span>
+        </button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+</md-sidenav-container>

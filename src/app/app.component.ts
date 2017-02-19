@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Sanitizer } from '@angular/core';
 import { MetaService } from 'ng2-meta';
 import { Router, Event, ActivatedRoute } from '@angular/router';
+import { MdIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare const ga: any;
 /**
@@ -9,6 +11,7 @@ declare const ga: any;
 @Component({
   selector: 'sd-app',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent {
   private currentRoute: string = '';
@@ -17,6 +20,8 @@ export class AppComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private metaService: MetaService,
+    private mdIconRegistry: MdIconRegistry,
+    protected sanitizer: DomSanitizer
   ) {
     activatedRoute.fragment
       .filter((fragment: string) => typeof fragment !== 'undefined')

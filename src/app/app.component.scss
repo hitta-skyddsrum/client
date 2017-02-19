@@ -1,0 +1,55 @@
+@import "../styles/variables";
+
+/deep/ html,
+/deep/ body,
+sd-app,
+md-sidenav-container,
+.content {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mat-sidenav,
+.mat-sidenav.mat-sidenav-push {
+  background-color: $dark_gray;
+
+  md-toolbar {
+    font-family: ForsvarsmaktenSans-Stencil,TradeGothic,Arial,sans-serif;
+    background-color: lighten($dark_gray, 0%);
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  md-list {
+    md-list-item {
+      color: #fff;
+
+      md-icon {
+        color: #fff;
+      }
+
+      a {
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.menu-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: $orange;
+  background: transparent;
+  border: 0;
+
+  md-icon {
+    $menuIconSize: 44px;
+    font-size: $menuIconSize;
+    height: $menuIconSize;
+    width: $menuIconSize;
+  }
+}
