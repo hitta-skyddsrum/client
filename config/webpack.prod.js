@@ -313,6 +313,10 @@ module.exports = function (env) {
         {
           from: './src/sitemap.xml',
           to: './'
+        },
+        {
+          from: './src/sitemap2.xml',
+          to: './'
         }
       ]),
 
