@@ -309,6 +309,10 @@ module.exports = function (env) {
         {
           from: './src/_redirects',
           to: './'
+        },
+        {
+          from: './src/sitemap.xml',
+          to: './'
         }
       ]),
 
