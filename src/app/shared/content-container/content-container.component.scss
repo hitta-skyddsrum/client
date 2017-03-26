@@ -4,17 +4,29 @@
 .container {
   background-color: rgba(44, 49, 66, 1);
   color: #fff;
-  text-align: center;
   padding: 0 30px;
 
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  font-size: 1.1em;
 
-  /deep/ p {
-    max-width: 410px;
-    margin: auto;
-    margin-bottom: 25px;
+  &.center {
+    text-align: center;
+    align-items: center;
+  }
+
+  .window {
+    width: 450px;
+    max-width: 100%;
+
+    &.wide {
+      width: 600px;
+    }
+
+    /deep/ p {
+      margin: auto;
+      margin-bottom: 30px;
+    }
   }
 }

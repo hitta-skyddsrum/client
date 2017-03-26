@@ -1,9 +1,5 @@
-<div class="container">
-    <div class="row" set-relative-height="0">
-        <div class="col col-center">
-            <div class="window">
-                <ng-content></ng-content>
-            </div>
-        </div>
-    </div>
+<div class="container" [class.center]="align === 'center'">
+  <div class="window" [class.wide]="size === 'wide'">
+    <ng-content></ng-content>
+  </div>
 </div>

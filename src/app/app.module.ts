@@ -21,6 +21,7 @@ import icons from 'glyphicons';
 import '../styles/base.scss';
 import { MaterialModule, MdIconRegistry } from '@angular/material';
 import { AboutComponent } from './about/about.component';
+import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -48,6 +49,7 @@ type StoreType = {
   declarations: [
     AppComponent,
     AboutComponent,
+    AboutSheltersComponent,
   ],
   providers: [
     ENV_PROVIDERS,

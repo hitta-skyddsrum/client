@@ -12,6 +12,7 @@ md-sidenav-container,
 
 .mat-sidenav,
 .mat-sidenav.mat-sidenav-push {
+  font-size: 1.4em;
   background-color: $dark_gray;
 
   md-toolbar {
@@ -20,19 +21,25 @@ md-sidenav-container,
     color: #fff;
     text-align: center;
     cursor: pointer;
+    font-size: 1.3em;
+    padding: 10px 25px;
   }
 
-  md-list {
-    md-list-item {
-      color: #fff;
+  .mat-list {
+    .mat-list-item {
 
-      md-icon {
+      .mat-button {
         color: #fff;
-      }
+        font-size: 1.3em;
 
-      a {
-        color: #fff;
-        text-decoration: none;
+        md-icon {
+          color: #fff;
+        }
+
+        a {
+          color: #fff;
+          text-decoration: none;
+        }
       }
     }
   }
