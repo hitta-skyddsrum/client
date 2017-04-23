@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "google.analytics": "registry:dt/google.analytics#0.0.0+20170324151803",
     "google.maps": "registry:dt/google.maps#3.25.0+20161208205818"
   }
 }

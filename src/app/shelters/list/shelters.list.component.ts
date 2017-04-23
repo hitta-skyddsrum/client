@@ -1,14 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ApiService } from '../../shared/api/api.service';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
-import { SheltersMapComponent } from '../map/shelters.map.component';
-import { SheltersInfoBoxComponent } from '../info-box/shelters.info-box.component';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
-import { MetaService } from 'ng2-meta';
 import { Shelter } from '../../../models/shelter.model';
 import { Position } from '../../../models/position.model';
-import { SheltersComponent } from '../shelters.component';
+import { MetaService } from '@nglibs/meta';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -68,7 +64,6 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
     if (addresses.length > 0) {
       let address = this.gmapsGeocoderService.getHighestSublocalityAddress(addresses);
 
-      // Fallback
       if (typeof address === 'undefined') {
         address = addresses[0];
       }

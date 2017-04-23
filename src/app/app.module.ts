@@ -1,27 +1,20 @@
-import { NgModule, ApplicationRef } from '@angular/core';
-import {
-  removeNgStyles,
-  createNewHosts,
-  createInputTransfer
-} from '@angularclass/hmr';
+import { ApplicationRef, NgModule } from '@angular/core';
+import { createInputTransfer, createNewHosts, removeNgStyles } from '@angularclass/hmr';
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_BASE_HREF } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { SheltersModule } from './shelters/shelters.module';
-import { MetaModule } from 'ng2-meta';
+import { MetaModule } from '@nglibs/meta';
 import { NotFoundModule } from './not-found/not-found.module';
 import { ENV_PROVIDERS } from './environment';
 import { AppState, InternalStateType } from './app.service';
-
-import icons from 'glyphicons';
-import '../styles/base.scss';
-import { MaterialModule, MdIconRegistry } from '@angular/material';
 import { AboutComponent } from './about/about.component';
 import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
+import { MdButtonModule, MdIconModule, MdListModule, MdSidenavModule, MdToolbarModule } from '@angular/material';
+import '../styles/base.scss';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -44,7 +37,11 @@ type StoreType = {
     SheltersModule,
     MetaModule.forRoot(),
     NotFoundModule,
-    MaterialModule,
+    MdSidenavModule,
+    MdToolbarModule,
+    MdListModule,
+    MdButtonModule,
+    MdIconModule,
   ],
   declarations: [
     AppComponent,
