@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@nglibs/meta';
-import { Shelter } from '../../../models/shelter.model';
-import { Hospital } from '../../../models/hospital.model';
+import { Shelter } from '../shelter.model';
+import { Hospital } from '../hospital.model';
 
 @Component({
   selector: 'sd-app',

@@ -2,8 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
-import { Shelter } from '../../../models/shelter.model';
-import { Position } from '../../../models/position.model';
+import { Shelter } from '../shelter.model';
+import { Position } from '../position.model';
 import { MetaService } from '@nglibs/meta';
 
 /**

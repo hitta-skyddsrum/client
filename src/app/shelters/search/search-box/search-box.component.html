@@ -4,9 +4,7 @@
 
 <section [hidden]="!showSearchBar">
     <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
-        <bouncer
-                [bounceIf]="showBouncer"
-        ></bouncer>
+        <bouncer [bounceIf]="showBouncer"></bouncer>
         <input
                 type="text"
                 class="input-text"

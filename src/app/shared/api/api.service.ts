@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Shelter } from '../../../models/shelter.model';
-import { Hospital } from '../../../models/hospital.model';
-import { Position } from '../../../models/position.model';
+import { Shelter } from '../../shelters/shelter.model';
+import { Hospital } from '../../shelters/hospital.model';
+import { Position } from '../../shelters/position.model';
 // import 'rxjs/add/operator/do';  // for debugging
 
 declare var swal: any;

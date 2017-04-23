@@ -10,10 +10,20 @@ import { SheltersDetailShelterResolver } from './detail/shelters.detail.shelter.
 import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospitals.resolver';
 import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-box.step1.component';
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
+import { SearchPageComponent } from 'app/shelters/search/search-page/search-page.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
+      {
+        path: 'skyddsrum',
+        component: SearchPageComponent,
+        data: {
+          meta: {
+            title: 'Var vill du hitta närmsta skyddsrum? | Hitta skyddsrum',
+          },
+        },
+      },
       {
         path: 'skyddsrum',
         component: SheltersComponent,
@@ -63,17 +73,6 @@ import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-bo
               },
 
             ]
-          },
-          {
-            path: '',
-            pathMatch: 'full',
-            outlet: 'infoBoxContent',
-            component: SheltersInfoBoxStep1Component,
-            data: {
-              meta: {
-                title: 'Var vill du hitta närmsta skyddsrum? | Hitta skyddsrum',
-              },
-            },
           },
         ]
       },

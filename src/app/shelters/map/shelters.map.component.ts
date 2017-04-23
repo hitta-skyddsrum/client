@@ -2,15 +2,15 @@ import { ApiService } from '../../shared/api/api.service';
 import { AfterViewInit, Component } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Shelter } from '../../../models/shelter.model';
-import { Hospital } from '../../../models/hospital.model';
-import { Position } from '../../../models/position.model';
+import { Shelter } from '../shelter.model';
+import { Hospital } from '../hospital.model';
+import { Position } from '../position.model';
 import {
   GmapsMarker,
   GmapsMarkerHospital,
   GmapsMarkerOptionsHospital, GmapsMarkerOptionsShelter,
   GmapsMarkerShelter
-} from '../../../models/gmaps-marker.model';
+} from '../gmaps-marker.model';
 import { Observable } from 'rxjs';
 import Icon = google.maps.Icon;
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Position } from '../../../models/position.model';
+import { Position } from 'app/shelters/position.model';
 
 @Injectable()
 export class GmapsGeocoderService {
@@ -70,6 +70,7 @@ export class GmapsGeocoderService {
           switch (status) {
             case google.maps.GeocoderStatus.OK:
               observer.next(results);
+              break;
             case google.maps.GeocoderStatus.REQUEST_DENIED:
             case google.maps.GeocoderStatus.UNKNOWN_ERROR:
             case google.maps.GeocoderStatus.INVALID_REQUEST:

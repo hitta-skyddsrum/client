@@ -1,24 +1,19 @@
-import {
-  Component,
-  AfterViewInit,
-  Output,
-  NgZone,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
-import { GeolocationService } from '../../shared/geolocation/geolocation.service';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
-import { Position } from '../../../models/position.model';
+import { Position } from '../../position.model';
 import GeocoderResult = google.maps.GeocoderResult;
+import { GeolocationService } from 'app/shared/geolocation/geolocation.service';
+import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.service';
 
 @Component({
-  templateUrl: 'shelters.consumer-locator.component.html',
-  styleUrls: ['shelters.consumer-locator.component.scss'],
-  selector: 'hs-consumer-locator'
+  templateUrl: 'search-box.component.html',
+  styleUrls: ['search-box.component.scss'],
+  selector: 'search-box'
 })
 
-export class SheltersConsumerLocatorComponent implements AfterViewInit {
+export class SearchBoxComponent implements AfterViewInit {
+
+  @Input() showOnload: boolean = false;
 
   @ViewChild('search') public searchElemRef: ElementRef;
   public showBouncer: boolean;
@@ -39,20 +34,23 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    if (this.router.url === '/skyddsrum') {
+    if (this.showOnload) {
       this.displaySearchBar();
-      this.displayBouncer(true);
-      this.geoLocation.getLocation().first().subscribe(
-        (pos: any) => {
-          this.lookupPosition(<Position> {
-            lat: pos.coords.latitude,
-            long: pos.coords.longitude,
-          });
-        },
-        () => this.displayBouncer(false),
-        () => this.displayBouncer(false)
-      );
     }
+  }
+
+  public findUsersPosition(): void {
+    this.displayBouncer(true);
+    this.geoLocation.getLocation().first().subscribe(
+      (pos: any) => {
+        this.lookupPosition(<Position> {
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude,
+        });
+      },
+      () => this.displayBouncer(false),
+      () => this.displayBouncer(false)
+    );
   }
 
   public toggleSearchBar() {

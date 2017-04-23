@@ -1,0 +1,12 @@
+<search-box [showOnload]="true"></search-box>
+<section id="infoBox" [ngClass]="{'open': true}">
+  <div>
+    <div class="inner">
+      <div class="content">
+        <router-outlet name="infoBoxContent"></router-outlet>
+      </div>
+      <div class="progress">
+      </div>
+    </div>
+  </div>
+</section>
