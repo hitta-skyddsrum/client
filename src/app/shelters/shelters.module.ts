@@ -21,6 +21,8 @@ import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-bo
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
 import { SearchPageComponent } from 'app/shelters/search/search-page/search-page.component';
 import { MdButtonModule, MdIconModule } from '@angular/material';
+import { NguiMapModule } from '@ngui/map';
+import { GooglePlaceModule } from 'angular2-google-map-auto-complete/directives';
 
 @NgModule({
   imports: [
@@ -30,6 +32,8 @@ import { MdButtonModule, MdIconModule } from '@angular/material';
     ShareButtonsModule,
     MdIconModule,
     MdButtonModule,
+    NguiMapModule.forRoot({apiUrl: '//maps.google.com/maps/api/js?libraries=places&key=AIzaSyAN8-fiUVNDslX11X-iIkPVBxmBHEOmWn4'}),
+    GooglePlaceModule,
   ],
   declarations: [
     SheltersComponent,

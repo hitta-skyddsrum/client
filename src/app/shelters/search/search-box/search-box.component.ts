@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Position } from '../../position.model';
-import GeocoderResult = google.maps.GeocoderResult;
 import { GeolocationService } from 'app/shared/geolocation/geolocation.service';
 import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.service';
+import GeocoderResult = google.maps.GeocoderResult;
 
 @Component({
   templateUrl: 'search-box.component.html',
@@ -13,14 +13,16 @@ import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.s
 
 export class SearchBoxComponent implements AfterViewInit {
 
-  @Input() showOnload: boolean = false;
+  @Input()
+  public showOnload: boolean = false;
 
-  @ViewChild('search') public searchElemRef: ElementRef;
+  @ViewChild('search')
+  public searchElemRef: ElementRef;
+
   public showBouncer: boolean;
   public searchQuery: string;
   public showSearchBar: boolean;
 
-  private gmapsGeocoder: any;
   private autocomplete: any;
   private autocompleteListener: any;
 
@@ -29,14 +31,16 @@ export class SearchBoxComponent implements AfterViewInit {
     private zone: NgZone,
     private geoLocation: GeolocationService,
     private gmapsGeocoderService: GmapsGeocoderService
-  ) {
-    this.gmapsGeocoder = new google.maps.Geocoder();
-  }
+  ) {}
 
   public ngAfterViewInit() {
     if (this.showOnload) {
       this.displaySearchBar();
     }
+  }
+
+  public onAddressChoosen(place: any): void {
+    debugger;
   }
 
   public findUsersPosition(): void {
@@ -53,7 +57,7 @@ export class SearchBoxComponent implements AfterViewInit {
     );
   }
 
-  public toggleSearchBar() {
+  public toggleSearchBar(): void {
     if (this.showSearchBar === true) {
       this.hideSearchBar();
     } else {
@@ -61,7 +65,7 @@ export class SearchBoxComponent implements AfterViewInit {
     }
   }
 
-  public chooseAddress(address: any) {
+  public chooseAddress(address: any): void {
     this.searchQuery = address.formatted_address;
     this.displayBouncer(true);
 
@@ -76,29 +80,14 @@ export class SearchBoxComponent implements AfterViewInit {
 
   private displaySearchBar() {
     this.showSearchBar = true;
-
-    this.autocomplete = new google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
-      types: ['address'],
-      componentRestrictions: {
-        country: 'se'
-      }
-    });
-
-    this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
-      let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
-      this.chooseAddress(place);
-    });
-
   }
 
   private hideSearchBar() {
     this.showSearchBar = false;
-    google.maps.event.clearInstanceListeners(this.autocomplete);
-    google.maps.event.removeListener(this.autocompleteListener);
   }
 
   private lookupPosition(position: Position) {
-    this.zone.run(() => this.displayBouncer(true));
+    this.displayBouncer(true);
 
     this.gmapsGeocoderService.lookupPosition(position).subscribe(
       (results: GeocoderResult[]) => {

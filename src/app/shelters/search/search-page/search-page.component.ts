@@ -7,6 +7,6 @@ import { Component, OnInit } from '@angular/core';
 
 export class SearchPageComponent implements OnInit {
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 }

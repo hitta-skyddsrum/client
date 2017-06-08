@@ -3,7 +3,7 @@
 </button>
 
 <section [hidden]="!showSearchBar">
-    <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
+    <div class="search_box" [class.showBouncer]="showBouncer">
         <bouncer [bounceIf]="showBouncer"></bouncer>
         <input
                 type="text"
@@ -11,6 +11,8 @@
                 [(ngModel)]="searchQuery"
                 #search
                 placeholder="Ange adress"
+                (setAddress)="onAddressChoosen($event)"
+                googleplace
         />
     </div>
 </section>

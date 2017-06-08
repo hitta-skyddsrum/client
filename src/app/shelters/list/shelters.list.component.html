@@ -1,0 +1,12 @@
+<ngui-map
+  zoom="5"
+  [center]="currentPosition.lat + ',' + currentPosition.long"
+  mapTypeControl="false"
+>
+  <marker [position]="currentPosition.lat + ', ' + currentPosition.long"></marker>
+  <marker *ngFor="let shelter of shelters"
+          [position]="shelter.position.lat + ', ' + shelter.position.long"
+          [options]="shelterMarkerOptions"
+          (click)="onClick(shelter)"
+  ></marker>
+</ngui-map>

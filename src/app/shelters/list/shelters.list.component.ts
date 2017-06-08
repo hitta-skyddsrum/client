@@ -1,61 +1,48 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Shelter } from '../shelter.model';
 import { Position } from '../position.model';
 import { MetaService } from '@nglibs/meta';
 
-/**
- * This class represents the lazy loaded HomeComponent.
- */
 @Component({
-  template: ''
+  templateUrl: 'shelters.list.component.html'
 })
 
 export class SheltersListComponent implements OnInit, AfterViewInit {
 
-  private shelters: Shelter[] = [];
-  private currentPosition: Position;
+  public currentPosition: Position;
+  public shelters: Shelter[] = [];
+
+  public shelterMarkerOptions: any = {
+    icon: {
+      url: '/assets/images/icon-shelter.png'
+    }
+  };
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private metaService: MetaService,
     private sheltersUserStateService: SheltersUserStateService,
     private gmapsGeocoderService: GmapsGeocoderService,
-  ) {
-  }
+  ) {}
 
   public ngOnInit() {
-    this.currentPosition = <Position> {
-      lat: Number(this.route.snapshot.params['lat']),
-      long: Number(this.route.snapshot.params['lng'])
-    };
-
-    this.sheltersUserStateService.setPosition(this.currentPosition);
-
-    // Clean the map on init
-    this.sheltersUserStateService.setHospitals([]);
-
-    this.sheltersUserStateService.setShelters(
-      this.route.snapshot.data['shelters']
-    );
-
-    this.sheltersUserStateService.shelters$.subscribe(
-      (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
-    ).unsubscribe();
-
-    this.sheltersUserStateService.selectedShelter$.subscribe(
-      (shelter: Shelter) => {
-        this.sheltersUserStateService.setCurrentStep(2);
-      }
-    ).unsubscribe();
+    this.setCurrentPosition(Number(this.route.snapshot.params['lat']), Number(this.route.snapshot.params['lng']))
+    this.route.data
+      .subscribe(data => this.shelters = data['shelters']);
   }
 
   public ngAfterViewInit() {
     this.gmapsGeocoderService.lookupPosition(this.currentPosition).subscribe(
       (addresses: any[]) => this.setTitle(addresses)
     );
+  }
+
+  public onClick(shelter: Shelter): void {
+    this.router.navigate(['skyddsrum', shelter.id]);
   }
 
   private setTitle(addresses: any[]) {
@@ -74,5 +61,10 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.metaService.setTitle(title);
     });
+  }
+
+  private setCurrentPosition(lat: number, long: number): void {
+    this.currentPosition = <Position> {lat: lat, long: long};
+    this.sheltersUserStateService.setPosition(this.currentPosition);
   }
 }
