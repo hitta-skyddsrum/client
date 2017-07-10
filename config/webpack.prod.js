@@ -161,6 +161,7 @@ module.exports = function (env) {
         'HMR': METADATA.HMR,
         'API_URL': JSON.stringify(process.env.API_URL),
         'GA_ACCOUNT': JSON.stringify(process.env.GA_ACCOUNT),
+        'GMAPS_API_KEY': JSON.stringify(process.env.GMAPS_API_KEY),
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
