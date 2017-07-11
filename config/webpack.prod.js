@@ -46,7 +46,7 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
 
     /**
      * Options affecting the output of the compilation.
@@ -126,17 +126,6 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
-
-      /**
-       * Webpack plugin to optimize a JavaScript file for faster initial load
-       * by wrapping eagerly-invoked functions.
-       *
-       * See: https://github.com/vigneshshanmugam/optimize-js-plugin
-       */
-
-      new OptimizeJsPlugin({
-        sourceMap: false
-      }),
 
       /**
        * Plugin: ExtractTextPlugin

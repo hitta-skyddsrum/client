@@ -235,7 +235,7 @@ module.exports = function (options) {
     devServer: {
       port: METADATA.port,
       host: METADATA.host,
-      historyApiFallback: true,
+      historyApiFallback: helpers.root('dist'),
       watchOptions: {
         aggregateTimeout: 300,
         poll: 1000
