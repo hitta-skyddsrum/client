@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { ApiService } from './api/api.service';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { GmapsGeocoderService } from './gmaps-geocoder/gmaps-geocoder.service';
@@ -18,13 +17,11 @@ import { ContentContainerComponent } from './content-container/content-container
 @NgModule({
   imports: [CommonModule, RouterModule],
   declarations: [
-    NavbarComponent,
     SpinnerComponent,
     BouncerComponent,
     ContentContainerComponent,
   ],
   exports: [
-    NavbarComponent,
     CommonModule,
     FormsModule,
     RouterModule,

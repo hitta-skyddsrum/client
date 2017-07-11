@@ -1,17 +1,20 @@
 import { ApiService } from '../../shared/api/api.service';
-import { Component, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 import { Position } from '../../../models/position.model';
-import { GmapsMarker  } from '../../../models/gmaps-marker.model';
-import { GmapsMarkerShelter } from '../../../models/gmaps-marker-shelter.model';
-import { GmapsMarkerHospital } from '../../../models/gmaps-marker-hospital.model';
+import {
+  GmapsMarker,
+  GmapsMarkerHospital,
+  GmapsMarkerOptionsHospital, GmapsMarkerOptionsShelter,
+  GmapsMarkerShelter
+} from '../../../models/gmaps-marker.model';
 import { Observable } from 'rxjs';
+import Icon = google.maps.Icon;
 
 declare var MarkerClusterer: any;
-declare var google: any;
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -68,19 +71,18 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   private selectHospital(hospital: Hospital) {
-    let _subsc = this.whenSheltersIsPlotted$.subscribe(
-      () => {
-        for (let marker of this.hospitalMarkers) {
-          if (marker.hospital.hsaId === hospital.hsaId) {
-            this.clickMarker(marker);
-            break;
-          }
-        }
-      }).unsubscribe();
+    let _subsc = this.whenSheltersIsPlotted$
+      .take(1)
+      .subscribe(
+      () => this.clickMarker(
+        this.hospitalMarkers.find(marker => marker.hospital.hsaId === hospital.hsaId)
+      ));
   }
 
   private selectShelter(shelter: Shelter) {
-    this.whenSheltersIsPlotted$.subscribe(
+    this.whenSheltersIsPlotted$
+      .take(1)
+      .subscribe(
       () => {
         for (let marker of this.shelterMarkers) {
           if (marker.shelter.id === shelter.id) {
@@ -88,7 +90,7 @@ export class SheltersMapComponent implements AfterViewInit {
             break;
           }
         }
-      }).unsubscribe();
+      });
   }
 
   private clickMarker(marker: GmapsMarker) {
@@ -164,7 +166,7 @@ export class SheltersMapComponent implements AfterViewInit {
   };
 
   private plotCurrentPosition(position: Position) {
-    new google.maps.Marker({
+    new google.maps.Marker(<any>{
       position: new google.maps.LatLng(position.lat, position.long),
       map: this.map,
       type: 'currentPosition',
@@ -186,7 +188,7 @@ export class SheltersMapComponent implements AfterViewInit {
         continue;
       }
 
-      let marker = new google.maps.Marker({
+      let marker = <GmapsMarkerShelter> new google.maps.Marker(<GmapsMarkerOptionsShelter> {
         position: new google.maps.LatLng(shelter.position.lat, shelter.position.long),
         map: this.map,
         icon: {
@@ -194,7 +196,7 @@ export class SheltersMapComponent implements AfterViewInit {
           scaledSize: new google.maps.Size(30, 30)
         },
         shelter,
-        type: 'shelter',
+        type: 'shelter'
       });
 
       this.setShelterMarkerEventData(shelter, marker);
@@ -239,7 +241,7 @@ export class SheltersMapComponent implements AfterViewInit {
         continue;
       }
 
-      let marker = new google.maps.Marker({
+      let marker = <GmapsMarkerHospital> new google.maps.Marker(<GmapsMarkerOptionsHospital> {
         position: new google.maps.LatLng(hospital.position.lat, hospital.position.long),
         map: this.map,
         icon: {
@@ -258,7 +260,7 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   private setSizeOfMarkerAsOriginal(marker: GmapsMarker, type: string) {
-    let icon = marker.icon;
+    let icon = <Icon> marker.getIcon();
     switch (type) {
       case 'shelter':
         icon.scaledSize.width = 29;
@@ -275,7 +277,7 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   private setSizeOfMarkerAsSelected(marker: GmapsMarker, type: string) {
-    let icon = marker.icon;
+    let icon = <Icon> marker.getIcon();
     switch (type) {
       case 'shelter':
         icon.scaledSize.width = 58;
@@ -305,7 +307,7 @@ export class SheltersMapComponent implements AfterViewInit {
 
         this.setSizeOfMarkerAsSelected(this.selectedShelterMarker, 'shelter');
 
-        this.sheltersUserStateService.currentPosition$.subscribe(
+        this.sheltersUserStateService.currentPosition$.take(1).subscribe(
           (position: Position) => {
             // Write path
             this.findClosestPath(
@@ -314,7 +316,7 @@ export class SheltersMapComponent implements AfterViewInit {
               false,
               google.maps.TravelMode['WALKING']
             );
-          }).unsubscribe();
+          });
       }
     );
 

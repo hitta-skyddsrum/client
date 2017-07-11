@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AboutComponent } from './about/about.component';
+import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
 
 @NgModule({
   imports: [
@@ -10,10 +11,19 @@ import { AboutComponent } from './about/about.component';
         component: AboutComponent,
         data: {
           meta: {
-            title: 'Om Hitta Skyddsrum | Hitta skyddsrum',
+            title: 'Om Hitta skyddsrum | Hitta skyddsrum',
           }
         }
-      }
+      },
+      {
+        path: 'vad-ar-ett-skyddsrum',
+        component: AboutSheltersComponent,
+        data: {
+          meta: {
+            title: 'Vad är ett skyddsrum? | Hitta skyddsrum',
+          }
+        }
+      },
     ])
   ],
   exports: [RouterModule]

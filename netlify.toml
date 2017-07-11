@@ -1,0 +1,14 @@
+# Global settings applied to the whole site.
+[build]
+  publish = "dist"
+  command = "npm run build:prod"
+
+# Production context: All deploys to the main
+# repository branch will inherit these settings.
+[context.production]
+  command = "npm run build:prod"
+
+[context.stage]
+  command = "npm run build:prod"
+  [context.stage.environment]
+  GMAPS_API_KEY = "AIzaSyA3kjCWox3nKYBjpMPECalvCVqvldePykU"

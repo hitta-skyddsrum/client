@@ -15,7 +15,7 @@ import { SheltersUserStateService } from './user-state/shelters.user-state.servi
 import { SheltersListComponent } from './list/shelters.list.component';
 import { SheltersDetailComponent } from './detail/shelters.detail.component';
 import { SheltersInfoBoxStep3Component } from './info-box/step3/shelters.info-box.step3.component';
-import { ShareButtonsModule } from 'ng2-sharebuttons';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { SheltersListResolver } from './list/shelters.list.resolver';
 import { SheltersDetailShelterResolver } from './detail/shelters.detail.shelter.resolver';
 import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospitals.resolver';

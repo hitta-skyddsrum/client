@@ -44,6 +44,7 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
       this.displayBouncer(true);
       this.geoLocation.getLocation().first().subscribe(
         (pos: any) => {
+          this.displayBouncer(false);
           this.lookupPosition(<Position> {
             lat: pos.coords.latitude,
             long: pos.coords.longitude,
@@ -112,9 +113,8 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
             google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {});
             this.searchElemRef.nativeElement.focus();
           }, 60);
+          this.displayBouncer(false);
         }
-
-        this.displayBouncer(false);
       },
       () => this.displayBouncer(false),
       () => this.displayBouncer(false),
