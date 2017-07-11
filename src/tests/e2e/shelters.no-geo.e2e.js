@@ -10,8 +10,7 @@ module.exports = {
       .url(browser.launchUrl + '/skyddsrum');
     
     browser
-      .waitForElementVisible(inputField, 2000)
-      .waitForElementNotPresent(searchBoxWithBouncer, 10000);
+      .waitForElementVisible(inputField, 2000);
     
     browser
       .setValue(inputField, 'Stockholmsvägen')

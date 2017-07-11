@@ -29,12 +29,6 @@ var nightwatch_config = {
         "on_error" : true,
       },
     },
-    "chrome" : {
-      "desiredCapabilities": {
-        "browser": "chrome"
-      },
-      "exclude": ["src/tests/e2e/*.no-geo.*"]
-    },
     "chrome:no-geo" : {
       "desiredCapabilities": {
         "chromeOptions": {
@@ -43,20 +37,19 @@ var nightwatch_config = {
           }
         }
       },
-      "filter": ["src/tests/e2e/*.no-geo.*"]
+      "exclude": ["src/tests/e2e/*.geo.*"]
     },
-    "firefox" : {
+    "firefox:no-geo" : {
       "desiredCapabilities": {
         "browser": "chrome"
       },
-      "exclude": ["src/tests/e2e/*.no-geo.*"]
+      "exclude": ["src/tests/e2e/*.geo.*"]
     },
-    "edge" : {
+    "edge:no-geo" : {
       "desiredCapabilities": {
         "browser": "edge"
       },
       "exclude": ["src/tests/e2e/*.geo.*"]
-  
     }
   }
 };
