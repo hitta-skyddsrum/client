@@ -10,3 +10,5 @@
 
 [context.stage]
   command = "npm run build:prod"
+  [context.stage.environment]
+  GMAPS_API_KEY = "AIzaSyA3kjCWox3nKYBjpMPECalvCVqvldePykU"
