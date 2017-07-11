@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Shelter } from '../../../models/shelter.model';
 import { Position } from '../../../models/position.model';
-import { MetaService } from '@nglibs/meta';
+import { MetaService } from '@ngx-meta/core';
 
 /**
  * This class represents the lazy loaded HomeComponent.

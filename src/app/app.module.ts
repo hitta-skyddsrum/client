@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { SheltersModule } from './shelters/shelters.module';
-import { MetaModule } from '@nglibs/meta';
+import { MetaModule } from '@ngx-meta/core';
 import { NotFoundModule } from './not-found/not-found.module';
 import { ENV_PROVIDERS } from './environment';
 import { AppState, InternalStateType } from './app.service';
