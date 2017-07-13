@@ -154,9 +154,9 @@
     "tslint-loader": "^3.3.0",
     "typedoc": "^0.5.3",
     "url-loader": "^0.5.7",
-    "webpack": "2.4.1",
+    "webpack": "^3.2.0",
     "webpack-dev-middleware": "^1.10.0",
-    "webpack-dev-server": "2.4.4",
+    "webpack-dev-server": "^2.5.1",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-merge": "~4.1.0"
   },
