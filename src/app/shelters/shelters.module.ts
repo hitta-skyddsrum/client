@@ -8,9 +8,7 @@ import { GeolocationService } from '../shared/geolocation/geolocation.service';
 import { SheltersMapComponent } from './map/shelters.map.component';
 import { SheltersInfoBoxComponent } from './info-box/shelters.info-box.component';
 import { SheltersInfoBoxStep2Component } from './info-box/step2/shelters.info-box.step2.component';
-import {
-  SheltersConsumerLocatorComponent
-} from './consumer-locator/shelters.consumer-locator.component';
+import { SheltersConsumerLocatorComponent } from './consumer-locator/shelters.consumer-locator.component';
 import { SheltersUserStateService } from './user-state/shelters.user-state.service';
 import { SheltersListComponent } from './list/shelters.list.component';
 import { SheltersDetailComponent } from './detail/shelters.detail.component';

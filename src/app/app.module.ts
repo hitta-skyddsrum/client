@@ -1,4 +1,5 @@
-import { ApplicationRef, NgModule } from '@angular/core';
+import Raven from 'raven-js';
+import { ApplicationRef, ErrorHandler, NgModule } from '@angular/core';
 import { createInputTransfer, createNewHosts, removeNgStyles } from '@angularclass/hmr';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
@@ -13,8 +14,13 @@ import { ENV_PROVIDERS } from './environment';
 import { AppState, InternalStateType } from './app.service';
 import { AboutComponent } from './about/about.component';
 import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
-import { MdButtonModule, MdIconModule, MdListModule, MdSidenavModule, MdToolbarModule } from '@angular/material';
+import {
+  MdButtonModule, MdDialogContent, MdDialogModule, MdDialogTitle, MdIconModule, MdListModule, MdSidenavModule,
+  MdToolbarModule
+} from '@angular/material';
 import '../styles/base.scss';
+import { DialogComponent } from './dialog/dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -26,6 +32,22 @@ type StoreType = {
   restoreInputValues: () => void,
   disposeOldHosts: () => void
 };
+
+Raven
+  .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
+    environment: ENV
+  })
+  .install();
+
+export class RavenErrorHandler implements ErrorHandler {
+  handleError(err:any) : void {
+    if (ENV !== 'development') {
+      Raven.captureException(err.originalError || err);
+    } else {
+      console.error(err);
+    }
+  }
+}
 
 @NgModule({
   imports: [
@@ -42,15 +64,22 @@ type StoreType = {
     MdListModule,
     MdButtonModule,
     MdIconModule,
+    MdDialogModule,
+    BrowserAnimationsModule,
   ],
   declarations: [
     AppComponent,
     AboutComponent,
     AboutSheltersComponent,
+    DialogComponent,
   ],
   providers: [
     ENV_PROVIDERS,
     APP_PROVIDERS,
+    { provide: ErrorHandler, useClass: RavenErrorHandler }
+  ],
+  entryComponents: [
+    DialogComponent,
   ],
   bootstrap: [AppComponent]
 

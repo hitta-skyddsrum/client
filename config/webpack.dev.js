@@ -150,9 +150,13 @@ module.exports = function (options) {
         'API_URL': JSON.stringify(process.env.API_URL),
         'GA_ACCOUNT': JSON.stringify(process.env.GA_ACCOUNT),
         'GMAPS_API_KEY': JSON.stringify(process.env.GMAPS_API_KEY),
+        'SENTRY_KEY': JSON.stringify(process.env.SENTRY_KEY),
+        'SENTRY_PROJECT': JSON.stringify(process.env.SENTRY_PROJECT),
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
+          'SENTRY_KEY': JSON.stringify(process.env.SENTRY_KEY),
+          'SENTRY_PROJECT': JSON.stringify(process.env.SENTRY_PROJECT),
           'HMR': METADATA.HMR,
         }
       }),
@@ -164,10 +168,6 @@ module.exports = function (options) {
             {
               name: 'zone.js',
               path: 'zone.js/dist/zone.js'
-            },
-            {
-              name: 'zone.js',
-              path: 'zone.js/dist/long-stack-trace-zone.js'
             },
           ],
           vendor: [
@@ -235,7 +235,9 @@ module.exports = function (options) {
     devServer: {
       port: METADATA.port,
       host: METADATA.host,
-      historyApiFallback: helpers.root('dist'),
+      historyApiFallback: {
+        index: helpers.root('dist'),
+      },
       watchOptions: {
         aggregateTimeout: 300,
         poll: 1000

@@ -1,15 +1,10 @@
-import {
-  Component,
-  AfterViewInit,
-  Output,
-  NgZone,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { GeolocationService } from '../../shared/geolocation/geolocation.service';
 import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Position } from '../../../models/position.model';
+import { MdDialog } from '@angular/material';
+import { DialogComponent } from '../../dialog/dialog.component';
 import GeocoderResult = google.maps.GeocoderResult;
 
 @Component({
@@ -18,7 +13,7 @@ import GeocoderResult = google.maps.GeocoderResult;
   selector: 'hs-consumer-locator'
 })
 
-export class SheltersConsumerLocatorComponent implements AfterViewInit {
+export class SheltersConsumerLocatorComponent implements OnInit {
 
   @ViewChild('search') public searchElemRef: ElementRef;
   public showBouncer: boolean;
@@ -33,12 +28,13 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
     private router: Router,
     private zone: NgZone,
     private geoLocation: GeolocationService,
-    private gmapsGeocoderService: GmapsGeocoderService
+    private gmapsGeocoderService: GmapsGeocoderService,
+    private dialog: MdDialog,
   ) {
     this.gmapsGeocoder = new google.maps.Geocoder();
   }
 
-  public ngAfterViewInit() {
+  public ngOnInit() {
     if (this.router.url === '/skyddsrum') {
       this.displaySearchBar();
       this.displayBouncer(true);
@@ -65,6 +61,11 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
   }
 
   public chooseAddress(address: any) {
+    if (!address.geometry) {
+      this.dialog.open(DialogComponent, { data: { header: 'Adressen kunde inte hittas', message: 'Välj en adress från förslagen.' } });
+      return;
+    }
+
     this.searchQuery = address.formatted_address;
     this.displayBouncer(true);
 
@@ -89,7 +90,9 @@ export class SheltersConsumerLocatorComponent implements AfterViewInit {
 
     this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
       let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
-      this.chooseAddress(place);
+      setTimeout(() => {
+        this.chooseAddress(place);
+      });
     });
 
   }
