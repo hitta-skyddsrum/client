@@ -90,9 +90,7 @@ export class SheltersConsumerLocatorComponent implements OnInit {
 
     this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
       let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
-      setTimeout(() => {
-        this.chooseAddress(place);
-      });
+      this.chooseAddress(place);
     });
 
   }

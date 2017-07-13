@@ -1,5 +1,5 @@
 import { ApiService } from '../../shared/api/api.service';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Shelter } from '../../../models/shelter.model';
@@ -25,7 +25,7 @@ declare var MarkerClusterer: any;
   selector: 'hs-map',
 })
 
-export class SheltersMapComponent implements AfterViewInit {
+export class SheltersMapComponent implements OnInit {
   public whenSheltersIsPlotted$: Observable <boolean>;
   public whenHospitalsIsPlotted$: Observable <boolean>;
 
@@ -47,7 +47,7 @@ export class SheltersMapComponent implements AfterViewInit {
     this.whenHospitalsIsPlotted$ = this.hospitalsIsPlotted.asObservable().filter((r) => r === true);
   }
 
-  public ngAfterViewInit() {
+  public ngOnInit() {
     this.loadMap();
     this.sheltersUserStateService.shelters$.subscribe(
       (shelters: Shelter[]) => this.plotShelters(shelters)
@@ -71,7 +71,7 @@ export class SheltersMapComponent implements AfterViewInit {
   }
 
   private selectHospital(hospital: Hospital) {
-    let _subsc = this.whenSheltersIsPlotted$
+    this.whenSheltersIsPlotted$
       .take(1)
       .subscribe(
       () => this.clickMarker(
@@ -82,15 +82,10 @@ export class SheltersMapComponent implements AfterViewInit {
   private selectShelter(shelter: Shelter) {
     this.whenSheltersIsPlotted$
       .take(1)
-      .subscribe(
-      () => {
-        for (let marker of this.shelterMarkers) {
-          if (marker.shelter.id === shelter.id) {
-            this.clickMarker(marker);
-            break;
-          }
-        }
-      });
+      .subscribe(() => this.clickMarker(
+        this.shelterMarkers
+          .find((marker: any) => shelter.id === marker.shelter.id)
+      ));
   }
 
   private clickMarker(marker: GmapsMarker) {

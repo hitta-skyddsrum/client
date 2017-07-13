@@ -27,29 +27,31 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
   }
 
   public ngOnInit() {
-    this.currentPosition = <Position> {
-      lat: Number(this.route.snapshot.params['lat']),
-      long: Number(this.route.snapshot.params['lng'])
-    };
+    this.route.params
+      .subscribe(params => {
+        this.currentPosition = <Position> {
+          lat: Number(params['lat']),
+          long: Number(params['lng'])
+        };
 
-    this.sheltersUserStateService.setPosition(this.currentPosition);
+        this.sheltersUserStateService.setPosition(this.currentPosition);
+      });
 
-    // Clean the map on init
-    this.sheltersUserStateService.setHospitals([]);
+    this.route.data
+      .subscribe(data => {
+        // Clean the map on init
+        this.sheltersUserStateService.setHospitals([]);
 
-    this.sheltersUserStateService.setShelters(
-      this.route.snapshot.data['shelters']
-    );
+        this.sheltersUserStateService.setShelters(data['shelters']);
 
-    this.sheltersUserStateService.shelters$.subscribe(
-      (shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0])
-    ).unsubscribe();
+        this.sheltersUserStateService.shelters$
+          .first()
+          .subscribe((shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0]));
 
-    this.sheltersUserStateService.selectedShelter$.subscribe(
-      (shelter: Shelter) => {
-        this.sheltersUserStateService.setCurrentStep(2);
-      }
-    ).unsubscribe();
+        this.sheltersUserStateService.selectedShelter$
+          .first()
+          .subscribe((shelter: Shelter) => this.sheltersUserStateService.setCurrentStep(2));
+      });
   }
 
   public ngAfterViewInit() {
