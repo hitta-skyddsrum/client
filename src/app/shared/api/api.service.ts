@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 import { Position } from '../../../models/position.model';
+import { MdDialog } from '@angular/material';
+import { DialogComponent } from '../../dialog/dialog.component';
+import Raven from 'raven-js';
 // import 'rxjs/add/operator/do';  // for debugging
-
-declare var swal: any;
 
 /**
  * This class provides the NameList service with methods to read names and add names.
@@ -15,7 +16,10 @@ declare var swal: any;
 export class ApiService {
   private apiUrl: string = API_URL;
 
-  constructor(private http: Http) {}
+  constructor(
+    private http: Http,
+    private dialog: MdDialog
+  ) {}
 
   public shelters() {
     let apiService = this;
@@ -61,7 +65,8 @@ export class ApiService {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
-    swal('Oops...', errMsg, 'error');
+    this.dialog.open(DialogComponent, { data: { header: 'Någonting gick fel', message: errMsg } });
+    Raven.captureException(error);
     return Observable.throw(errMsg);
   }
 }

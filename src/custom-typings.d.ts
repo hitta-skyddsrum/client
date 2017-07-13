@@ -56,11 +56,15 @@ declare module 'modern-lru' {
 }
 */
 
+declare var swal: any;
+
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
 declare var ENV: string;
 declare var HMR: boolean;
 declare var System: SystemJS;
 declare var API_URL: string;
+declare var SENTRY_KEY: string;
+declare var SENTRY_PROJECT: string;
 
 interface SystemJS {
   import: (path?: string) => Promise<any>;

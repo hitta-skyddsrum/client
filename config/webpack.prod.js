@@ -46,7 +46,7 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-source-map',
 
     /**
      * Options affecting the output of the compilation.
@@ -151,9 +151,13 @@ module.exports = function (env) {
         'API_URL': JSON.stringify(process.env.API_URL),
         'GA_ACCOUNT': JSON.stringify(process.env.GA_ACCOUNT),
         'GMAPS_API_KEY': JSON.stringify(process.env.GMAPS_API_KEY),
+        'SENTRY_KEY': JSON.stringify(process.env.SENTRY_KEY),
+        'SENTRY_PROJECT': JSON.stringify(process.env.SENTRY_PROJECT),
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
+          'SENTRY_KEY': JSON.stringify(process.env.SENTRY_KEY),
+          'SENTRY_PROJECT': JSON.stringify(process.env.SENTRY_PROJECT),
           'HMR': METADATA.HMR,
         }
       }),
