@@ -25,7 +25,7 @@ export class ApiService {
     let apiService = this;
     return {
       index(position: Position): Observable<Shelter[]> {
-        let uri: string = apiService.apiUrl + '/shelters';
+        let uri: string = apiService.apiUrl + '/shelters/';
         let params: URLSearchParams = new URLSearchParams();
         params.set('lat', <string> position.lat.toString());
         params.set('long', <string> position.long.toString());
