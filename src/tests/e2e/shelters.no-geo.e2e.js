@@ -21,6 +21,7 @@ module.exports = {
     
     browser
       .waitForElementNotPresent(searchBoxWithBouncer, 100000)
+      .pause(500)
       .assert.urlContains('skyddsrum/');
     
     browser.end();
