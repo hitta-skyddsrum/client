@@ -34,7 +34,9 @@ type StoreType = {
 };
 
 Raven
-  .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`)
+  .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
+    environment: ENV
+  })
   .install();
 
 export class RavenErrorHandler implements ErrorHandler {

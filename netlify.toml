@@ -18,3 +18,10 @@
   command = "npm run build:prod"
   [context.stage.environment]
   GMAPS_API_KEY = "AIzaSyA3kjCWox3nKYBjpMPECalvCVqvldePykU"
+
+[context.deploy-preview]
+  [context.production.environment]
+  API_URL = "https://api.hittaskyddsrum.se/api/v1"
+  GMAPS_API_KEY = "AIzaSyDmgFCTblHgx6hZmxZyeaFgDazciC3ur4k"
+  SENTRY_KEY = "df5f6919607346d3ba4d8174bedb8dad"
+  SENTRY_PROJECT = "190959"
