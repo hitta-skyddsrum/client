@@ -62,6 +62,8 @@ module.exports = function (options) {
        * See: http://webpack.github.io/docs/configuration.html#output-path
        */
       path: helpers.root('dist'),
+      
+      publicPath: '/',
 
       /**
        * Specifies the name of each output file on disk.
@@ -236,7 +238,10 @@ module.exports = function (options) {
       port: METADATA.port,
       host: METADATA.host,
       historyApiFallback: {
-        index: helpers.root('dist'),
+        index: 'index.html',
+        rewrites: [
+          { from: /^\/skyddsrum/, to: '/index.html' }
+        ]
       },
       watchOptions: {
         aggregateTimeout: 300,

@@ -18,8 +18,10 @@ var nightwatch_config = {
     "default": {
       "launch_url" : process.env.NIGHWATCH_BROWSERSTACK_LAUNCH_URL,
       "desiredCapabilities": {
+        "build": "nightwatch-browserstack",
         "browserstack.user": process.env.BROWSERSTACK_USERNAME,
         "browserstack.key": process.env.BROWSERSTACK_KEY,
+        "browserstack.debug": true,
         "browser": "chrome"
       },
       "screenshots" : {
