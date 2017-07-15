@@ -20,6 +20,7 @@ import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospita
 import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-box.step1.component';
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
 import { MaterialModule } from '@angular/material';
+import { WindowRefService } from 'app/shelters/window-ref.services';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { MaterialModule } from '@angular/material';
     SheltersListResolver,
     SheltersDetailShelterResolver,
     SheltersDetailHospitalResolver,
+    WindowRefService,
   ]
 })
 export class SheltersModule {

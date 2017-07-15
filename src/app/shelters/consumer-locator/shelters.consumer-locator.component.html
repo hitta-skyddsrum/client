@@ -3,16 +3,15 @@
 </button>
 
 <section [hidden]="!showSearchBar">
-    <div class="search_box" [ngClass]="{showBouncer: showBouncer === true}">
-        <bouncer
-                [bounceIf]="showBouncer"
-        ></bouncer>
+    <div class="search_box" [ngClass]="{ showBouncer: showBouncer }">
+        <bouncer [bounceIf]="showBouncer"></bouncer>
         <input
                 type="text"
                 class="input-text"
                 [(ngModel)]="searchQuery"
                 #search
                 placeholder="Ange adress"
+                [disabled]="disabled"
         />
     </div>
 </section>
