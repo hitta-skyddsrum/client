@@ -11,6 +11,7 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 /**
  * Webpack Constants
@@ -114,7 +115,10 @@ module.exports = function (options) {
             },
             'angular2-template-loader'
           ],
-          exclude: [/\.e2e\.ts$/]
+          exclude: [
+            /\.e2e\.ts$/,
+            helpers.root('compiled'),
+          ],
         },
         
         /**
@@ -189,6 +193,7 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
+      new HardSourceWebpackPlugin(),
       
       /**
        * Plugin: DefinePlugin
