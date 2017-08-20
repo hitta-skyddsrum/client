@@ -32,7 +32,7 @@ export class GmapsGeocoderService {
     return ordered.slice(-1).pop();
   }
 
-  public lookupPosition(position: Position): Observable <google.maps.GeocoderResult> {
+  public lookupPosition(position: Position): Observable <google.maps.GeocoderResult[]> {
     return Observable.create((observer: any) => {
 
       this.gmapsGeocoder.geocode({
