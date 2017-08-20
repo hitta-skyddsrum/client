@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GeolocationService } from 'app/shared/geolocation/geolocation.service';
 import { Position } from 'models/position.model';
 import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   templateUrl: './shelters-search.component.html',
@@ -22,9 +21,10 @@ export class SheltersSearchComponent implements OnInit {
 
     this.geoLocationService.getLocation()
       .flatMap((position) => this.onGeolocationRetrieved(position))
-      .subscribe(() => {
-        this.loadingLocation = false;
-      });
+      .subscribe(
+        () => this.loadingLocation = false,
+        () => this.loadingLocation = false,
+      );
   }
 
   private onGeolocationRetrieved(position: Position) {

@@ -1,5 +1,5 @@
 import { SheltersSearchComponent } from 'app/pages/shelters-search/shelters-search.component';
-import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { SharedModule } from 'app/shared/shared.module';
 import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.service';
 import { WindowRefService } from 'app/shelters/window-ref.services';
@@ -72,7 +72,7 @@ describe('SheltersSearchComponent', () => {
   });
 
   fdescribe('ngOnInit', () => {
-    it('should retrieve the users position', async () => {
+    it('should retrieve the users position', fakeAsync(() => {
       const geolocation = { lat: 59, long: 100 };
       const geoAddress = [
         {
@@ -82,7 +82,7 @@ describe('SheltersSearchComponent', () => {
       const geoSpy = spyOn(GeolocationServiceMock.prototype, 'getLocation')
         .and.callFake(() => Observable.of(geolocation));
       const decoderSpy = spyOn(GmapsGeocoderServiceMock.prototype, 'lookupPosition')
-        .and.callFake(() => Observable.of(geoAddress).delay(300));
+        .and.callFake(() => Observable.of(geoAddress));
 
       comp.ngOnInit();
       fixture.detectChanges();
@@ -95,9 +95,9 @@ describe('SheltersSearchComponent', () => {
       tick();
       expect(fixture.debugElement.query(By.css('h1')).nativeElement.textContent)
         .toEqual('Ange din position');
-    });
+    }));
 
-    it('should fallback to manual search when GeoLocationService throws error', async () => {
+    it('should fallback to manual search when GeoLocationService throws error', fakeAsync(() => {
       const geoSpy = spyOn(GeolocationServiceMock.prototype, 'getLocation')
         .and.callFake(() => Observable.throw({}).delay(300));
 
@@ -107,6 +107,6 @@ describe('SheltersSearchComponent', () => {
 
       expect(fixture.debugElement.query(By.css('h1')).nativeElement.textContent)
         .toEqual('Ange din position');
-    });
+    }));
   });
 });
