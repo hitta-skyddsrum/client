@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
+import { SheltersUserStateService } from '../../shelters/user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { Shelter } from '../../../models/shelter.model';
@@ -19,7 +19,7 @@ export class SheltersDetailComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    let shelter: Shelter = this.route.snapshot.data['shelter'];
+    const shelter: Shelter = this.route.snapshot.data['shelter'];
     this.sheltersUserStateService.setShelters([shelter]);
     this.sheltersUserStateService.selectShelter(shelter);
 
@@ -27,7 +27,7 @@ export class SheltersDetailComponent implements OnInit {
       this.metaService.setTitle('Skyddsrum ' + shelter.estateId + ', ' + shelter.city);
     });
 
-    let hospitals: Hospital[] = this.route.snapshot.data['hospitals'];
+    const hospitals: Hospital[] = this.route.snapshot.data['hospitals'];
     this.sheltersUserStateService.setHospitals(hospitals);
     this.sheltersUserStateService.selectHospital(hospitals[0]);
   }

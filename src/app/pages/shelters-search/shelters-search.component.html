@@ -1,0 +1,4 @@
+<h1 *ngIf="loadingLocation">Din position hämtas</h1>
+<h1 *ngIf="!loadingLocation">Ange din position</h1>
+
+<hs-search-by-address [searchQuery]="searchQuery" [disabled]="loadingLocation"></hs-search-by-address>

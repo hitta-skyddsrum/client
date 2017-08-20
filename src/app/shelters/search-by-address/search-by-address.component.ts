@@ -13,22 +13,23 @@ import { Router } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Position } from '../../../models/position.model';
 import { MdDialog } from '@angular/material';
-import { DialogComponent } from '../../dialog/dialog.component';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { WindowRefService } from 'app/shelters/window-ref.services';
 import GeocoderResult = google.maps.GeocoderResult;
 
 @Component({
-  templateUrl: 'shelters.consumer-locator.component.html',
-  styleUrls: ['shelters.consumer-locator.component.scss'],
-  selector: 'hs-consumer-locator',
+  templateUrl: './search-by-address.component.html',
+  styleUrls: ['./search-by-address.component.scss'],
+  selector: 'hs-search-by-address',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SheltersConsumerLocatorComponent implements OnInit, OnDestroy {
+export class SearchByAddressComponent implements OnInit, OnDestroy {
   @Input() public disabled: boolean;
+  @Input() public placeholder: string;
+  @Input() public searchQuery: string;
 
   @ViewChild('search') public searchElemRef: ElementRef;
   public showBouncer: boolean;
-  public searchQuery: string;
   public showSearchBar: boolean;
 
   private gmapsGeocoder: any;
@@ -36,7 +37,7 @@ export class SheltersConsumerLocatorComponent implements OnInit, OnDestroy {
   private autocompleteListener: any;
   private geoLocation: GeolocationService;
 
-  constructor (
+  constructor(
     private router: Router,
     private zone: NgZone,
     private gmapsGeocoderService: GmapsGeocoderService,
@@ -48,15 +49,16 @@ export class SheltersConsumerLocatorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.autocomplete = new this.windowRefService.nativeWindow.google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
-      types: ['address'],
-      componentRestrictions: {
-        country: 'se'
-      }
+    this.autocomplete = new this.windowRefService.nativeWindow
+      .google.maps.places.Autocomplete(this.searchElemRef.nativeElement, {
+        types: ['address'],
+        componentRestrictions: {
+          country: 'se'
+        }
     });
 
     this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
-      let place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
+      const place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
       this.chooseAddress(place);
     });
 
@@ -83,7 +85,9 @@ export class SheltersConsumerLocatorComponent implements OnInit, OnDestroy {
 
   public chooseAddress(address: any) {
     if (!address.geometry) {
-      this.dialog.open(DialogComponent, { data: { header: 'Adressen kunde inte hittas', message: 'Välj en adress från förslagen.' } });
+      this.dialog.open(DialogComponent, {
+        data: { header: 'Adressen kunde inte hittas', message: 'Välj en adress från förslagen.' }
+      });
       return;
     }
 
@@ -118,7 +122,8 @@ export class SheltersConsumerLocatorComponent implements OnInit, OnDestroy {
           this.searchQuery = results[0].formatted_address;
 
           setTimeout(() => {
-            this.windowRefService.nativeWindow.google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {});
+            this.windowRefService.nativeWindow.
+              google.maps.event.trigger(this.searchElemRef.nativeElement, 'focus', {});
             this.searchElemRef.nativeElement.focus();
           }, 60);
           this.displayBouncer(false);

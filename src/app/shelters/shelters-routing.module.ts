@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SheltersListComponent } from './list/shelters.list.component';
+import { SheltersListComponent } from '../pages/shelters-list/shelters.list.component';
 import { SheltersInfoBoxStep2Component } from './info-box/step2/shelters.info-box.step2.component';
-import { SheltersDetailComponent } from './detail/shelters.detail.component';
+import { SheltersDetailComponent } from '../pages/shelters-detail/shelters.detail.component';
 import { SheltersInfoBoxStep3Component } from './info-box/step3/shelters.info-box.step3.component';
 import { SheltersComponent } from './shelters.component';
-import { SheltersListResolver } from './list/shelters.list.resolver';
-import { SheltersDetailShelterResolver } from './detail/shelters.detail.shelter.resolver';
-import { SheltersDetailHospitalResolver } from './detail/shelters.detail.hospitals.resolver';
+import { SheltersListResolver } from '../pages/shelters-list/shelters.list.resolver';
+// tslint:disable-next-line
+import { SheltersDetailShelterResolver } from '../pages/shelters-detail/shelters.detail.shelter.resolver';
+// tslint:disable-next-line
+import { SheltersDetailHospitalResolver } from '../pages/shelters-detail/shelters.detail.hospitals.resolver';
 import { SheltersInfoBoxStep1Component } from './info-box/step1/shelters.info-box.step1.component';
 import { SheltersInfoBoxStep4Component } from './info-box/step4/shelters.info-box.step4.component';
 

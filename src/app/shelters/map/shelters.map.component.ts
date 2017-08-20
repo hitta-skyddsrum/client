@@ -114,8 +114,8 @@ export class SheltersMapComponent implements OnInit {
     preserveViewport: boolean,
     travelMode: any
   ) {
-    let directionsService = new google.maps.DirectionsService();
-    let _shelterComponent = this;
+    const directionsService = new google.maps.DirectionsService();
+    const _shelterComponent = this;
 
     // If travelMode isnt set, lets set it to WALKING
     if (typeof travelMode === 'undefined') {
@@ -123,7 +123,7 @@ export class SheltersMapComponent implements OnInit {
     }
 
     // Prepare request to get the route for the closest route
-    let request = {
+    const request = {
       origin: new google.maps.LatLng(origin.lat, origin.long),
       destination: new google.maps.LatLng(destination.lat, destination.long),
       travelMode,
@@ -158,10 +158,11 @@ export class SheltersMapComponent implements OnInit {
 
     });
 
-  };
+  }
 
   private plotCurrentPosition(position: Position) {
-    new google.maps.Marker(<any>{
+    // tslint:disable-next-line
+    new google.maps.Marker(<any> {
       position: new google.maps.LatLng(position.lat, position.long),
       map: this.map,
       type: 'currentPosition',
@@ -172,18 +173,18 @@ export class SheltersMapComponent implements OnInit {
     this.sheltersIsPlotted.next(false);
 
     // Collect the shelters that already is marked
-    let seenShelters: number[] = [];
-    for (let marker of this.shelterMarkers) {
+    const seenShelters: number[] = [];
+    for (const marker of this.shelterMarkers) {
       seenShelters.push(marker.shelter.id);
     }
 
     // Create all the markers
-    for (let shelter of shelters) {
+    for (const shelter of shelters) {
       if (seenShelters.indexOf(shelter.id) !== -1) {
         continue;
       }
 
-      let marker = <GmapsMarkerShelter> new google.maps.Marker(<GmapsMarkerOptionsShelter> {
+      const marker = <GmapsMarkerShelter> new google.maps.Marker(<GmapsMarkerOptionsShelter> {
         position: new google.maps.LatLng(shelter.position.lat, shelter.position.long),
         map: this.map,
         icon: {
@@ -226,17 +227,17 @@ export class SheltersMapComponent implements OnInit {
     this.hospitalsIsPlotted.next(false);
 
     // Collect the hospitals that already is marked
-    let seenHospitals: any[] = [];
-    for (let marker of this.hospitalMarkers) {
+    const seenHospitals: any[] = [];
+    for (const marker of this.hospitalMarkers) {
       seenHospitals.push(marker.hospital.hsaId);
     }
 
-    for (let hospital of hospitals) {
+    for (const hospital of hospitals) {
       if (seenHospitals.indexOf(hospital.hsaId) !== -1) {
         continue;
       }
 
-      let marker = <GmapsMarkerHospital> new google.maps.Marker(<GmapsMarkerOptionsHospital> {
+      const marker = <GmapsMarkerHospital> new google.maps.Marker(<GmapsMarkerOptionsHospital> {
         position: new google.maps.LatLng(hospital.position.lat, hospital.position.long),
         map: this.map,
         icon: {
@@ -255,7 +256,7 @@ export class SheltersMapComponent implements OnInit {
   }
 
   private setSizeOfMarkerAsOriginal(marker: GmapsMarker, type: string) {
-    let icon = <Icon> marker.getIcon();
+    const icon = <Icon> marker.getIcon();
     switch (type) {
       case 'shelter':
         icon.scaledSize.width = 29;
@@ -272,7 +273,7 @@ export class SheltersMapComponent implements OnInit {
   }
 
   private setSizeOfMarkerAsSelected(marker: GmapsMarker, type: string) {
-    let icon = <Icon> marker.getIcon();
+    const icon = <Icon> marker.getIcon();
     switch (type) {
       case 'shelter':
         icon.scaledSize.width = 58;

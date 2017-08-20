@@ -33,7 +33,7 @@ export class SheltersInfoBoxStep4Component implements OnInit {
   }
 
   public openShareDialog() {
-    let popupProps: string = '\'height=450, width=550, top=200, left=200,'
+    const popupProps: string = '\'height=450, width=550, top=200, left=200,'
       + 'toolbar=0, location=0, menubar=0, directories=0, scrollbars=0\'';
 
     swal({

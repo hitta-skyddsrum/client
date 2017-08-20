@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { SheltersUserStateService } from '../user-state/shelters.user-state.service';
+import { SheltersUserStateService } from '../../shelters/user-state/shelters.user-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { GmapsGeocoderService } from '../../shared/gmaps-geocoder/gmaps-geocoder.service';
 import { Shelter } from '../../../models/shelter.model';
@@ -46,7 +46,9 @@ export class SheltersListComponent implements OnInit, AfterViewInit {
 
         this.sheltersUserStateService.shelters$
           .first()
-          .subscribe((shelters: Shelter[]) => this.sheltersUserStateService.selectShelter(shelters[0]));
+          .subscribe((shelters: Shelter[]) =>
+            this.sheltersUserStateService.selectShelter(shelters[0])
+          );
 
         this.sheltersUserStateService.selectedShelter$
           .first()

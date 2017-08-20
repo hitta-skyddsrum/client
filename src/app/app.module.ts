@@ -5,48 +5,48 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeModule } from './home/home.module';
+import { HomeModule } from './pages/home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { SheltersModule } from './shelters/shelters.module';
 import { MetaModule } from '@ngx-meta/core';
-import { NotFoundModule } from './not-found/not-found.module';
+import { NotFoundModule } from './pages/not-found/not-found.module';
 import { ENV_PROVIDERS } from './environment';
 import { AppState, InternalStateType } from './app.service';
-import { AboutComponent } from './about/about.component';
-import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AboutSheltersComponent } from './pages/about-shelters/about-shelters.component';
 import {
-  MdButtonModule, MdDialogContent, MdDialogModule, MdDialogTitle, MdIconModule, MdListModule, MdSidenavModule,
+  MdButtonModule,
+  MdDialogModule,
+  MdIconModule,
+  MdListModule,
+  MdSidenavModule,
   MdToolbarModule
 } from '@angular/material';
 import '../styles/base.scss';
-import { DialogComponent } from './dialog/dialog.component';
+import { DialogComponent } from './shared/dialog/dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RavenErrorHandler } from './raven-error-handler';
+import { SheltersDetailComponent } from 'app/pages/shelters-detail/shelters.detail.component';
+import { SheltersListComponent } from 'app/pages/shelters-list/shelters.list.component';
+import { SheltersSearchComponent } from 'app/pages/shelters-search/shelters-search.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState
 ];
 
-type StoreType = {
-  state: InternalStateType,
-  restoreInputValues: () => void,
-  disposeOldHosts: () => void
-};
+interface StoreType {
+  state: InternalStateType;
+  restoreInputValues: () => void;
+  disposeOldHosts: () => void;
+}
 
-Raven
-  .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
-    environment: ENV
-  })
-  .install();
-
-export class RavenErrorHandler implements ErrorHandler {
-  handleError(err:any) : void {
-    if (ENV !== 'development') {
-      Raven.captureException(err.originalError || err);
-    } else {
-      console.error(err);
-    }
-  }
+if (ENV !== 'development') {
+  Raven
+    .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
+      environment: ENV
+    })
+    .install();
 }
 
 @NgModule({
@@ -72,6 +72,9 @@ export class RavenErrorHandler implements ErrorHandler {
     AboutComponent,
     AboutSheltersComponent,
     DialogComponent,
+    SheltersDetailComponent,
+    SheltersListComponent,
+    SheltersSearchComponent,
   ],
   providers: [
     ENV_PROVIDERS,
@@ -100,7 +103,7 @@ export class AppModule {
     this.appState._state = store.state;
     // set input values
     if ('restoreInputValues' in store) {
-      let restoreInputValues = store.restoreInputValues;
+      const restoreInputValues = store.restoreInputValues;
       setTimeout(restoreInputValues);
     }
 

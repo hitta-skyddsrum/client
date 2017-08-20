@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AboutComponent } from './about/about.component';
-import { AboutSheltersComponent } from './about-shelters/about-shelters.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AboutSheltersComponent } from './pages/about-shelters/about-shelters.component';
+import { SheltersSearchComponent } from 'app/pages/shelters-search/shelters-search.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
+      {
+        path: 'skyddsrum/sok',
+        component: SheltersSearchComponent,
+      },
       {
         path: 'om-tjansten',
         component: AboutComponent,

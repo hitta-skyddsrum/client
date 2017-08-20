@@ -12,11 +12,11 @@ export class GmapsGeocoderService {
   }
 
   public getHighestSublocalityAddress(addresses: any[]) {
-    let ordered: any[] = [];
-    let prefix = 'sublocality_level_';
+    const ordered: any[] = [];
+    const prefix = 'sublocality_level_';
 
-    for (let address of addresses) {
-      let subs = address.types.filter((k: string[]) => {
+    for (const address of addresses) {
+      const subs = address.types.filter((k: string[]) => {
         return k.indexOf(prefix) === 0;
       });
 
@@ -24,7 +24,7 @@ export class GmapsGeocoderService {
         continue;
       }
 
-      let level = subs[0].replace(prefix, '');
+      const level = subs[0].replace(prefix, '');
 
       ordered[level] = address;
     }
@@ -32,13 +32,13 @@ export class GmapsGeocoderService {
     return ordered.slice(-1).pop();
   }
 
-  public lookupPosition(position: Position) {
+  public lookupPosition(position: Position): Observable <google.maps.GeocoderResult> {
     return Observable.create((observer: any) => {
 
       this.gmapsGeocoder.geocode({
           location: {
-            lat: position.lat,
-            lng: position.long
+            lat: Number(position.lat),
+            lng: Number(position.long),
           }
         },
         (results: any, status: string) => {
@@ -58,7 +58,7 @@ export class GmapsGeocoderService {
 
   public lookupAddress(address: string) {
     return Observable.create((observer: any) => {
-      let options = {
+      const options = {
         address,
         componentRestrictions: {
           country: 'SE'
