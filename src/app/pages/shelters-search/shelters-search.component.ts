@@ -20,7 +20,8 @@ export class SheltersSearchComponent implements OnInit {
   public ngOnInit(): void {
     this.loadingLocation = true;
 
-    Observable.zip(this.geoLocationService.getLocation())
+    this.geoLocationService.getLocation()
+      .flatMap((position) => this.onGeolocationRetrieved(position))
       .subscribe(() => {
         this.loadingLocation = false;
       });

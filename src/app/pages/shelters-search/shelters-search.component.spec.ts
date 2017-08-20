@@ -42,7 +42,13 @@ describe('SheltersSearchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SheltersSearchComponent,
-        MockComponent({ selector: 'hs-search-by-address' })
+        MockComponent({
+          selector: 'hs-search-by-address',
+          inputs: [
+            'searchQuery',
+            'disabled',
+          ],
+        }),
       ],
       imports: [SharedModule],
       providers: [
