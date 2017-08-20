@@ -1,7 +1,6 @@
 import { GmapsPosition } from './gmaps-position.model';
 import { Hospital } from './hospital.model';
 import { Shelter } from './shelter.model';
-import LatLng = google.maps.LatLng;
 import Marker = google.maps.Marker;
 import MarkerOptions = google.maps.MarkerOptions;
 

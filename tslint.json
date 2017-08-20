@@ -9,6 +9,8 @@
     // Custom
     "trailing-comma": [false, {"multiline": "always", "singleline": "never"}],
     "interface-name": [false, "always-prefix"],
+    "arrow-parens": false,
+    "no-angle-bracket-type-assertion": false,
     // Angular 2
     "component-class-suffix": true,
     // "component-selector": [true, "element", "my", "kebab-case"],
@@ -29,6 +31,8 @@
     "use-output-property-decorator": true,
     "use-pipe-transform-interface": true,
     // General
+    "no-empty": false,
+    "no-trailing-whitespace": false,
     "no-console": [true,
       "time",
       "timeEnd",

@@ -5,7 +5,7 @@ import { Shelter } from '../../../models/shelter.model';
 import { Hospital } from '../../../models/hospital.model';
 import { Position } from '../../../models/position.model';
 import { MdDialog } from '@angular/material';
-import { DialogComponent } from '../../dialog/dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 import Raven from 'raven-js';
 // import 'rxjs/add/operator/do';  // for debugging
 
@@ -22,14 +22,14 @@ export class ApiService {
   ) {}
 
   public shelters() {
-    let apiService = this;
+    const apiService = this;
     return {
       index(position: Position): Observable<Shelter[]> {
-        let uri: string = apiService.apiUrl + '/shelters/';
-        let params: URLSearchParams = new URLSearchParams();
+        const uri: string = apiService.apiUrl + '/shelters/';
+        const params: URLSearchParams = new URLSearchParams();
         params.set('lat', <string> position.lat.toString());
         params.set('long', <string> position.long.toString());
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           search: params
         });
 
@@ -40,7 +40,7 @@ export class ApiService {
       },
 
       show(params: any = null) {
-        let uri: string = apiService.apiUrl + '/shelters/' + params.id;
+        const uri: string = apiService.apiUrl + '/shelters/' + params.id;
 
         return apiService.http.get(uri)
           .map((result: any) => <Shelter> result.json())
@@ -49,7 +49,7 @@ export class ApiService {
       },
 
       showHospitals(params: any = null) {
-        let uri: string = apiService.apiUrl + '/shelters/' + params.id + '/hospitals';
+        const uri: string = apiService.apiUrl + '/shelters/' + params.id + '/hospitals';
 
         return apiService.http.get(uri)
           .map((result: any) => <Hospital[]> result.json())
@@ -59,10 +59,10 @@ export class ApiService {
     };
   }
 
-  private handleError (error: any) {
+  private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
-    let errMsg = (error.message) ? error.message :
+    const errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
     this.dialog.open(DialogComponent, { data: { header: 'Någonting gick fel', message: errMsg } });

@@ -1,2 +1,1 @@
-//export const Config: any = require('env2')('./env');
-
+// export const Config: any = require('env2')('./env');

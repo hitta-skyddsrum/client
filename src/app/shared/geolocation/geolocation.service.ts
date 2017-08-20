@@ -12,7 +12,6 @@ const GEOLOCATION_ERRORS = {
 export class GeolocationService {
 
   public getLocation() {
-
     return Observable.create((observer: any) => {
       if (window.navigator && window.navigator.geolocation) {
 

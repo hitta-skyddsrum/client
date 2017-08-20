@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 
 export class ContentContainerComponent {
-  @Input() align: string;
-  @Input() size: string;
+  @Input() public align: string;
+  @Input() public size: string;
 }
