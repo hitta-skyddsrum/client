@@ -8,7 +8,7 @@ import { GeolocationService } from '../shared/geolocation/geolocation.service';
 import { SheltersMapComponent } from './map/shelters.map.component';
 import { SheltersInfoBoxComponent } from './info-box/shelters.info-box.component';
 import { SheltersInfoBoxStep2Component } from './info-box/step2/shelters.info-box.step2.component';
-import { SearchByAddressComponent } from './search-by-address/search-by-address.component';
+import { SearchByAddressComponent } from '../components/search-by-address/search-by-address.component';
 import { SheltersUserStateService } from './user-state/shelters.user-state.service';
 import { SheltersInfoBoxStep3Component } from './info-box/step3/shelters.info-box.step3.component';
 import { ShareButtonsModule } from 'ngx-sharebuttons';

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   SearchByAddressComponent,
-} from 'app/shelters/search-by-address/search-by-address.component';
+} from 'app/components/search-by-address/search-by-address.component';
 import { MdDialogModule, MdIconModule } from '@angular/material';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -29,7 +29,7 @@ class WindowMock {
   };
 }
 
-describe('SearchByAddressComponent', () => {
+fdescribe('SearchByAddressComponent', () => {
   let comp: SearchByAddressComponent;
   let fixture: ComponentFixture<SearchByAddressComponent>;
 
