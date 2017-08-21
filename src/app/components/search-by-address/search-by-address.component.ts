@@ -57,11 +57,9 @@ export class SearchByAddressComponent implements OnInit, OnDestroy {
         }
     });
 
-    this.autocompleteListener = this.autocomplete.addListener('place_changed', () => {
-      const place: google.maps.places.PlaceResult = this.autocomplete.getPlace();
-      this.chooseAddress(place);
-    });
-
+    this.autocompleteListener = this.autocomplete
+      .addListener('place_changed', () => this.chooseAddress(this.autocomplete.getPlace()));
+/*
     if (this.router.url === '/skyddsrum') {
       this.displaySearchBar();
       this.displayBouncer(true);
@@ -77,6 +75,7 @@ export class SearchByAddressComponent implements OnInit, OnDestroy {
         () => this.displayBouncer(false)
       );
     }
+    */
   }
 
   public toggleSearchBar() {
@@ -85,10 +84,9 @@ export class SearchByAddressComponent implements OnInit, OnDestroy {
 
   public chooseAddress(address: any) {
     if (!address.geometry) {
-      this.dialog.open(DialogComponent, {
+      return this.dialog.open(DialogComponent, {
         data: { header: 'Adressen kunde inte hittas', message: 'Välj en adress från förslagen.' }
       });
-      return;
     }
 
     this.searchQuery = address.formatted_address;
@@ -111,7 +109,7 @@ export class SearchByAddressComponent implements OnInit, OnDestroy {
   private displaySearchBar() {
     this.showSearchBar = true;
   }
-
+/*
   private lookupPosition(position: Position) {
     this.zone.run(() => this.displayBouncer(true));
 
@@ -133,8 +131,8 @@ export class SearchByAddressComponent implements OnInit, OnDestroy {
       () => this.displayBouncer(false),
     );
   }
-
+*/
   private displayBouncer(value: boolean) {
-    this.zone.run(() => this.showBouncer = value);
+    this.showBouncer = value;
   }
 }

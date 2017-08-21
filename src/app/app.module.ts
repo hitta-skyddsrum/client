@@ -29,6 +29,10 @@ import { RavenErrorHandler } from './raven-error-handler';
 import { SheltersDetailComponent } from 'app/pages/shelters-detail/shelters.detail.component';
 import { SheltersListComponent } from 'app/pages/shelters-list/shelters.list.component';
 import { SheltersSearchComponent } from 'app/pages/shelters-search/shelters-search.component';
+import { SearchByAddressComponent } from 'app/components/search-by-address/search-by-address.component';
+import { GeolocationService } from 'app/shared/geolocation/geolocation.service';
+import { GmapsGeocoderService } from 'app/shared/gmaps-geocoder/gmaps-geocoder.service';
+import { WindowRefService } from 'app/shelters/window-ref.services';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -56,7 +60,6 @@ if (ENV !== 'development') {
     AppRoutingModule,
     HomeModule,
     SharedModule.forRoot(),
-    SheltersModule,
     MetaModule.forRoot(),
     NotFoundModule,
     MdSidenavModule,
@@ -75,11 +78,15 @@ if (ENV !== 'development') {
     SheltersDetailComponent,
     SheltersListComponent,
     SheltersSearchComponent,
+    SearchByAddressComponent,
   ],
   providers: [
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    { provide: ErrorHandler, useClass: RavenErrorHandler }
+    { provide: ErrorHandler, useClass: RavenErrorHandler },
+    GeolocationService,
+    GmapsGeocoderService,
+    WindowRefService,
   ],
   entryComponents: [
     DialogComponent,
