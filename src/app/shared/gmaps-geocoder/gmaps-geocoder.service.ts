@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Position } from '../../../models/position.model';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class GmapsGeocoderService {
@@ -32,28 +33,18 @@ export class GmapsGeocoderService {
     return ordered.slice(-1).pop();
   }
 
-  public lookupPosition(position: Position): Observable <google.maps.GeocoderResult[]> {
-    return Observable.create((observer: any) => {
-
-      this.gmapsGeocoder.geocode({
+  public lookupPosition(position: Position):
+  Observable <google.maps.GeocoderResult[]|ErrorObservable> {
+    return Observable
+      .bindCallback(this.gmapsGeocoder.geocode(
+        {
           location: {
             lat: Number(position.lat),
             lng: Number(position.long),
           }
-        },
-        (results: any, status: string) => {
-          switch (status) {
-            case 'OK':
-              observer.next(results);
-              observer.complete(results);
-              break;
-            default:
-              observer.error(status);
-          }
         }
-      );
-    });
-
+      ))
+      .map(status => status !== 'OK' ? Observable.throw(status) : status);
   }
 
   public lookupAddress(address: string) {
