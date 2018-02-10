@@ -85,7 +85,7 @@ export class SheltersMapComponent implements AfterViewInit {
       .subscribe(
       () => {
         for (let marker of this.shelterMarkers) {
-          if (marker.shelter.id === shelter.id) {
+          if (marker.shelter.shelterId === shelter.shelterId) {
             this.clickMarker(marker);
             break;
           }
@@ -177,14 +177,14 @@ export class SheltersMapComponent implements AfterViewInit {
     this.sheltersIsPlotted.next(false);
 
     // Collect the shelters that already is marked
-    let seenShelters: number[] = [];
+    let seenShelters: string[] = [];
     for (let marker of this.shelterMarkers) {
-      seenShelters.push(marker.shelter.id);
+      seenShelters.push(marker.shelter.shelterId);
     }
 
     // Create all the markers
     for (let shelter of shelters) {
-      if (seenShelters.indexOf(shelter.id) !== -1) {
+      if (seenShelters.indexOf(shelter.shelterId) !== -1) {
         continue;
       }
 
