@@ -1,11 +1,11 @@
-<div class="button" [routerLink]="['/skyddsrum', shelter?.id]">
+<div class="button" [routerLink]="['/skyddsrum', shelter?.shelterId]">
     <bouncer
             [bounceIf]="showBouncer"
             [textValue]="'Nästa'"
     ></bouncer>
 </div>
 <div class="step1">
-    <h1>Skyddsrum: {{shelter?.id}} </h1>
+    <h1>Skyddsrum: {{shelter?.shelterId}} </h1>
     <p>{{shelter?.address}}</p>
     <p>Kapacitet: {{shelter?.slots}} personer</p>
 </div>
