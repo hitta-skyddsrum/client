@@ -33,11 +33,13 @@ type StoreType = {
   disposeOldHosts: () => void
 };
 
-Raven
-  .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
-    environment: ENV
-  })
-  .install();
+if (SENTRY_KEY) {
+  Raven
+    .config(`https://${SENTRY_KEY}@sentry.io/${SENTRY_PROJECT}`, {
+      environment: ENV
+    })
+    .install();
+}
 
 export class RavenErrorHandler implements ErrorHandler {
   handleError(err:any) : void {
